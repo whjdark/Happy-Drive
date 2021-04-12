@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StatisticsWindow</class>
+ <widget class="QMainWindow" name="StatisticsWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>820</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>统计信息</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../icon.qrc">
+    <normaloff>:/icon/res/icon/statistic.png</normaloff>:/icon/res/icon/statistic.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <stylestrategy>PreferDefault</stylestrategy>
+       </font>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
+      <row>
+       <property name="text">
+        <string>CH1</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>CH2</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>CH3</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>CH4</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>CH5</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>CH6</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>CH7</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>CH8</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>最大值</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>最小值</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>平均值</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>峰峰值</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>有效值</string>
+       </property>
+      </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="0" column="1">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="0" column="2">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="0" column="3">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="0" column="4">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="1" column="0">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="1" column="1">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="1" column="2">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="1" column="3">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="1" column="4">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="2" column="0">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="2" column="1">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="2" column="2">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="2" column="3">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="2" column="4">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="3" column="0">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="3" column="1">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="3" column="2">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="3" column="3">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="3" column="4">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="4" column="0">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="4" column="1">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="4" column="2">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="4" column="3">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="4" column="4">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="5" column="0">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="5" column="1">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="5" column="2">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="5" column="3">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="5" column="4">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="6" column="0">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="6" column="1">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="6" column="2">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="6" column="3">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="6" column="4">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="7" column="0">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="7" column="1">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="7" column="2">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="7" column="3">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+      <item row="7" column="4">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>820</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../../icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

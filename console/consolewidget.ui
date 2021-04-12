@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConsoleWidget</class>
+ <widget class="QWidget" name="ConsoleWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>通讯控制台</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
+    <number>3</number>
+   </property>
+   <item row="0" column="0" rowspan="3">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="cmdComboBox">
+         <property name="insertPolicy">
+          <enum>QComboBox::InsertAtBottom</enum>
+         </property>
+         <item>
+          <property name="text">
+           <string>0x0001</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x0002</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x0003</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x1001</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2001</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2002</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2003</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2004</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2005</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2006</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2007</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2008</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x2009</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x200A</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x200B</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x200C</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x200D</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x3001</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>0x3002</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="sendButton">
+         <property name="text">
+          <string>发送</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../icon.qrc">
+           <normaloff>:/icon/res/icon/send.png</normaloff>:/icon/res/icon/send.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>命令行参数</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="clearCmdPushButton">
+           <property name="text">
+            <string>清空</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/clear.png</normaloff>:/icon/res/icon/clear.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="recvlabel">
+           <property name="text">
+            <string>接收区</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="showRecvCheckBox">
+           <property name="text">
+            <string>显示所有接收数据</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="clearRecvPushButton">
+           <property name="text">
+            <string>清空</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/clear.png</normaloff>:/icon/res/icon/clear.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QTextEdit" name="cmdDataTextEdit">
+           <property name="cursor" stdset="0">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
+           <property name="cursorWidth">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextEdit" name="recvTextEdit">
+           <property name="cursor" stdset="0">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="cursorWidth">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QLabel" name="requestLabel">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>通讯请求次数： </string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="warnLabel">
+         <property name="text">
+          <string>通讯警告次数： </string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="errorLabel">
+         <property name="text">
+          <string>通讯错误次数： </string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="avgTimeLabel">
+         <property name="text">
+          <string>通讯平均耗时： </string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="txdLabel">
+         <property name="text">
+          <string>总发送字节：</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="rxdLabel">
+         <property name="text">
+          <string>总接收字节：</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item>
+        <widget class="QLCDNumber" name="requestLcdNumber">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="digitCount">
+          <number>19</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="warnLcdNumber">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="digitCount">
+          <number>19</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="errorLcdNumber">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="digitCount">
+          <number>19</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+         <property name="value" stdset="0">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="avgTimeLcdNumber">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="digitCount">
+          <number>19</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+         <property name="value" stdset="0">
+          <double>0.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="txdLcdNumber">
+         <property name="digitCount">
+          <number>19</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="rxdLcdNumber">
+         <property name="digitCount">
+          <number>19</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::Flat</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_9">
+       <item>
+        <widget class="QLabel" name="cntUnitLabel">
+         <property name="text">
+          <string>次</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="cntUnitLabel_2">
+         <property name="text">
+          <string>次</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="cntUnitLabel_3">
+         <property name="text">
+          <string>次</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="msUnitLabel">
+         <property name="text">
+          <string>毫秒</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="bytesLabel">
+         <property name="text">
+          <string>Bytes</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="bytesLabel_2">
+         <property name="text">
+          <string>Bytes</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="clearCounterPushButton">
+     <property name="text">
+      <string>清空计数器</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../icon.qrc">
+       <normaloff>:/icon/res/icon/clear.png</normaloff>:/icon/res/icon/clear.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <widget class="QLabel" name="logLabel">
+           <property name="text">
+            <string>通讯日志</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="clearLogButton">
+           <property name="text">
+            <string>清空</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/clear.png</normaloff>:/icon/res/icon/clear.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QTextEdit" name="logTextEdit">
+         <property name="cursor" stdset="0">
+          <cursorShape>IBeamCursor</cursorShape>
+         </property>
+         <property name="documentTitle">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="cursorWidth">
+          <number>2</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

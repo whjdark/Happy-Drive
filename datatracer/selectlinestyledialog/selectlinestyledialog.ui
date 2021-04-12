@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SelectLineStyleDialog</class>
+ <widget class="QDialog" name="SelectLineStyleDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>曲线样式设置</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../icon.qrc">
+    <normaloff>:/icon/res/icon/default.png</normaloff>:/icon/res/icon/default.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="lineStyleLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Line Style</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="lineStyleComboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <item>
+        <property name="text">
+         <string>lsNone</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>lsLine</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>lsStepLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>lsStepRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>lsStepCenter</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>lsImpulse</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="scatterStyleLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Scatter Shape</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="scatterShapeComboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <item>
+        <property name="text">
+         <string>ssNone</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssDot</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssCross</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssPlus</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssCircle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssDisc</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssSquare</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssDiamond</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssStar</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssTriangle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssTriangleInverted</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssCrossSquare</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssPlusSquare</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssCrossCircle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssPlusCircle</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ssPeace</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="scatterSizeLable">
+       <property name="text">
+        <string>Scatter Szie</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="scatterSizeDoubleSpinBox">
+       <property name="maximum">
+        <double>99.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../icon.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>SelectLineStyleDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>SelectLineStyleDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

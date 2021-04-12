@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts;xlf</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts;xlf</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CONconfiger\CONconfigdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CONconfiger\CONconfigwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseDataType\bitconverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="connectDialog\connectdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="console\consolemainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="console\consolewidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tracer\datatracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseDataType\driverdatatype.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="monitor\monitorwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tracer\oscilloscope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QCustomPlot\qcustomplot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="runconfig\runconfigdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tracer\scopetraceline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tracer\scopetracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tracer\selectlinestyledialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xcomm\serial\serialcomm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xcomm\xcomm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="CONconfiger\CONconfigdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CONconfiger\CONconfigwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="utilities\CRC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseDataType\bitconverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="connectDialog\connectdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="console\consolemainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="console\consolewidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="tracer\datatracer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="BaseDataType\driverdatatype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\fftw3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="monitor\monitorwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="tracer\oscilloscope.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QCustomPlot\qcustomplot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="runconfig\runconfigdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="tracer\scopetraceline.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="tracer\scopetracer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="tracer\selectlinestyledialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="xcomm\serial\serialcomm.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="xcomm\xcomm.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MyDriver_en_US.ts">
+      <Filter>Translation Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="CONconfiger\CONconfigdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="CONconfiger\CONconfigwidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="connectDialog\connectdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="console\consolemainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="console\consolewidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="tracer\datatracer.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="monitor\monitorwidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="runconfig\runconfigdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="tracer\selectlinestyledialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\icon\analyse.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\auto.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\axis.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\cancel.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\clear.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\configer.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\confirm.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\connect.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\console.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\default.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\detail.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\disconnect.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\export.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\exportPicture.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\graphic.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <QtRcc Include="icon.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <None Include="res\icon\import.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\legend.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\load.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\measure.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\monitor.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\readData.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\cursor\redcross.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\reqData.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\reset.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\save.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\send.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\start.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\statistic.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\stop.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\tracer.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\up.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\icon\write.png">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include=".\MyDriver_resource.rc" />
+  </ItemGroup>
+</Project>

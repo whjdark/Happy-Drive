@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConnectDialog</class>
+ <widget class="QWidget" name="ConnectDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>320</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>串口设置</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../icon.qrc">
+    <normaloff>:/icon/res/icon/connect.png</normaloff>:/icon/res/icon/connect.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="portLabel">
+       <property name="text">
+        <string>串口</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="portComboBox"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="baudLabel">
+       <property name="text">
+        <string>波特率</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="baudComboBox"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>等待响应时间</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="waitResponsespinBox">
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+       <property name="value">
+        <number>1000</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="detectButton">
+     <property name="text">
+      <string>刷新串口列表</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../icon.qrc">
+       <normaloff>:/icon/res/icon/load.png</normaloff>:/icon/res/icon/load.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="setButton">
+       <property name="text">
+        <string>连接</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../icon.qrc">
+         <normaloff>:/icon/res/icon/connect.png</normaloff>:/icon/res/icon/connect.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="text">
+        <string>取消</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../icon.qrc">
+         <normaloff>:/icon/res/icon/cancel.png</normaloff>:/icon/res/icon/cancel.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="defaultButton">
+       <property name="text">
+        <string>恢复默认</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../icon.qrc">
+         <normaloff>:/icon/res/icon/default.png</normaloff>:/icon/res/icon/default.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="detailButton">
+       <property name="text">
+        <string>详细信息</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../icon.qrc">
+         <normaloff>:/icon/res/icon/detail.png</normaloff>:/icon/res/icon/detail.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

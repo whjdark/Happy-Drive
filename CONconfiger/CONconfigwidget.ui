@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConfigWidget</class>
+ <widget class="QWidget" name="ConfigWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1024</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QTableView{
+    font-family:&quot;Microsoft Yahei&quot;;
+    font-size:10pt;
+    selection-color: black;
+    selection-background-color: rgb(255,209,128);
+}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>205</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="runModeLabel">
+       <property name="text">
+        <string>启动模式:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="runModeBox">
+       <item>
+        <property name="text">
+         <string>模式0：电流开环</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>模式1：速度闭环（电流PI，速度PI）</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>模式2：位置闭环（位置P，电流PI，速度PI）</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>模式3：速度闭环（速度ADRC，电流PI）</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>模式4：速度闭环（速度ADRC，电流ADRC）</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>模式5：位置闭环（位置P，速度ADRC，电流ADRC）</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>模式6：速度闭环（电流环PI，速度环FOPD-GESO）</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="2">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>205</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0" rowspan="2" colspan="3">
+    <widget class="QTableWidget" name="tableWidget"/>
+   </item>
+   <item row="1" column="3">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="writeDSPButon">
+        <property name="text">
+         <string>写入驱动器</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../icon.qrc">
+          <normaloff>:/icon/res/icon/write.png</normaloff>:/icon/res/icon/write.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadJSONButton">
+        <property name="text">
+         <string>载入配置</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../icon.qrc">
+          <normaloff>:/icon/res/icon/load.png</normaloff>:/icon/res/icon/load.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="saveJSONButton">
+        <property name="text">
+         <string>保存配置</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../icon.qrc">
+          <normaloff>:/icon/res/icon/save.png</normaloff>:/icon/res/icon/save.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cleartTableButton">
+        <property name="text">
+         <string>重置参数</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../icon.qrc">
+          <normaloff>:/icon/res/icon/clear.png</normaloff>:/icon/res/icon/clear.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>588</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

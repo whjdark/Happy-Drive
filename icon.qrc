@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>res/icon/start.png</file>
+        <file>res/icon/stop.png</file>
+        <file>res/icon/tracer.png</file>
+        <file>res/icon/configer.png</file>
+        <file>res/icon/monitor.png</file>
+        <file>res/icon/reqData.png</file>
+        <file>res/icon/connect.png</file>
+        <file>res/icon/disconnect.png</file>
+        <file>res/icon/reset.png</file>
+        <file>res/icon/console.png</file>
+        <file>res/icon/auto.png</file>
+        <file>res/icon/cancel.png</file>
+        <file>res/icon/clear.png</file>
+        <file>res/icon/confirm.png</file>
+        <file>res/icon/default.png</file>
+        <file>res/icon/detail.png</file>
+        <file>res/icon/export.png</file>
+        <file>res/icon/exportPicture.png</file>
+        <file>res/icon/import.png</file>
+        <file>res/icon/load.png</file>
+        <file>res/icon/readData.png</file>
+        <file>res/icon/save.png</file>
+        <file>res/icon/statistic.png</file>
+        <file>res/icon/write.png</file>
+        <file>res/icon/analyse.png</file>
+        <file>res/icon/axis.png</file>
+        <file>res/icon/graphic.png</file>
+        <file>res/icon/legend.png</file>
+        <file>res/icon/measure.png</file>
+        <file>res/icon/send.png</file>
+        <file>res/icon/up.png</file>
+    </qresource>
+</RCC>

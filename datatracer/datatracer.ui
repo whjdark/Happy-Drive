@@ -1,0 +1,992 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DataTracer</class>
+ <widget class="QWidget" name="DataTracer">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../icon.qrc">
+    <normaloff>:/icon/res/icon/tracer.png</normaloff>:/icon/res/icon/tracer.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_5" columnstretch="0,1">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="mainGroupBox">
+     <property name="minimumSize">
+      <size>
+       <width>350</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>面板</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3" rowstretch="0,0,0,0,0" columnstretch="0,0">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item row="1" column="1">
+       <widget class="QGroupBox" name="advanceFeatureGroupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>数据分析</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0">
+         <property name="leftMargin">
+          <number>3</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>3</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="FFTButton">
+           <property name="text">
+            <string>FFT</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/analyse.png</normaloff>:/icon/res/icon/analyse.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="statsButton">
+           <property name="text">
+            <string>统计信息</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/statistic.png</normaloff>:/icon/res/icon/statistic.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QGroupBox" name="controlBox">
+        <property name="title">
+         <string/>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <property name="leftMargin">
+          <number>3</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>3</number>
+         </property>
+         <property name="bottomMargin">
+          <number>3</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="startButton">
+           <property name="text">
+            <string>运行</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/start.png</normaloff>:/icon/res/icon/start.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QPushButton" name="configButton">
+           <property name="text">
+            <string>控制器参数</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/configer.png</normaloff>:/icon/res/icon/configer.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QPushButton" name="readButton">
+           <property name="text">
+            <string>读取数据</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/reqData.png</normaloff>:/icon/res/icon/reqData.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QPushButton" name="stopButton">
+           <property name="text">
+            <string>停止</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/stop.png</normaloff>:/icon/res/icon/stop.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QGroupBox" name="dataManagerBox">
+        <property name="title">
+         <string>数据管理</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="leftMargin">
+          <number>3</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>3</number>
+         </property>
+         <property name="bottomMargin">
+          <number>3</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="exportDataButton">
+           <property name="text">
+            <string>导出数据</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/export.png</normaloff>:/icon/res/icon/export.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="exportImgButton">
+           <property name="text">
+            <string>保存成图片</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/exportPicture.png</normaloff>:/icon/res/icon/exportPicture.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QPushButton" name="importDataButton">
+           <property name="text">
+            <string>导入数据</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icon.qrc">
+             <normaloff>:/icon/res/icon/import.png</normaloff>:/icon/res/icon/import.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0" rowspan="2">
+       <widget class="QGroupBox" name="chSelectBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>通道选择</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_14">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QPushButton" name="showAllchannelButton">
+             <property name="text">
+              <string>通道全开</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../icon.qrc">
+               <normaloff>:/icon/res/icon/confirm.png</normaloff>:/icon/res/icon/confirm.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="closeAllchannelButton">
+             <property name="text">
+              <string>通道全关</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../icon.qrc">
+               <normaloff>:/icon/res/icon/cancel.png</normaloff>:/icon/res/icon/cancel.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+           <property name="leftMargin">
+            <number>3</number>
+           </property>
+           <property name="topMargin">
+            <number>3</number>
+           </property>
+           <property name="rightMargin">
+            <number>3</number>
+           </property>
+           <property name="bottomMargin">
+            <number>3</number>
+           </property>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QCheckBox" name="ch1Box">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ch1</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="tristate">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ch2Box">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ch2</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ch3Box">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ch3</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ch4Box">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ch4</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ch5Box">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ch5</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ch6Box">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ch6</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ch7Box">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ch7</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ch8Box">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ch8</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_11">
+             <item>
+              <widget class="QComboBox" name="ch1ComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="ch2ComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="ch3ComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="ch4ComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="ch5ComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="ch6ComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="ch7ComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="ch8ComboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="defaultButton">
+            <property name="text">
+             <string>默认坐标轴</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../icon.qrc">
+              <normaloff>:/icon/res/icon/default.png</normaloff>:/icon/res/icon/default.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="clearDataButton">
+            <property name="text">
+             <string>清空数据</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../icon.qrc">
+              <normaloff>:/icon/res/icon/clear.png</normaloff>:/icon/res/icon/clear.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QPushButton" name="autoSetButton">
+            <property name="text">
+             <string>自动调整</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../icon.qrc">
+              <normaloff>:/icon/res/icon/auto.png</normaloff>:/icon/res/icon/auto.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0" rowspan="2">
+       <widget class="QToolBox" name="toolBox">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>227</width>
+           <height>209</height>
+          </rect>
+         </property>
+         <attribute name="icon">
+          <iconset resource="../icon.qrc">
+           <normaloff>:/icon/res/icon/axis.png</normaloff>:/icon/res/icon/axis.png</iconset>
+         </attribute>
+         <attribute name="label">
+          <string>坐标轴设置</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <item>
+               <widget class="QLabel" name="xMaxLabel">
+                <property name="text">
+                 <string>X轴最大值</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="xMinLabel">
+                <property name="text">
+                 <string>X轴最小值</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="yMaxLabel">
+                <property name="text">
+                 <string>Y轴最大值</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="yMinLabel">
+                <property name="text">
+                 <string>Y轴最小值</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QDoubleSpinBox" name="xMaxDoubleSpinBox">
+                <property name="decimals">
+                 <number>2</number>
+                </property>
+                <property name="minimum">
+                 <double>-9999999.000000000000000</double>
+                </property>
+                <property name="maximum">
+                 <double>9999999.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="xMinDoubleSpinBox">
+                <property name="minimum">
+                 <double>-9999999.000000000000000</double>
+                </property>
+                <property name="maximum">
+                 <double>9999999.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="yMaxDoubleSpinBox">
+                <property name="minimum">
+                 <double>-9999999.000000000000000</double>
+                </property>
+                <property name="maximum">
+                 <double>9999999.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="yMinDoubleSpinBox">
+                <property name="minimum">
+                 <double>-9999999.000000000000000</double>
+                </property>
+                <property name="maximum">
+                 <double>9999999.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QLabel" name="xTickLabel">
+                <property name="text">
+                 <string>X轴刻度线数</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="yTickLabel">
+                <property name="text">
+                 <string>Y轴刻度线数</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QSpinBox" name="xTickSpinBox">
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>18</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="yTickSpinBox">
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>237</width>
+           <height>182</height>
+          </rect>
+         </property>
+         <attribute name="icon">
+          <iconset resource="../icon.qrc">
+           <normaloff>:/icon/res/icon/legend.png</normaloff>:/icon/res/icon/legend.png</iconset>
+         </attribute>
+         <attribute name="label">
+          <string>图例和标题设置</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_17">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QCheckBox" name="legendBox">
+              <property name="text">
+               <string>图例</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../icon.qrc">
+                <normaloff>:/icon/res/icon/legend.png</normaloff>:/icon/res/icon/legend.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="legendPosComboBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <item>
+               <property name="text">
+                <string>右下</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>右上</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>左下</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>左上</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_16">
+              <item>
+               <widget class="QLabel" name="OscTitleLabel">
+                <property name="text">
+                 <string>图标标题</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="xTitleLabel">
+                <property name="text">
+                 <string>x轴标题</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="yTitleLabel">
+                <property name="text">
+                 <string>y轴标题</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_15">
+              <item>
+               <widget class="QLineEdit" name="OscTitleLineEdit"/>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="xTitleLineEdit"/>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="yTitleLineEdit"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>217</width>
+           <height>182</height>
+          </rect>
+         </property>
+         <attribute name="icon">
+          <iconset resource="../icon.qrc">
+           <normaloff>:/icon/res/icon/graphic.png</normaloff>:/icon/res/icon/graphic.png</iconset>
+         </attribute>
+         <attribute name="label">
+          <string>图形设置</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QCheckBox" name="openGLBox">
+              <property name="toolTip">
+               <string>“使用openGL加速，可能会有BUG”</string>
+              </property>
+              <property name="text">
+               <string>openGL</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="subAxisCheckBox">
+              <property name="text">
+               <string>子网格线</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLabel" name="themeLabel">
+              <property name="text">
+               <string>主题</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="themeBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="currentText">
+               <string>Dark</string>
+              </property>
+              <property name="currentIndex">
+               <number>1</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Light</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Dark</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_4">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>217</width>
+           <height>182</height>
+          </rect>
+         </property>
+         <attribute name="icon">
+          <iconset resource="../icon.qrc">
+           <normaloff>:/icon/res/icon/measure.png</normaloff>:/icon/res/icon/measure.png</iconset>
+         </attribute>
+         <attribute name="label">
+          <string>测量</string>
+         </attribute>
+         <widget class="QCheckBox" name="tracerCheckBox">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>59</y>
+            <width>59</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>游标</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="Oscilloscope" name="customPlot" native="true">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Oscilloscope</class>
+   <extends>QWidget</extends>
+   <header>oscilloscope\oscilloscope.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>
