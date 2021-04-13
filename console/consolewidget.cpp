@@ -269,12 +269,12 @@ ConsoleWidget::on_showRecvCheckBox_stateChanged(int state)
 {
   switch (state) {
     case Qt::Unchecked:
-      disconnect(m_xcomm, &XComm::allCmd, this, &ConsoleWidget::slotShowCmd);
+      disconnect(m_xcomm, &XComm::logAllRecv, this, &ConsoleWidget::slotShowCmd);
       break;
     case Qt::PartiallyChecked:
       break;
     case Qt::Checked:
-      connect(m_xcomm, &XComm::allCmd, this, &ConsoleWidget::slotShowCmd);
+      connect(m_xcomm, &XComm::logAllRecv, this, &ConsoleWidget::slotShowCmd);
       break;
     default:
       break;

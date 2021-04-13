@@ -52,6 +52,7 @@ HEADERS += BaseDataType/bitconverter.h \
     oscilloscope/scopetracer.h \
     runconfig/runconfigdialog.h \
     stable.h \
+    toolbox/sweeping/sweepingwindow.h \
     utilities/CRC.h \
     mainwindow.h \
     timer.h \
@@ -76,6 +77,7 @@ FORMS += mainwindow.ui \
     datatracer/statisticsWindow/statisticswindow.ui \
     monitor/monitorwidget.ui \
     runconfig/runconfigdialog.ui \
+    toolbox/sweeping/sweepingwindow.ui
 
 SOURCES += BaseDataType/bitconverter.cpp \
            BaseDataType/driverdatatype.cpp \
@@ -99,6 +101,7 @@ SOURCES += BaseDataType/bitconverter.cpp \
            oscilloscope/scopetraceline.cpp \
            oscilloscope/scopetracer.cpp \
            runconfig/runconfigdialog.cpp \
+           toolbox/sweeping/sweepingwindow.cpp \
            xcomm/serial/serialcomm.cpp \
            xcomm/xcomm.cpp
 

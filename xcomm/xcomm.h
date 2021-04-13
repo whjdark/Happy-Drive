@@ -42,6 +42,9 @@ public:
     MONITOR_HEADER = 0x10,
     TRACER_HEADER = 0x20,
     CONTROLLER_HEADER = 0x30,
+    TOOLBOX_SWEEPING_HEADER = 0x40,
+
+    HEADER_UNKNOWN = 0xFF,
   };
   Q_ENUM(CmdHeaderType)
 
@@ -69,6 +72,9 @@ public:
 
     CONTROLLER_WRITE = 0x3001,
     CONTROLLER_READ = 0x3002,
+
+    TOOLBOX_SWEEPING_WRITE = 0x4001,
+    TOOLBOX_SWEEPING_REQ_DATA = 0x4002,
 
     CMD_UNKNOWN = 0xFFFF,
   };
@@ -120,10 +126,11 @@ Q_SIGNALS:
   void connectSuccess();
   void motorStart();
   void motorStop();
-  void allCmd(const quint16 cmd, const QByteArray& data);
+  void logAllRecv(const quint16 cmd, const QByteArray& data);
   void monitorCmd(const quint16 cmd, const QByteArray& data);
   void tracerCmd(const quint16 cmd, const QByteArray& data);
   void controllerCmd(const quint16 cmd, const QByteArray& data);
+  void toolboxSweepingCmd(const quint16 cmd, const QByteArray& data);
   void sendCommLog(AbstractComm::LogLevel level,
                    quint16 errCmdInt,
                    const QString& msgLog);

@@ -85,7 +85,7 @@ void
 XComm::slotResponse(const quint16 cmd, const QByteArray& data)
 {
   //事件转发
-  int cmdHeader = cmd >> 8; // 提取高8位;
+  int cmdHeader = cmd >> 8; // 提取高8位（命令头）用于消息转发
   switch (cmdHeader) {
     case XComm::SYSTEM_HEADER:
       slotSysCmd(cmd, data);
@@ -98,6 +98,9 @@ XComm::slotResponse(const quint16 cmd, const QByteArray& data)
       break;
     case XComm::CONTROLLER_HEADER:
       Q_EMIT controllerCmd(cmd, data);
+      break;
+    case XComm::TOOLBOX_SWEEPING_HEADER:
+      Q_EMIT toolboxSweepingCmd(cmd, data);
       break;
     default:
       // unexpected cmd header
@@ -116,7 +119,7 @@ XComm::slotResponse(const quint16 cmd, const QByteArray& data)
   } else {
     truncatedData = data;
   }
-  Q_EMIT allCmd(cmd, truncatedData);
+  Q_EMIT logAllRecv(cmd, truncatedData);
 }
 
 void

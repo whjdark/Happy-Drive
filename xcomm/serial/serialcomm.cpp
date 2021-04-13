@@ -12,12 +12,8 @@
 #include <QTime>
 
 Serial::Serial(QObject* parent)
-  : QThread(parent)
-{
-  //不同线程之间通过信号和槽来传递自定义数据类型,
-  //需添加注册自定义类SerialMsgLevel类型
-  qRegisterMetaType<Serial::LogLevel>("SerialThread::SerialMsgLevel");
-}
+  : AbstractComm(parent)
+{}
 
 Serial::~Serial()
 {

@@ -478,7 +478,7 @@ TracerWidget::on_configButton_clicked()
 {
   //控制器参数配置对话框
   int ret = m_controllerConfiger->exec();
-  return ret;
+  return ret; //返回值是enum QDialog::DialogCode
 }
 
 void

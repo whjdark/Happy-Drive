@@ -13,16 +13,12 @@
 #include "../../utilities/CRC.h"
 #include "../abstractcomm.h"
 
-#include <QMetaType>
 #include <QMutex>
 #include <QPair>
-#include <QThread>
 #include <QTime>
 #include <QtSerialPort>
 
-class Serial
-  : public QThread
-  , public AbstractComm
+class Serial : public AbstractComm
 {
   Q_OBJECT
 
