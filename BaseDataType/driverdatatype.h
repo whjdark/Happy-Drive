@@ -36,6 +36,19 @@ typedef qint32 positionDataType;
 //编码器数据类型
 typedef qint16 encoderDataType;
 
+//运行模式
+enum RunMode
+{
+  MODE0 = 0,
+  MODE1 = 1,
+  MODE2 = 2,
+  MODE3 = 3,
+  MODE4 = 4,
+  MODE5 = 5,
+  MODE6 = 6,
+
+};
+
 struct PIDParams
 {
   quint32 kp;

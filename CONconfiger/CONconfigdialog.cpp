@@ -5,12 +5,12 @@
 CONConfigQDialog::CONConfigQDialog(QWidget* parent, XComm* xcomm)
   : QDialog(parent)
   , ui(new Ui::CONConfigDialog)
-  , m_ctrllerConfigWidget(new CONConfigWidget(this, xcomm))
+  , m_conConfigWidget(new CONConfigWidget(this, xcomm))
 {
   ui->setupUi(this);
 
   // add configWidget to window
-  ui->gridLayout->addWidget(m_ctrllerConfigWidget, 0, 0, 1, 3);
+  ui->gridLayout->addWidget(m_conConfigWidget, 0, 0, 1, 3);
   setWindowTitle(QStringLiteral("控制器参数配置"));
 
   ui->buttonBox->button(QDialogButtonBox::Ok)->setText(QStringLiteral("确认"));

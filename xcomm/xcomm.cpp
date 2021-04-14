@@ -44,7 +44,7 @@ XComm::configSerialPort(const Serial::SerialConfig& serialConfig)
 }
 
 auto
-XComm::connectStatus() const -> XComm::CommState
+XComm::getConnectStatus() const -> XComm::CommState
 {
   return m_commState;
 }

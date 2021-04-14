@@ -1,4 +1,4 @@
-#ifndef CONCONFIGDIALOG_H
+﻿#ifndef CONCONFIGDIALOG_H
 #define CONCONFIGDIALOG_H
 
 #include <QDialog>
@@ -20,9 +20,7 @@ public:
 
 private:
   Ui::CONConfigDialog* ui;
-
-public:
-  CONConfigWidget* m_ctrllerConfigWidget;
+  CONConfigWidget* m_conConfigWidget;
 };
 
 #endif // CONCONFIGDIALOG_H

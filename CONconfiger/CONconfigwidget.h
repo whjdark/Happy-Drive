@@ -41,19 +41,6 @@ public:
   };
   Q_ENUM(TableCols)
 
-  enum RunMode
-  {
-    MODE0 = 0,
-    MODE1 = 1,
-    MODE2 = 2,
-    MODE3 = 3,
-    MODE4 = 4,
-    MODE5 = 5,
-    MODE6 = 6,
-
-  };
-  Q_ENUM(RunMode)
-
   struct ParamsRow
   {
     QString num;
@@ -70,15 +57,11 @@ public:
   explicit CONConfigWidget(QWidget* parent = nullptr, XComm* xcomm = nullptr);
   ~CONConfigWidget();
 
-  void resetDSPRunMode();
-  QString currentDSPRunMode() const;
-
 private Q_SLOTS:
   void on_writeDSPButon_clicked();
   void on_loadJSONButton_clicked();
   void on_saveJSONButton_clicked();
   void on_cleartTableButton_clicked();
-
   void on_runModeBox_currentIndexChanged(int index);
 
   void slotProcessCmd(const quint16 cmd, const QByteArray& data);
@@ -112,7 +95,7 @@ private:
                     const T data,
                     const bool isHex);
 
-  void refreshModeTable(CONConfigWidget::RunMode);
+  void refreshModeTable(DriverDataType::RunMode);
   void resetTableValue();
   void checkDSPConfig(const QByteArray& data);
 
@@ -126,9 +109,7 @@ private:
   XComm* m_xcomm;
   std::array<QVector<ParamsRow>, numOfMode> m_tableConfig;
   //上一个表格的mode
-  RunMode m_lastTableMode = MODE0;
-  //成功写入到DSP的模式, 也就是正在使用的模式
-  RunMode m_currentDSPRunMode = MODE0;
+  DriverDataType::RunMode m_lastTableMode = DriverDataType::MODE0;
 };
 
 #endif // CONCONFIGWIDGET_H

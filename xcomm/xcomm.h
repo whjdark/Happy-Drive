@@ -105,13 +105,13 @@ public:
 
   void initConnections();
   void command(const quint16 cmd, const QByteArray& data);
-  const QString& currentSerialPort() const { return m_serial.currentPort(); }
+  const QString& getCurrentSerialPort() const { return m_serial.currentPort(); }
   void configSerialPort(const Serial::SerialConfig& serialConfig);
   void connectDriver();
   void disconnectDriver();
-  CommState connectStatus() const;
+  CommState getConnectStatus() const;
   const CommStats& getStats();
-  MotorState MotorStatus() const { return m_motorState; }
+  MotorState getMotorStatus() const { return m_motorState; }
   void setMotorState(MotorState motorState) { m_motorState = motorState; }
   void clearCmdCnt();
   void clearErrCnt();
@@ -121,6 +121,8 @@ public:
   void clearTotalRxdBytes();
   void startMotor(DriverDataType::RunConfigType& runConfig);
   void stopMotor();
+  DriverDataType::RunMode getCurrentRunMode() const { return currentRunMode; }
+  void logRunMode(DriverDataType::RunMode mode) { currentRunMode = mode; }
 
 Q_SIGNALS:
   void connectSuccess();
@@ -147,5 +149,6 @@ private:
   CommState m_commState = XComm::COMM_IDLE;
   MotorState m_motorState = XComm::MOTOR_STOP;
   CommStats m_commStats;
+  DriverDataType::RunMode currentRunMode = DriverDataType::MODE0;
 };
 #endif // XCOMM_H

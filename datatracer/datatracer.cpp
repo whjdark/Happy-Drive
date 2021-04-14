@@ -433,13 +433,13 @@ TracerWidget::selectChannel() -> Channels
 void
 TracerWidget::on_startButton_clicked()
 {
-  if (m_xcomm->connectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));
     return;
   }
-  if (m_xcomm->MotorStatus() == XComm::MOTOR_RUN) {
+  if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
     // if motor is running , no action
     QMessageBox::warning(this,
                          QStringLiteral("警告"),
@@ -447,8 +447,9 @@ TracerWidget::on_startButton_clicked()
     return;
   }
   //运行参数配置对话框，提示当前运行模式
-  m_runConfiger->setRunModeInfo(
-    m_controllerConfiger->m_ctrllerConfigWidget->currentDSPRunMode());
+  QString currentRunMode =
+    tr("Run Mode %1").arg(m_xcomm->getCurrentRunMode()); //读取当前运行模式
+  m_runConfiger->setRunModeInfo(currentRunMode);
   if (m_runConfiger->exec() == QDialog::Rejected) {
     return;
   }
@@ -461,13 +462,13 @@ TracerWidget::on_startButton_clicked()
 void
 TracerWidget::on_stopButton_clicked()
 {
-  if (m_xcomm->connectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));
     return;
   }
-  if (m_xcomm->MotorStatus() == XComm::MOTOR_RUN) {
+  if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
     // if motor is running，stop it
     m_xcomm->stopMotor();
   }
@@ -484,7 +485,7 @@ TracerWidget::on_configButton_clicked()
 void
 TracerWidget::on_readButton_clicked()
 {
-  if (m_xcomm->connectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));

@@ -37,21 +37,6 @@ CONConfigWidget::~CONConfigWidget()
 }
 
 void
-CONConfigWidget::resetDSPRunMode()
-{
-  //重置运行模式为mode 0
-  ui->runModeBox->setCurrentIndex(0);
-  //写入驱动器
-  on_writeDSPButon_clicked();
-}
-
-auto
-CONConfigWidget::currentDSPRunMode() const -> QString
-{
-  return ui->runModeBox->itemText(m_currentDSPRunMode);
-}
-
-void
 CONConfigWidget::initTableHeader()
 {
   //设置标题
@@ -174,7 +159,7 @@ CONConfigWidget::initMode1Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE1].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE1].append(paramsRow);
   // 电流pid ki
   paramsRow.num = QStringLiteral("0x1");
   paramsRow.name = QStringLiteral("电流PID-ki");
@@ -184,7 +169,7 @@ CONConfigWidget::initMode1Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE1].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE1].append(paramsRow);
   // 电流pid kc
   paramsRow.num = QStringLiteral("0x17");
   paramsRow.name = QStringLiteral("电流PID-kc");
@@ -194,7 +179,7 @@ CONConfigWidget::initMode1Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE1].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE1].append(paramsRow);
   // 速度PID-kp
   paramsRow.num = QStringLiteral("0x3");
   paramsRow.name = QStringLiteral("速度PID-kp");
@@ -204,7 +189,7 @@ CONConfigWidget::initMode1Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE1].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE1].append(paramsRow);
   // 速度PID-ki
   paramsRow.num = QStringLiteral("0x4");
   paramsRow.name = QStringLiteral("速度PID-ki");
@@ -214,7 +199,7 @@ CONConfigWidget::initMode1Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE1].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE1].append(paramsRow);
   // 速度PID-kc
   paramsRow.num = QStringLiteral("0x18");
   paramsRow.name = QStringLiteral("速度PID-kc");
@@ -224,7 +209,7 @@ CONConfigWidget::initMode1Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE1].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE1].append(paramsRow);
 }
 
 void
@@ -241,7 +226,7 @@ CONConfigWidget::initMode2Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE2].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE2].append(paramsRow);
   // 电流pid ki
   paramsRow.num = QStringLiteral("0x1");
   paramsRow.name = QStringLiteral("电流PID-ki");
@@ -251,7 +236,7 @@ CONConfigWidget::initMode2Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE2].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE2].append(paramsRow);
   // 电流pid kc
   paramsRow.num = QStringLiteral("0x17");
   paramsRow.name = QStringLiteral("电流PID-kc");
@@ -261,7 +246,7 @@ CONConfigWidget::initMode2Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE2].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE2].append(paramsRow);
   // 速度PID-kp
   paramsRow.num = QStringLiteral("0x3");
   paramsRow.name = QStringLiteral("速度PID-kp");
@@ -271,7 +256,7 @@ CONConfigWidget::initMode2Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE2].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE2].append(paramsRow);
   // 速度PID-ki
   paramsRow.num = QStringLiteral("0x4");
   paramsRow.name = QStringLiteral("速度PID-ki");
@@ -281,7 +266,7 @@ CONConfigWidget::initMode2Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE2].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE2].append(paramsRow);
   // 速度PID-kc
   paramsRow.num = QStringLiteral("0x18");
   paramsRow.name = QStringLiteral("速度PID-kc");
@@ -291,7 +276,7 @@ CONConfigWidget::initMode2Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE2].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE2].append(paramsRow);
   // 位置PID-kp
   paramsRow.num = QStringLiteral("0x6");
   paramsRow.name = QStringLiteral("位置PID-kp");
@@ -301,7 +286,7 @@ CONConfigWidget::initMode2Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE2].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE2].append(paramsRow);
 }
 
 void
@@ -318,7 +303,7 @@ CONConfigWidget::initMode3Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE3].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE3].append(paramsRow);
   // 电流pid ki
   paramsRow.num = QStringLiteral("0x1");
   paramsRow.name = QStringLiteral("电流PID-ki");
@@ -328,7 +313,7 @@ CONConfigWidget::initMode3Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE3].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE3].append(paramsRow);
   // 电流pid kc
   paramsRow.num = QStringLiteral("0x17");
   paramsRow.name = QStringLiteral("电流PID-kc");
@@ -338,7 +323,7 @@ CONConfigWidget::initMode3Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE3].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE3].append(paramsRow);
   // 速度ADRC-wo
   paramsRow.num = QStringLiteral("0xC");
   paramsRow.name = QStringLiteral("速度ADRC-wo");
@@ -348,7 +333,7 @@ CONConfigWidget::initMode3Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE3].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE3].append(paramsRow);
   // 速度ADRC-wc
   paramsRow.num = QStringLiteral("0xD");
   paramsRow.name = QStringLiteral("速度ADRC-wc");
@@ -358,7 +343,7 @@ CONConfigWidget::initMode3Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE3].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE3].append(paramsRow);
   // 速度ADRC-bi
   paramsRow.num = QStringLiteral("0xE");
   paramsRow.name = QStringLiteral("速度ADRC-bi");
@@ -368,7 +353,7 @@ CONConfigWidget::initMode3Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE3].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE3].append(paramsRow);
 }
 
 void
@@ -385,7 +370,7 @@ CONConfigWidget::initMode4Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE4].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE4].append(paramsRow);
   // 电流ADRC-wci
   paramsRow.num = QStringLiteral("0xA");
   paramsRow.name = QStringLiteral("电流ADRC-wci");
@@ -395,7 +380,7 @@ CONConfigWidget::initMode4Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE4].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE4].append(paramsRow);
   // 电流ADRC-bi
   paramsRow.num = QStringLiteral("0xB");
   paramsRow.name = QStringLiteral("电流ADRC-bi");
@@ -405,7 +390,7 @@ CONConfigWidget::initMode4Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE4].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE4].append(paramsRow);
   // 速度ADRC-wo
   paramsRow.num = QStringLiteral("0xC");
   paramsRow.name = QStringLiteral("速度ADRC-wo");
@@ -415,7 +400,7 @@ CONConfigWidget::initMode4Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE4].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE4].append(paramsRow);
   // 速度ADRC-wc
   paramsRow.num = QStringLiteral("0xD");
   paramsRow.name = QStringLiteral("速度ADRC-wc");
@@ -425,7 +410,7 @@ CONConfigWidget::initMode4Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE4].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE4].append(paramsRow);
   // 速度ADRC-bi
   paramsRow.num = QStringLiteral("0xE");
   paramsRow.name = QStringLiteral("速度ADRC-bi");
@@ -435,7 +420,7 @@ CONConfigWidget::initMode4Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE4].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE4].append(paramsRow);
 }
 
 void
@@ -452,7 +437,7 @@ CONConfigWidget::initMode5Tables()
   paramsRow.range = QStringLiteral("0-128");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE5].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE5].append(paramsRow);
   //电流ADRC-woi
   paramsRow.num = QStringLiteral("0x9");
   paramsRow.name = QStringLiteral("电流ADRC-woi");
@@ -462,7 +447,7 @@ CONConfigWidget::initMode5Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE5].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE5].append(paramsRow);
   // 电流ADRC-wci
   paramsRow.num = QStringLiteral("0xA");
   paramsRow.name = QStringLiteral("电流ADRC-wci");
@@ -472,7 +457,7 @@ CONConfigWidget::initMode5Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE5].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE5].append(paramsRow);
   // 电流ADRC-bi
   paramsRow.num = QStringLiteral("0xB");
   paramsRow.name = QStringLiteral("电流ADRC-bi");
@@ -482,7 +467,7 @@ CONConfigWidget::initMode5Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE5].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE5].append(paramsRow);
   // 速度ADRC-wo
   paramsRow.num = QStringLiteral("0xC");
   paramsRow.name = QStringLiteral("速度ADRC-wo");
@@ -492,7 +477,7 @@ CONConfigWidget::initMode5Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE5].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE5].append(paramsRow);
   // 速度ADRC-wc
   paramsRow.num = QStringLiteral("0xD");
   paramsRow.name = QStringLiteral("速度ADRC-wc");
@@ -502,7 +487,7 @@ CONConfigWidget::initMode5Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE5].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE5].append(paramsRow);
   // 速度ADRC-bi
   paramsRow.num = QStringLiteral("0xE");
   paramsRow.name = QStringLiteral("速度ADRC-bi");
@@ -512,7 +497,7 @@ CONConfigWidget::initMode5Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE5].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE5].append(paramsRow);
 }
 
 void
@@ -529,7 +514,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 电流pid ki
   paramsRow.num = QStringLiteral("0x1");
   paramsRow.name = QStringLiteral("电流PID-ki");
@@ -539,7 +524,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 电流pid kc
   paramsRow.num = QStringLiteral("0x17");
   paramsRow.name = QStringLiteral("电流PID-kc");
@@ -549,7 +534,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 速度FOPD-GESO kp
   paramsRow.num = QStringLiteral("0xF");
   paramsRow.name = QStringLiteral("速度FOPD-GESO-kp");
@@ -559,7 +544,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 速度FOPD-GESO kd
   paramsRow.num = QStringLiteral("0x10");
   paramsRow.name = QStringLiteral("速度FOPD-GESO-kd");
@@ -569,7 +554,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 速度FOPD-GESO mu
   paramsRow.num = QStringLiteral("0x11");
   paramsRow.name = QStringLiteral("速度FOPD-GESO-mu");
@@ -579,7 +564,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 速度FOPD-GESO omegaO
   paramsRow.num = QStringLiteral("0x12");
   paramsRow.name = QStringLiteral("速度FOPD-GESO-omegaO");
@@ -589,7 +574,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 速度FOPD-GESO b0
   paramsRow.num = QStringLiteral("0x13");
   paramsRow.name = QStringLiteral("速度FOPD-GESO-b0");
@@ -599,7 +584,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 速度FOPD-GESO a1
   paramsRow.num = QStringLiteral("0x14");
   paramsRow.name = QStringLiteral("速度FOPD-GESO-a1");
@@ -609,7 +594,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   // 速度FOPD-GESO a2
   paramsRow.num = QStringLiteral("0x15");
   paramsRow.name = QStringLiteral("速度FOPD-GESO-a2");
@@ -619,7 +604,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
   paramsRow.num = QStringLiteral("0x16");
   paramsRow.name = QStringLiteral("速度FOPD-GESO-h");
   paramsRow.value = 0.0;
@@ -628,7 +613,7 @@ CONConfigWidget::initMode6Tables()
   paramsRow.range = QStringLiteral("0-16384");
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
-  m_tableConfig[MODE6].append(paramsRow);
+  m_tableConfig[DriverDataType::MODE6].append(paramsRow);
 }
 
 void
@@ -653,7 +638,6 @@ CONConfigWidget::slotProcessCmd(const quint16 cmd, const QByteArray& data)
       // check config from DSP
       checkDSPConfig(data);
       break;
-      break;
     default:
       break;
   }
@@ -662,13 +646,13 @@ CONConfigWidget::slotProcessCmd(const quint16 cmd, const QByteArray& data)
 void
 CONConfigWidget::on_writeDSPButon_clicked()
 {
-  if (m_xcomm->connectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));
     return;
   }
-  if (m_xcomm->MotorStatus() == XComm::MOTOR_RUN) {
+  if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
     // 正在运行
     QMessageBox::warning(this,
                          QStringLiteral("错误"),
@@ -888,7 +872,7 @@ CONConfigWidget::on_saveJSONButton_clicked()
 }
 
 void
-CONConfigWidget::refreshModeTable(RunMode mode)
+CONConfigWidget::refreshModeTable(DriverDataType::RunMode mode)
 {
   //根据上一次表格Mode保存一下参数
   bool isOk = false;
@@ -943,7 +927,7 @@ CONConfigWidget::resetTableValue()
 void
 CONConfigWidget::on_runModeBox_currentIndexChanged(int index)
 {
-  auto mode = static_cast<RunMode>(index);
+  auto mode = static_cast<DriverDataType::RunMode>(index);
   refreshModeTable(mode);
 }
 
@@ -998,8 +982,8 @@ CONConfigWidget::checkDSPConfig(const QByteArray& data)
   // successfully config controller & pass check
   QMessageBox::information(
     this, QStringLiteral("提示"), QStringLiteral("DSP参数写入成功"));
-  //记录一下成功写入DSP的运行模式
-  m_currentDSPRunMode = static_cast<RunMode>(readRunMode);
+  //记录一下dsp的runmode
+  m_xcomm->logRunMode(static_cast<DriverDataType::RunMode>(readRunMode));
 }
 
 auto

@@ -22,17 +22,17 @@ ba2Int(const QByteArray& ba) -> int
   int out = 0;
   if (ba.size() == 2) {
     qint16 tmp = 0;
-    // memcpy_s(&tmp, sizeof(tmp), ba.data(), ba.size());
-    tmp |= static_cast<quint8>(ba[0]);
-    tmp |= static_cast<quint8>(ba[1]) << 8;
+    memcpy_s(&tmp, sizeof(tmp), ba.data(), ba.size());
+    //    tmp |= static_cast<quint8>(ba[0]);
+    //    tmp |= static_cast<quint8>(ba[1]) << 8;
     out = tmp;
   } else if (ba.size() == 4) {
     qint32 tmp = 0;
-    // memcpy_s(&tmp, sizeof(tmp), ba.data(), ba.size());
-    tmp |= static_cast<quint8>(ba[0]);
-    tmp |= static_cast<quint8>(ba[1]) << 8;
-    tmp |= static_cast<quint8>(ba[2]) << 16;
-    tmp |= static_cast<quint8>(ba[3]) << 24;
+    memcpy_s(&tmp, sizeof(tmp), ba.data(), ba.size());
+    //    tmp |= static_cast<quint8>(ba[0]);
+    //    tmp |= static_cast<quint8>(ba[1]) << 8;
+    //    tmp |= static_cast<quint8>(ba[2]) << 16;
+    //    tmp |= static_cast<quint8>(ba[3]) << 24;
     out = tmp;
   }
   return out;

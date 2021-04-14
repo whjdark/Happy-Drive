@@ -192,21 +192,21 @@ void
 MainWindow::slotUpdateStatusLabel()
 {
   // set communicate status label
-  if (m_xcomm->connectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
     m_commStatusLbl->setText(QStringLiteral("通讯: 关闭"));
     m_commStatusLbl->setStyleSheet(QStringLiteral("color:red;"));
     //连接/短线按钮使能/失效
     m_conAction->setEnabled(true);
     m_disconAction->setEnabled(false);
   } else { // m_xcomm->connectStatus() == XComm::COMM_CONNECT
-    m_commStatusLbl->setText(tr("通讯: %1").arg(m_xcomm->currentSerialPort()));
+    m_commStatusLbl->setText(tr("通讯: %1").arg(m_xcomm->getCurrentSerialPort()));
     m_commStatusLbl->setStyleSheet(QStringLiteral("color:green;"));
     //连接/短线按钮使能/失效
     m_conAction->setEnabled(false);
     m_disconAction->setEnabled(true);
   }
   // set motor status label
-  if (m_xcomm->MotorStatus() == XComm::MOTOR_RUN) {
+  if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
     m_motorStatusLbl->setText(QStringLiteral("电机: 正在运行"));
     m_motorStatusLbl->setStyleSheet(QStringLiteral("color:green;"));
   } else { // m_xcomm->currMotorState() == XComm::MOTOR_STOP
@@ -226,7 +226,7 @@ MainWindow::closeEvent(QCloseEvent* event)
 {
   QString info;
   //检查电机运行状态
-  if (m_xcomm->MotorStatus() == XComm::MOTOR_RUN) {
+  if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
     info = QStringLiteral("电机正在运行，是否退出程序?");
   } else {
     info = QStringLiteral("是否退出程序?");
@@ -286,7 +286,7 @@ MainWindow::slotOpenConnectDialog()
 void
 MainWindow::slotDisconnect()
 {
-  if (m_xcomm->MotorStatus() == XComm::MOTOR_RUN) {
+  if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
     QMessageBox msgBox(this);
     msgBox.setFixedSize(200, 200);
     msgBox.setWindowTitle("警告");
@@ -337,7 +337,7 @@ MainWindow::slotShowAllDocks()
 void
 MainWindow::slotCheckConnect()
 {
-  if (m_xcomm->connectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("连接失败"));
     m_xcomm->disconnectDriver();
