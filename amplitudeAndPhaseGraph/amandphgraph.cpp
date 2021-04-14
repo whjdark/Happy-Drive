@@ -1,9 +1,9 @@
-﻿#include "FFTwidget.h"
-#include "ui_FFTwidget.h"
+﻿#include "amandphgraph.h"
+#include "ui_amandphgraph.h"
 
-FFTWidget::FFTWidget(QWidget* parent)
+AmAndPhGraph::AmAndPhGraph(QWidget* parent)
   : QWidget(parent)
-  , ui(new Ui::FFTWidget)
+  , ui(new Ui::AmAndPhGraph)
 {
   ui->setupUi(this);
 
@@ -12,13 +12,13 @@ FFTWidget::FFTWidget(QWidget* parent)
   initConnections();
 }
 
-FFTWidget::~FFTWidget()
+AmAndPhGraph::~AmAndPhGraph()
 {
   delete ui;
 }
 
 void
-FFTWidget::initAmplitudeGraph()
+AmAndPhGraph::initAmplitudeGraph()
 {
   // chart setting
   ui->amWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
@@ -55,7 +55,7 @@ FFTWidget::initAmplitudeGraph()
 }
 
 void
-FFTWidget::initPhaseGraph()
+AmAndPhGraph::initPhaseGraph()
 {
   // chart setting
   ui->phWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
@@ -93,7 +93,7 @@ FFTWidget::initPhaseGraph()
 }
 
 void
-FFTWidget::initConnections()
+AmAndPhGraph::initConnections()
 {
   //幅频图和相拼图的tracer绑定，实现同步移动
   connect(
@@ -103,7 +103,7 @@ FFTWidget::initConnections()
 }
 
 void
-FFTWidget::setTracerVisible(bool isVisible)
+AmAndPhGraph::setTracerVisible(bool isVisible)
 {
   m_isVisible = isVisible;
   ui->amWidget->setTracerVisible(isVisible);
@@ -111,7 +111,7 @@ FFTWidget::setTracerVisible(bool isVisible)
 }
 
 void
-FFTWidget::autoScaleAxis()
+AmAndPhGraph::autoScaleAxis()
 {
   //调整图像
   ui->amWidget->rescaleAxes();
@@ -121,27 +121,27 @@ FFTWidget::autoScaleAxis()
 }
 
 void
-FFTWidget::setTitle(const QString& title)
+AmAndPhGraph::setTitle(const QString& title)
 {
   ui->titleLabel->setText(title);
 }
 
 void
-FFTWidget::setAmplitudeTitle(const QString& xTitle, const QString& yTitle)
+AmAndPhGraph::setAmplitudeTitle(const QString& xTitle, const QString& yTitle)
 {
   ui->amWidget->xAxis->setLabel(xTitle);
   ui->amWidget->yAxis->setLabel(yTitle);
 }
 
 void
-FFTWidget::setPhaseTitle(const QString& xTitle, const QString& yTitle)
+AmAndPhGraph::setPhaseTitle(const QString& xTitle, const QString& yTitle)
 {
   ui->phWidget->xAxis->setLabel(xTitle);
   ui->phWidget->yAxis->setLabel(yTitle);
 }
 
 auto
-FFTWidget::doFFTAndShowResult(const QVector<QCPGraphData>& data) -> int
+AmAndPhGraph::doFFTAndShowResult(const DataVector& data) -> int
 {
   if (data.isEmpty()) {
     QMessageBox::warning(
@@ -210,3 +210,8 @@ FFTWidget::doFFTAndShowResult(const QVector<QCPGraphData>& data) -> int
   fftw_free(out);
   return 0;
 }
+
+void
+AmAndPhGraph::setDataAndShowBode(const DataVector& amplitude,
+                                 const DataVector& phase)
+{}

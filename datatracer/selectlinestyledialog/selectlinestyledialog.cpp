@@ -7,6 +7,7 @@ SelectLineStyleDialog::SelectLineStyleDialog(QWidget* parent)
   , ui(new Ui::SelectLineStyleDialog)
 {
   ui->setupUi(this);
+  // set dialogbutton title & icon
   ui->buttonBox->button(QDialogButtonBox::Ok)->setText(QStringLiteral("确认"));
   ui->buttonBox->button(QDialogButtonBox::Ok)
     ->setIcon(QIcon(QStringLiteral(":/icon/res/icon/confirm.png")));

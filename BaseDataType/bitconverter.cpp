@@ -18,7 +18,7 @@ ba2Int(const QByteArray& ba) -> int
 {
   Q_ASSERT_X(ba.size() == sizeof(qint16) || ba.size() == sizeof(qint32),
              "ba2Int",
-             "not support int type or empty array"); // int16 int32
+             "not support int type or empty array"); // int16 int32 is ok
   int out = 0;
   if (ba.size() == 2) {
     qint16 tmp = 0;

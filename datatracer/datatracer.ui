@@ -97,7 +97,7 @@
            </property>
            <property name="icon">
             <iconset resource="../icon.qrc">
-             <normaloff>:/icon/res/icon/analyse.png</normaloff>:/icon/res/icon/analyse.png</iconset>
+             <normaloff>:/icon/res/icon/FFT.png</normaloff>:/icon/res/icon/FFT.png</iconset>
            </property>
           </widget>
          </item>

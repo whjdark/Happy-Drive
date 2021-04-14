@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FFTWidget</class>
- <widget class="QWidget" name="FFTWidget">
+ <class>AmAndPhGraph</class>
+ <widget class="QWidget" name="AmAndPhGraph">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -85,7 +85,7 @@
   <customwidget>
    <class>Graph</class>
    <extends>QWidget</extends>
-   <header>FFTwidget\graph.h</header>
+   <header>amplitudeAndPhaseGraph\graph.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

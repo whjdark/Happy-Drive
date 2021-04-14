@@ -1,4 +1,4 @@
-#ifndef CONSOLEMAINWINDOW_H
+﻿#ifndef CONSOLEMAINWINDOW_H
 #define CONSOLEMAINWINDOW_H
 
 #include <QMainWindow>
@@ -19,8 +19,6 @@ public:
 
 private:
   Ui::ConsoleMainWindow* ui;
-
-public:
   ConsoleWidget* m_consoleWidget;
 };
 

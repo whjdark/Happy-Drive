@@ -18,7 +18,10 @@ CONFIG += c++11
 # Use Precompiled headers (PCH)
 CONFIG += precompile_header
 PRECOMPILED_HEADER = stable.h
-#HEADERS += stable.h #这句话是可有可无的，建议加上
+HEADERS += stable.h #这句话是可有可无的，建议加上
+
+# release optimation level
+QMAKE_CXXFLAGS_RELEASE -= -O1
 
 QT += core \
 widgets \
@@ -35,10 +38,10 @@ HEADERS += BaseDataType/bitconverter.h \
     BaseDataType/driverdatatype.h \
     CONconfiger/CONconfigdialog.h \
     CONconfiger/CONconfigwidget.h \
-    FFTwidget/FFTwidget.h \
-    FFTwidget/graph.h \
     QCustomPlot/qcustomplot.h \
     aboutdialog/aboutdialog.h \
+    amplitudeAndPhaseGraph/amandphgraph.h \
+    amplitudeAndPhaseGraph/graph.h \
     connectDialog/connectdialog.h \
     console/consolemainwindow.h \
     console/consolewidget.h \
@@ -66,8 +69,8 @@ HEADERS += BaseDataType/bitconverter.h \
 FORMS += mainwindow.ui \
     CONconfiger/CONconfigdialog.ui \
     CONconfiger/CONconfigwidget.ui \
-    FFTwidget/FFTwidget.ui \
     aboutdialog/aboutdialog.ui \
+    amplitudeAndPhaseGraph/amandphgraph.ui \
     connectDialog/connectdialog.ui \
     console/consolemainwindow.ui \
     console/consolewidget.ui \
@@ -83,10 +86,10 @@ SOURCES += BaseDataType/bitconverter.cpp \
            BaseDataType/driverdatatype.cpp \
            CONconfiger/CONconfigdialog.cpp \
            CONconfiger/CONconfigwidget.cpp \
-           FFTwidget/FFTwidget.cpp \
-           FFTwidget/graph.cpp \
            QCustomPlot/qcustomplot.cpp \
            aboutdialog/aboutdialog.cpp \
+           amplitudeAndPhaseGraph/amandphgraph.cpp \
+           amplitudeAndPhaseGraph/graph.cpp \
            connectDialog/connectdialog.cpp \
            console/consolemainwindow.cpp \
            console/consolewidget.cpp \

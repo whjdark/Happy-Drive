@@ -158,7 +158,7 @@ private:
   void initChannels();
   void initPannel();
   void initStatisticsWindow();
-  void initToolBox();
+  void initGraphConfigBox();
   void initConnections();
 
   void readChBoxContent();
@@ -245,7 +245,8 @@ private:
   //通道请求顺序队列
   QQueue<Channels> m_chReqOrderQueue;
   //每个通道的数据
-  std::array<QVector<QCPGraphData>, maxChannels> m_points;
+  using DataVector = QVector<QCPGraphData>;
+  std::array<DataVector, maxChannels> m_points;
   //标题
   QCPTextElement* m_title;
   qreal m_minAxisX = defalutMaxX, m_maxAxisX = defalutMaxY; // X坐标轴刻度范围

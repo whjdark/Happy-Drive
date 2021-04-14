@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget* parent)
   , m_console(new ConsoleMainWindow(this, m_xcomm))
   , m_monitor(new MonitorWidget(this, m_xcomm))
   , m_tracer(new TracerWidget(this, m_xcomm))
+  , m_sweeping(new SweepingWindow(this, m_xcomm))
   , m_checkConnectTimer(new QTimer(this))
   , m_updateStatusBarTimer(new QTimer(this))
 {
@@ -88,6 +89,7 @@ MainWindow::initMenuBar()
 {
   //菜单栏
   m_menuBar = this->menuBar();
+  //通讯菜单
   m_commMenu = m_menuBar->addMenu(QStringLiteral("通讯"));
   m_conAction = m_commMenu->addAction(QStringLiteral("连接"));
   m_conAction->setIcon(QIcon(QStringLiteral(":/icon/res/icon/connect.png")));
@@ -111,12 +113,18 @@ MainWindow::initMenuBar()
   m_resetAction->setIcon(QIcon(QStringLiteral(":/icon/res/icon/reset.png")));
   m_stopAction = m_controlMenu->addAction(QStringLiteral("停止"));
   m_stopAction->setIcon(QIcon(QStringLiteral(":/icon/res/icon/stop.png")));
+  //工具箱toolbox菜单
+  m_toolboxMenu = m_menuBar->addMenu(QStringLiteral("工具箱"));
+  m_sweepingAction = m_toolboxMenu->addAction(QStringLiteral("扫频"));
+  m_sweepingAction->setIcon(
+    QIcon(QStringLiteral(":/icon/res/icon/sweeping.png")));
   //关于菜单
   m_helpMenu = m_menuBar->addMenu(QStringLiteral("帮助"));
   m_aboutAction = m_helpMenu->addAction(QStringLiteral("关于"));
+  m_aboutAction->setIcon(QIcon(QStringLiteral(":/icon/res/icon/about.png")));
   m_aboutQtAction = m_helpMenu->addAction(QStringLiteral("关于Qt"));
-  m_aboutQtAction->setIcon(
-    style()->standardIcon(QStyle::SP_TitleBarMenuButton));
+  QIcon QtAboutIcon = style()->standardIcon(QStyle::SP_TitleBarMenuButton);
+  m_aboutQtAction->setIcon(QtAboutIcon);
   m_manualAction = m_helpMenu->addAction(QStringLiteral("使用手册"));
 }
 
@@ -127,14 +135,20 @@ MainWindow::initToolBar()
   m_toolBar = this->addToolBar(QStringLiteral("工具栏"));
   m_toolBar->setIconSize(QSize(28, 28));
   m_toolBar->setMovable(false);
+  //通讯工具栏
   m_toolBar->addAction(m_conAction);
   m_toolBar->addAction(m_disconAction);
   m_toolBar->addSeparator();
+  //控制工具栏
   m_toolBar->addAction(m_startAction);
   m_toolBar->addAction(m_resetAction);
   m_toolBar->addAction(m_stopAction);
   m_toolBar->addSeparator();
+  //控制台工具栏
   m_toolBar->addAction(m_consoleAction);
+  m_toolBar->addSeparator();
+  // toolbox工具栏
+  m_toolBar->addAction(m_sweepingAction);
 }
 
 void
@@ -164,28 +178,29 @@ MainWindow::initStatusBar()
 void
 MainWindow::initConnections()
 {
-  using mw = MainWindow; //太长了，省略一下
-  connect(m_conAction, &QAction::triggered, this, &mw::slotOpenConnectDialog);
-  connect(m_aboutAction, &QAction::triggered, this, &mw::slotOpenAbout);
-  connect(m_aboutQtAction, &QAction::triggered, this, &mw::slotOpenAboutQt);
-  connect(m_manualAction, &QAction::triggered, this, &mw::slotOpenManuel);
-  connect(m_disconAction, &QAction::triggered, this, &mw::slotDisconnect);
+  using MW = MainWindow; //太长了，省略一下
+  // connect menu action
+  connect(m_conAction, &QAction::triggered, this, &MW::slotOpenConnectDialog);
+  connect(m_aboutAction, &QAction::triggered, this, &MW::slotOpenAbout);
+  connect(m_aboutQtAction, &QAction::triggered, this, &MW::slotOpenAboutQt);
+  connect(m_manualAction, &QAction::triggered, this, &MW::slotOpenManuel);
+  connect(m_disconAction, &QAction::triggered, this, &MW::slotDisconnect);
   connect(m_consoleAction, &QAction::triggered, m_console, &QWidget::show);
-  connect(m_defaultAction, &QAction::triggered, this, &mw::slotDefaultLayout);
-  connect(m_closeAllAction, &QAction::triggered, this, &mw::slotCloseAllDocks);
-  connect(m_showAllAction, &QAction::triggered, this, &mw::slotShowAllDocks);
-  connect(m_startAction, &QAction::triggered, this, &mw::slotStartMotor);
-  // TBC
-  connect(m_resetAction, &QAction::triggered, this, [=]() {});
-  connect(m_stopAction, &QAction::triggered, this, &mw::slotStopMotor);
-
-  connect(m_xcomm, &XComm::connectSuccess, this, &mw::slotConnectSuccess);
-  connect(m_xcomm, &XComm::motorStart, this, &mw::slotMotorStartInfo);
-  connect(m_xcomm, &XComm::motorStop, this, &mw::slotMotorStopInfo);
-
-  connect(m_checkConnectTimer, &QTimer::timeout, this, &mw::slotCheckConnect);
+  connect(m_defaultAction, &QAction::triggered, this, &MW::slotDefaultLayout);
+  connect(m_closeAllAction, &QAction::triggered, this, &MW::slotCloseAllDocks);
+  connect(m_showAllAction, &QAction::triggered, this, &MW::slotShowAllDocks);
+  connect(m_startAction, &QAction::triggered, this, &MW::slotStartMotor);
+  connect(m_sweepingAction, &QAction::triggered, m_sweeping, &QWidget::show);
+  connect(m_resetAction, &QAction::triggered, this, [=]() {}); // TBC
+  connect(m_stopAction, &QAction::triggered, this, &MW::slotStopMotor);
+  // connect driver status info update
+  connect(m_xcomm, &XComm::connectSuccess, this, &MW::slotConnectSuccess);
+  connect(m_xcomm, &XComm::motorStart, this, &MW::slotMotorStartInfo);
+  connect(m_xcomm, &XComm::motorStop, this, &MW::slotMotorStopInfo);
+  // connect timer
+  connect(m_checkConnectTimer, &QTimer::timeout, this, &MW::slotCheckConnect);
   connect(
-    m_updateStatusBarTimer, &QTimer::timeout, this, &mw::slotUpdateStatusLabel);
+    m_updateStatusBarTimer, &QTimer::timeout, this, &MW::slotUpdateStatusLabel);
 }
 
 void
@@ -199,7 +214,8 @@ MainWindow::slotUpdateStatusLabel()
     m_conAction->setEnabled(true);
     m_disconAction->setEnabled(false);
   } else { // m_xcomm->connectStatus() == XComm::COMM_CONNECT
-    m_commStatusLbl->setText(tr("通讯: %1").arg(m_xcomm->getCurrentSerialPort()));
+    m_commStatusLbl->setText(
+      tr("通讯: %1").arg(m_xcomm->getCurrentSerialPort()));
     m_commStatusLbl->setStyleSheet(QStringLiteral("color:green;"));
     //连接/短线按钮使能/失效
     m_conAction->setEnabled(false);

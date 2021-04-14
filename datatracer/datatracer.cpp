@@ -27,9 +27,9 @@ TracerWidget::TracerWidget(QWidget* parent, XComm* xcomm)
   initChannels();
   initPannel();
   initStatisticsWindow();
-  initToolBox();
+  initGraphConfigBox();
   initConnections();
-  ui->customPlot->replot();
+  ui->customPlot->replot(); //初始化完成，重绘
 }
 
 TracerWidget::~TracerWidget()
@@ -174,7 +174,7 @@ TracerWidget::initStatisticsWindow()
 }
 
 void
-TracerWidget::initToolBox()
+TracerWidget::initGraphConfigBox()
 {
   //默认标题设置
   ui->OscTitleLineEdit->setText(defautGraphTitle);
@@ -187,44 +187,44 @@ TracerWidget::initToolBox()
 void
 TracerWidget::initConnections()
 {
-  using tw = TracerWidget;
+  using TW = TracerWidget;
   using QCP = QCustomPlot; //省略一下
-  connect(m_xcomm, &XComm::tracerCmd, this, &tw::slotProccessCmd);
+  connect(m_xcomm, &XComm::tracerCmd, this, &TW::slotProccessCmd);
   //关联选中图例与线条
   connect(ui->customPlot,
           &QCP::selectionChangedByUser,
           this,
-          &tw::slotSelectionChanged);
+          &TW::slotSelectionChanged);
   //存在多个重载，使用指针函数明确具体函数
   // x轴范围变化
   void (QCPAxis::*xRangeChangedFunc)(const QCPRange&) = &QCPAxis::rangeChanged;
   connect(
-    ui->customPlot->xAxis, xRangeChangedFunc, this, &tw::slotxAxisChanged);
+    ui->customPlot->xAxis, xRangeChangedFunc, this, &TW::slotxAxisChanged);
   // y轴范围变化
   void (QCPAxis::*yRangeChangedFunc)(const QCPRange&) = &QCPAxis::rangeChanged;
   connect(
-    ui->customPlot->yAxis, yRangeChangedFunc, this, &tw::slotyAxisChanged);
+    ui->customPlot->yAxis, yRangeChangedFunc, this, &TW::slotyAxisChanged);
   //双击legend
   void (QCP::*legendDoubleClickFunc)(
     QCPLegend*, QCPAbstractLegendItem*, QMouseEvent*) = &QCP::legendDoubleClick;
   connect(
-    ui->customPlot, legendDoubleClickFunc, this, &tw::slotLegendDoubleClick);
+    ui->customPlot, legendDoubleClickFunc, this, &TW::slotLegendDoubleClick);
   // 双击坐标轴标题
   void (QCP::*axisDoubleClickFunc)(
     QCPAxis*, QCPAxis::SelectablePart, QMouseEvent*) = &QCP::axisDoubleClick;
   connect(
-    ui->customPlot, axisDoubleClickFunc, this, &tw::slotAxisLabelDoubleClick);
+    ui->customPlot, axisDoubleClickFunc, this, &TW::slotAxisLabelDoubleClick);
   // 双击图标标题
   connect(
-    m_title, &QCPTextElement::doubleClicked, this, &tw::slotTitleDoubleClick);
+    m_title, &QCPTextElement::doubleClicked, this, &TW::slotTitleDoubleClick);
   //鼠标点击某个轴
   //可以在该轴的方向上缩放
   //鼠标点击
-  connect(ui->customPlot, &QCP::mousePress, this, &tw::slotMousePress);
+  connect(ui->customPlot, &QCP::mousePress, this, &TW::slotMousePress);
   //滚轮移动
-  connect(ui->customPlot, &QCP::mouseWheel, this, &tw::slotMouseWheel);
+  connect(ui->customPlot, &QCP::mouseWheel, this, &TW::slotMouseWheel);
   //更新统计信息表
-  connect(m_updateStatsTimer, &QTimer::timeout, this, &tw::slotUpdateStats);
+  connect(m_updateStatsTimer, &QTimer::timeout, this, &TW::slotUpdateStats);
 }
 
 void

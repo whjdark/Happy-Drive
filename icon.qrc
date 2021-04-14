@@ -31,5 +31,8 @@
         <file>res/icon/measure.png</file>
         <file>res/icon/send.png</file>
         <file>res/icon/up.png</file>
+        <file>res/icon/about.png</file>
+        <file>res/icon/FFT.png</file>
+        <file>res/icon/sweeping.png</file>
     </qresource>
 </RCC>

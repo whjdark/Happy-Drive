@@ -1,5 +1,5 @@
-﻿#ifndef FFTWIDGET_H
-#define FFTWIDGET_H
+#ifndef AMANDPHGRAPH_H
+#define AMANDPHGRAPH_H
 
 #include <QMessageBox>
 #include <QWidget>
@@ -11,16 +11,19 @@
 // #pragma comment(lib, "libfftw3l-3.lib")// long double版本
 
 namespace Ui {
-class FFTWidget;
+class AmAndPhGraph;
 }
 
-class FFTWidget : public QWidget
+class AmAndPhGraph : public QWidget
 {
   Q_OBJECT
 
+private:
+  using DataVector = QVector<QCPGraphData>;
+
 public:
-  explicit FFTWidget(QWidget* parent = nullptr);
-  ~FFTWidget();
+  explicit AmAndPhGraph(QWidget* parent = nullptr);
+  ~AmAndPhGraph();
 
   void setTracerVisible(bool isVisible);
   bool isTracerVisible() const { return m_isVisible; }
@@ -28,7 +31,8 @@ public:
   void setTitle(const QString& title);
   void setAmplitudeTitle(const QString& xTitle, const QString& yTitle);
   void setPhaseTitle(const QString& xTitle, const QString& yTitle);
-  int doFFTAndShowResult(const QVector<QCPGraphData>& data);
+  int doFFTAndShowResult(const DataVector& data);
+  void setDataAndShowBode(const DataVector& amplitude, const DataVector& phase);
 
 private:
   void initAmplitudeGraph();
@@ -36,10 +40,10 @@ private:
   void initConnections();
 
 private:
-  Ui::FFTWidget* ui;
+  Ui::AmAndPhGraph* ui;
   bool m_isVisible = false;
-  QVector<QCPGraphData> m_amplitude; //振幅谱
-  QVector<QCPGraphData> m_phase;     //相位谱
+  DataVector m_amplitude; //振幅谱
+  DataVector m_phase;     //相位谱
 };
 
-#endif // FFTWIDGET_H
+#endif // AMANDPHGRAPH_H

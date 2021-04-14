@@ -17,7 +17,7 @@ public:
   explicit AboutDialog(QWidget* parent = nullptr);
   ~AboutDialog();
 
-private slots:
+private Q_SLOTS:
   void on_pushButton_clicked();
 
 private:

@@ -14,8 +14,8 @@
    <string>曲线样式设置</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../icon.qrc">
-    <normaloff>:/icon/res/icon/default.png</normaloff>:/icon/res/icon/default.png</iconset>
+   <iconset resource="../../icon.qrc">
+    <normaloff>:/icon/res/icon/graphic.png</normaloff>:/icon/res/icon/graphic.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -222,7 +222,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icon.qrc"/>
+  <include location="../../icon.qrc"/>
  </resources>
  <connections>
   <connection>
