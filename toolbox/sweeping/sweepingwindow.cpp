@@ -7,7 +7,7 @@ SweepingWindow::SweepingWindow(QWidget* parent, XComm* xcomm)
   , m_xcomm(xcomm)
 {
   ui->setupUi(this);
-  initBode(); //  // FFTwidget can alse show bode
+  initBode();
   initToolBar();
 }
 
