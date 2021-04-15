@@ -75,7 +75,7 @@ FFTWindow::slotSaveImage()
   QString fileName = QFileDialog::getSaveFileName(
     this,
     QStringLiteral("保存数据图像"),
-    QStringLiteral("bode_") + timeStr + QStringLiteral(".png"),
+    QStringLiteral("FFT_") + timeStr + QStringLiteral(".png"),
     QStringLiteral("Images (*.png)"));
   if (fileName.isEmpty()) {
     return;

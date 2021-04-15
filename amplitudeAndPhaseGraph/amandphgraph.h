@@ -1,4 +1,4 @@
-#ifndef AMANDPHGRAPH_H
+﻿#ifndef AMANDPHGRAPH_H
 #define AMANDPHGRAPH_H
 
 #include <QMessageBox>
@@ -33,6 +33,8 @@ public:
   void setPhaseTitle(const QString& xTitle, const QString& yTitle);
   int doFFTAndShowResult(const DataVector& data);
   void setDataAndShowBode(const DataVector& amplitude, const DataVector& phase);
+  const DataVector& getAmplitudeData() const { return m_amplitude; }
+  const DataVector& getPhaseData() const { return m_phase; }
 
 private:
   void initAmplitudeGraph();

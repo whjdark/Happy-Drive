@@ -9,7 +9,10 @@ SweepingWindow::SweepingWindow(QWidget* parent, XComm* xcomm)
   ui->setupUi(this);
   initBode();
   initToolBar();
-  connect(m_xcomm, &XComm::toolboxSweepingCmd, this, &SweepingWindow::slotProccessCmd);
+  connect(m_xcomm,
+          &XComm::toolboxSweepingCmd,
+          this,
+          &SweepingWindow::slotProccessCmd);
 }
 
 SweepingWindow::~SweepingWindow()
@@ -48,8 +51,10 @@ SweepingWindow::initToolBar()
   //导出图片
   connect(saveImageAction, &QAction::triggered, this, &SW::slotSaveImage);
   //自动缩放
-  connect(
-    autoScaleAction, &QAction::triggered, ui->bode, &AmAndPhGraph::autoScaleAxis);
+  connect(autoScaleAction,
+          &QAction::triggered,
+          ui->bode,
+          &AmAndPhGraph::autoScaleAxis);
   //开启/关闭游标
   connect(switchTracerAction, &QAction::triggered, this, &SW::slotSwitchTracer);
 }
@@ -97,11 +102,11 @@ SweepingWindow::slotSaveImage()
   }
   //保存文件
   if (img.save(fileName)) {
-      // 打开/创建图像成功
+    // 打开/创建图像成功
     QMessageBox::information(
       this, QStringLiteral("提示"), QStringLiteral("保存文件成功"));
   } else {
-      // 打开/创建图像失败
+    // 打开/创建图像失败
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("创建图像失败！"));
   }
@@ -125,9 +130,7 @@ SweepingWindow::showBode(const DataVector& ampitude, const DataVector& phase)
 
 void
 SweepingWindow::showBode(const QByteArray& data)
-{
-
-}
+{}
 
 void
 SweepingWindow::on_startButton_clicked()
@@ -158,15 +161,20 @@ SweepingWindow::on_startButton_clicked()
   m_xcomm->startMotor(runConfig);
 }
 
-void SweepingWindow::on_writeButton_clicked()
+void
+SweepingWindow::on_writeButton_clicked()
 {
   using namespace DriverDataType;
   SweepingConfigType sweepingConfig;
+  // read sweeping config
+  // some data should be scaled for transmiton
   sweepingConfig.data().m_targetLoop = ui->loopComboBox->currentIndex();
   sweepingConfig.data().m_ref = ui->refDoubleSpinBox->value() * scaleFactorIQ15;
-  sweepingConfig.data().m_amplitude = ui->amDoubleSpinBox->value() * scaleFactorIQ15;
+  sweepingConfig.data().m_amplitude =
+    ui->amDoubleSpinBox->value() * scaleFactorIQ15;
   sweepingConfig.data().m_minRange = ui->freqRangeMinSpinBox->value();
   sweepingConfig.data().m_maxRange = ui->freqRangeMaxSpinBox->value();
-  sweepingConfig.data().m_sweepingStep = ui->sweepStepDoubleSpinBox->value() * scaleFactorIQ15;
+  sweepingConfig.data().m_sweepingStep =
+    ui->sweepStepDoubleSpinBox->value() * scaleFactorIQ15;
   m_xcomm->command(XComm::TOOLBOX_SWEEPING_WRITE, sweepingConfig.toByteArray());
 }

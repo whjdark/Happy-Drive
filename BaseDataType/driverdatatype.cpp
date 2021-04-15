@@ -1,4 +1,4 @@
-#include "BaseDataType/driverdatatype.h"
+﻿#include "BaseDataType/driverdatatype.h"
 
 namespace DriverDataType {
 
@@ -11,7 +11,8 @@ auto
 CONDataType::toByteArray() -> QByteArray
 {
   QByteArray Ba;
-  Ba.append(reinterpret_cast<char*>(&m_controllerData), sizeof(m_controllerData));
+  Ba.append(reinterpret_cast<char*>(&m_controllerData),
+            sizeof(m_controllerData));
   return Ba;
 }
 
@@ -80,7 +81,8 @@ RunConfigType::toByteArray() -> QByteArray
 void
 RunConfigType::byteArrayToStruct(const QByteArray& ba)
 {
-  memcpy_s(&m_runConfigData, sizeof(m_runConfigData), ba.data(), sizeof(ba.data()));
+  memcpy_s(
+    &m_runConfigData, sizeof(m_runConfigData), ba.data(), sizeof(ba.data()));
 }
 
 void
@@ -92,27 +94,31 @@ RunConfigType::resetData()
 
 // Sweeping config datatype start
 SweepingConfigType::SweepingConfigType()
-    :m_sweepingConfigData()
+  : m_sweepingConfigData()
 {}
 
 auto
 SweepingConfigType::toByteArray() -> QByteArray
 {
-    QByteArray Ba;
-    Ba.append(reinterpret_cast<char*>(&m_sweepingConfigData), sizeof(m_sweepingConfigData));
-    return Ba;
+  QByteArray Ba;
+  Ba.append(reinterpret_cast<char*>(&m_sweepingConfigData),
+            sizeof(m_sweepingConfigData));
+  return Ba;
 }
 
 void
 SweepingConfigType::byteArrayToStruct(const QByteArray& ba)
 {
-    memcpy_s(&m_sweepingConfigData, sizeof(m_sweepingConfigData), ba.data(), sizeof(ba.data()));
+  memcpy_s(&m_sweepingConfigData,
+           sizeof(m_sweepingConfigData),
+           ba.data(),
+           sizeof(ba.data()));
 }
 
 void
 SweepingConfigType::resetData()
 {
-    memset(&m_sweepingConfigData, 0, sizeof(m_sweepingConfigData));
+  memset(&m_sweepingConfigData, 0, sizeof(m_sweepingConfigData));
 }
 // Sweeping config data type end
 
