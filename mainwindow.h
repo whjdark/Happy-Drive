@@ -56,7 +56,7 @@ private Q_SLOTS:
   void slotCheckConnect();
   void slotStartMotor();
   void slotStopMotor();
-  void slotUpdateStatusLabel();
+  void slotUpdateStatusLbl();
 
 protected:
   void closeEvent(QCloseEvent* event) override;

@@ -11,12 +11,12 @@
 #ifndef DRIVERDATATYPE_H
 #define DRIVERDATATYPE_H
 
-#include <QObject>
+#include <QtGlobal>
 
 namespace DriverDataType {
 //常量
 //浮点数-整型缩放因子
-Q_CONSTEXPR double scaleFactor = 2 << 14;
+Q_CONSTEXPR double scaleFactorIQ15 = 2 << 14;
 //速度变换因子
 Q_CONSTEXPR double velocityTransformFactor = 2000.0;
 //电流变换因子
@@ -159,6 +159,20 @@ struct RunConfigData
   {}
 };
 
+#pragma pack(1) //取消结构体对其
+struct SweepingConfigData
+{
+    quint16 m_targetLoop;   //扫频环节
+    qint16 m_ref; //参考值
+    qint16 m_amplitude; //幅值
+    quint16 m_minRange;//起始频率
+    quint16 m_maxRange; //终止频率
+    quint16 m_sweepingStep; //扫频步长
+
+    SweepingConfigData() = default;
+};
+#pragma pack(0)
+
 class MonitorDataType
 {
 public:
@@ -168,10 +182,10 @@ public:
   QByteArray toByteArray();
   void byteArrayToStruct(const QByteArray& ba);
   void resetData();
-  MonitorData& data() { return monitorData; }
+  MonitorData& data() { return m_monitorData; }
 
 private:
-  MonitorData monitorData;
+  MonitorData m_monitorData;
 };
 
 class CONDataType
@@ -183,11 +197,11 @@ public:
   QByteArray toByteArray();
   void byteArrayToStruct(const QByteArray& ba);
   void resetData();
-  CONData& data() { return controllerData; }
+  CONData& data() { return m_controllerData; }
   qint32& at(size_t i);
 
 private:
-  CONData controllerData;
+  CONData m_controllerData;
 };
 
 class RunConfigType
@@ -199,10 +213,25 @@ public:
   QByteArray toByteArray();
   void byteArrayToStruct(const QByteArray& ba);
   void resetData();
-  RunConfigData& data() { return runConfigData; }
+  RunConfigData& data() { return m_runConfigData; }
 
 private:
-  RunConfigData runConfigData;
+  RunConfigData m_runConfigData;
+};
+
+class SweepingConfigType
+{
+public:
+    explicit SweepingConfigType();
+    ~SweepingConfigType() = default;
+
+    QByteArray toByteArray();
+    void byteArrayToStruct(const QByteArray& ba);
+    void resetData();
+    SweepingConfigData& data() { return m_sweepingConfigData; }
+
+private:
+    SweepingConfigData m_sweepingConfigData;
 };
 
 } // namespace DriverDataType

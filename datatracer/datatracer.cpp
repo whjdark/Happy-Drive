@@ -254,12 +254,12 @@ TracerWidget::storeTransformedData(Channels waitForUdpdateCh,
     case TracerWidget::CURRENT:
       totalByteLen = samplePoints * sizeof(currentDataType);
       step = sizeof(currentDataType);
-      transFormFactor = currentTransformFactor / scaleFactor;
+      transFormFactor = currentTransformFactor / scaleFactorIQ15;
       break;
     case TracerWidget::VELOCITY:
       totalByteLen = samplePoints * sizeof(velocityDataType);
       step = sizeof(velocityDataType);
-      transFormFactor = velocityTransformFactor / scaleFactor;
+      transFormFactor = velocityTransformFactor / scaleFactorIQ15;
       break;
     case TracerWidget::POSITION:
       totalByteLen = samplePoints * sizeof(positionDataType);
@@ -447,8 +447,7 @@ TracerWidget::on_startButton_clicked()
     return;
   }
   //运行参数配置对话框，提示当前运行模式
-  QString currentRunMode =
-    tr("Run Mode %1").arg(m_xcomm->getCurrentRunMode()); //读取当前运行模式
+  QString currentRunMode = tr("Run Mode %1").arg(m_xcomm->getCurrentRunMode());
   m_runConfiger->setRunModeInfo(currentRunMode);
   if (m_runConfiger->exec() == QDialog::Rejected) {
     return;

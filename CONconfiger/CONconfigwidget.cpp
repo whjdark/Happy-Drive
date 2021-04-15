@@ -676,7 +676,7 @@ CONConfigWidget::on_writeDSPButon_clicked()
     //结构体下标0是运行模式
     //所以参数编号+1对应结构体下标
     // upscale for double, convert double to int
-    double scaledVal = val * DriverDataType::scaleFactor;
+    double scaledVal = val * DriverDataType::scaleFactorIQ15;
     // read table data and convert it to POD struct
     configData.at(numOfParam + 1) = static_cast<qint32>(scaledVal);
   }
@@ -964,7 +964,7 @@ CONConfigWidget::checkDSPConfig(const QByteArray& data)
     //所以参数编号+1对应结构体下标
     double val = configData.at(numOfParam + 1);
     // downscale int data, convert int to double
-    double scaledVal = val / DriverDataType::scaleFactor;
+    double scaledVal = val / DriverDataType::scaleFactorIQ15;
     // compare read data with table data
     double tableVal = ui->tableWidget->item(row, VAL_COL)->text().toDouble();
     // if gap > tolerant error, we consider that write request fail

@@ -9,6 +9,7 @@ SweepingWindow::SweepingWindow(QWidget* parent, XComm* xcomm)
   ui->setupUi(this);
   initBode();
   initToolBar();
+  connect(m_xcomm, &XComm::toolboxSweepingCmd, this, &SweepingWindow::slotProccessCmd);
 }
 
 SweepingWindow::~SweepingWindow()
@@ -54,6 +55,22 @@ SweepingWindow::initToolBar()
 }
 
 void
+SweepingWindow::slotProccessCmd(const quint16 cmd, const QByteArray& data)
+{
+  switch (cmd) {
+    case XComm::TOOLBOX_SWEEPING_WRITE:
+      QMessageBox::information(
+        this, QStringLiteral("提示"), QStringLiteral("参数写入成功"));
+      break;
+    case XComm::TOOLBOX_SWEEPING_REQ_DATA:
+      showBode(data);
+      break;
+    default:
+      break;
+  }
+}
+
+void
 SweepingWindow::slotExportData()
 {}
 
@@ -79,10 +96,12 @@ SweepingWindow::slotSaveImage()
     return;
   }
   //保存文件
-  if (img.save(fileName)) { // 打开/创建图像成功
+  if (img.save(fileName)) {
+      // 打开/创建图像成功
     QMessageBox::information(
       this, QStringLiteral("提示"), QStringLiteral("保存文件成功"));
-  } else { // 打开/创建图像失败
+  } else {
+      // 打开/创建图像失败
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("创建图像失败！"));
   }
@@ -105,9 +124,49 @@ SweepingWindow::showBode(const DataVector& ampitude, const DataVector& phase)
 }
 
 void
-SweepingWindow::on_pushButton_clicked()
-{}
+SweepingWindow::showBode(const QByteArray& data)
+{
+
+}
 
 void
 SweepingWindow::on_startButton_clicked()
-{}
+{
+  RunConfigDialog runConfigDialog;
+  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
+    // 未连接
+    QMessageBox::warning(
+      this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));
+    return;
+  }
+  if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
+    // if motor is running , no action
+    QMessageBox::warning(this,
+                         QStringLiteral("警告"),
+                         QStringLiteral("电机已在运行，不要重复发送指令！"));
+    return;
+  }
+  //运行参数配置对话框，提示当前运行模式
+  QString currentRunMode = tr("Run Mode %1").arg(m_xcomm->getCurrentRunMode());
+  runConfigDialog.setRunModeInfo(currentRunMode);
+  if (runConfigDialog.exec() == QDialog::Rejected) {
+    return;
+  }
+  //添加运行参数
+  DriverDataType::RunConfigType runConfig = runConfigDialog.getRunConfig();
+  // if motor is stop，start it
+  m_xcomm->startMotor(runConfig);
+}
+
+void SweepingWindow::on_writeButton_clicked()
+{
+  using namespace DriverDataType;
+  SweepingConfigType sweepingConfig;
+  sweepingConfig.data().m_targetLoop = ui->loopComboBox->currentIndex();
+  sweepingConfig.data().m_ref = ui->refDoubleSpinBox->value() * scaleFactorIQ15;
+  sweepingConfig.data().m_amplitude = ui->amDoubleSpinBox->value() * scaleFactorIQ15;
+  sweepingConfig.data().m_minRange = ui->freqRangeMinSpinBox->value();
+  sweepingConfig.data().m_maxRange = ui->freqRangeMaxSpinBox->value();
+  sweepingConfig.data().m_sweepingStep = ui->sweepStepDoubleSpinBox->value() * scaleFactorIQ15;
+  m_xcomm->command(XComm::TOOLBOX_SWEEPING_WRITE, sweepingConfig.toByteArray());
+}

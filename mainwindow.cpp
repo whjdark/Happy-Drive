@@ -199,12 +199,11 @@ MainWindow::initConnections()
   connect(m_xcomm, &XComm::motorStop, this, &MW::slotMotorStopInfo);
   // connect timer
   connect(m_checkConnectTimer, &QTimer::timeout, this, &MW::slotCheckConnect);
-  connect(
-    m_updateStatusBarTimer, &QTimer::timeout, this, &MW::slotUpdateStatusLabel);
+  connect(m_updateStatusBarTimer, &QTimer::timeout, this, &MW::slotUpdateStatusLbl);
 }
 
 void
-MainWindow::slotUpdateStatusLabel()
+MainWindow::slotUpdateStatusLbl()
 {
   // set communicate status label
   if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
