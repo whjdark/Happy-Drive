@@ -74,7 +74,8 @@ public:
     CONTROLLER_READ = 0x3002,
 
     TOOLBOX_SWEEPING_WRITE = 0x4001,
-    TOOLBOX_SWEEPING_REQ_DATA = 0x4002,
+    TOOLBOX_SWEEPING_REQ_AM = 0x4002,
+    TOOLBOX_SWEEPING_REQ_PH = 0x4003,
 
     CMD_UNKNOWN = 0xFFFF,
   };
@@ -112,7 +113,7 @@ public:
   CommState getConnectStatus() const;
   const CommStats& getStats();
   MotorState getMotorStatus() const { return m_motorState; }
-  void setMotorState(MotorState motorState) { m_motorState = motorState; }
+  void setMotorState(const MotorState motorState) { m_motorState = motorState; }
   void clearCmdCnt();
   void clearErrCnt();
   void clearWarnCnt();
@@ -122,7 +123,8 @@ public:
   void startMotor(DriverDataType::RunConfigType& runConfig);
   void stopMotor();
   DriverDataType::RunMode getCurrentRunMode() const { return currentRunMode; }
-  void logRunMode(DriverDataType::RunMode mode) { currentRunMode = mode; }
+  QString getCurrentRunModeStr() const;
+  void logRunMode(const DriverDataType::RunMode mode) { currentRunMode = mode; }
 
 Q_SIGNALS:
   void connectSuccess();

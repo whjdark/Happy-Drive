@@ -93,12 +93,12 @@ RunConfigType::resetData()
 // run config data type end
 
 // Sweeping config datatype start
-SweepingConfigType::SweepingConfigType()
+SweepConfigType::SweepConfigType()
   : m_sweepingConfigData()
 {}
 
 auto
-SweepingConfigType::toByteArray() -> QByteArray
+SweepConfigType::toByteArray() -> QByteArray
 {
   QByteArray Ba;
   Ba.append(reinterpret_cast<char*>(&m_sweepingConfigData),
@@ -107,7 +107,7 @@ SweepingConfigType::toByteArray() -> QByteArray
 }
 
 void
-SweepingConfigType::byteArrayToStruct(const QByteArray& ba)
+SweepConfigType::byteArrayToStruct(const QByteArray& ba)
 {
   memcpy_s(&m_sweepingConfigData,
            sizeof(m_sweepingConfigData),
@@ -116,7 +116,7 @@ SweepingConfigType::byteArrayToStruct(const QByteArray& ba)
 }
 
 void
-SweepingConfigType::resetData()
+SweepConfigType::resetData()
 {
   memset(&m_sweepingConfigData, 0, sizeof(m_sweepingConfigData));
 }

@@ -88,7 +88,7 @@ private Q_SLOTS:
   void on_stopButton_clicked();
   int on_configButton_clicked();
   void on_readButton_clicked();
-  void on_autoSetButton_clicked();
+  void on_autoScaleAxisButton_clicked();
   void on_closeAllchannelButton_clicked();
   void on_showAllchannelButton_clicked();
   void on_clearDataButton_clicked();

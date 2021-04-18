@@ -33,7 +33,9 @@ private:
 
 private:
   Ui::FFTWindow* ui;
-  AmAndPhGraph* m_FFTGraph;
+  AmAndPhGraph* m_FFT;
+  DataVector m_amplitude;
+  DataVector m_phase;
 };
 
 #endif // FFTWINDOW_H

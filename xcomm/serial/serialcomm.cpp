@@ -166,7 +166,7 @@ Serial::run()
     m_mutex.unlock();
     if (isEmpty) { //没有新命令
       // sleep一下降低CPU使用率
-      msleep(checkQueueEmptyInterval);
+      msleep(checkQueueInterval);
       continue;
     }
     //有新命令，通讯忙

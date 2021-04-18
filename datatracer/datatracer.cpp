@@ -233,6 +233,7 @@ TracerWidget::storeTransformedData(Channels waitForUdpdateCh,
                                    DataTransformType type)
 {
   using namespace DriverDataType;
+  using namespace BitConverter;
   // clear data storage before append
   m_points[waitForUdpdateCh].clear();
   // read config from run config
@@ -254,12 +255,12 @@ TracerWidget::storeTransformedData(Channels waitForUdpdateCh,
     case TracerWidget::CURRENT:
       totalByteLen = samplePoints * sizeof(currentDataType);
       step = sizeof(currentDataType);
-      transFormFactor = currentTransformFactor / scaleFactorIQ15;
+      transFormFactor = currentTransformFactor / _IQ15;
       break;
     case TracerWidget::VELOCITY:
       totalByteLen = samplePoints * sizeof(velocityDataType);
       step = sizeof(velocityDataType);
-      transFormFactor = velocityTransformFactor / scaleFactorIQ15;
+      transFormFactor = velocityTransformFactor / _IQ15;
       break;
     case TracerWidget::POSITION:
       totalByteLen = samplePoints * sizeof(positionDataType);
@@ -283,11 +284,10 @@ TracerWidget::storeTransformedData(Channels waitForUdpdateCh,
   //将数据从byteArray中取出并转成double
   for (size_t indexOfArray = 0, indexOfPoint = 0; indexOfArray < totalByteLen;
        indexOfArray += step, indexOfPoint++) {
-    //将字节数据转成整型
-    int y = BitConverter::ba2Int(data.mid(indexOfArray, step));
-    double transformedY = y * transFormFactor; // y进行变换
+    //将字节数据转成整型，并进行变换
+    double Y = ba2Int(data.mid(indexOfArray, step)) * transFormFactor;
     double x = indexOfPoint * sampleCycles; // x根据采样周期和采样点数变换到时间
-    m_points[waitForUdpdateCh].append(QCPGraphData(x, transformedY));
+    m_points[waitForUdpdateCh].append(QCPGraphData(x, Y));
   }
   // show on plot
   relaceChannelData(waitForUdpdateCh, m_points[waitForUdpdateCh]);
@@ -447,8 +447,7 @@ TracerWidget::on_startButton_clicked()
     return;
   }
   //运行参数配置对话框，提示当前运行模式
-  QString currentRunMode = tr("Run Mode %1").arg(m_xcomm->getCurrentRunMode());
-  m_runConfiger->setRunModeInfo(currentRunMode);
+  m_runConfiger->setRunModeInfo(m_xcomm->getCurrentRunModeStr());
   if (m_runConfiger->exec() == QDialog::Rejected) {
     return;
   }
@@ -644,7 +643,7 @@ TracerWidget::readChBoxContent()
 }
 
 void
-TracerWidget::on_autoSetButton_clicked()
+TracerWidget::on_autoScaleAxisButton_clicked()
 {
   //调整XY轴的范围，使之能显示出可见曲线
   ui->customPlot->rescaleAxes(true);

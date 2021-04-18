@@ -5,14 +5,14 @@ SweepingWindow::SweepingWindow(QWidget* parent, XComm* xcomm)
   : QMainWindow(parent)
   , ui(new Ui::SweepingWindow)
   , m_xcomm(xcomm)
+  , m_sweepConfig()
+  , m_runConfig(2000, 256)
 {
   ui->setupUi(this);
   initBode();
   initToolBar();
-  connect(m_xcomm,
-          &XComm::toolboxSweepingCmd,
-          this,
-          &SweepingWindow::slotProccessCmd);
+  using SW = SweepingWindow;
+  connect(m_xcomm, &XComm::toolboxSweepingCmd, this, &SW::slotProccessCmd);
 }
 
 SweepingWindow::~SweepingWindow()
@@ -46,15 +46,13 @@ SweepingWindow::initToolBar()
   QAction* switchTracerAction = toolBar->addAction(QStringLiteral("游标"));
   //工具栏动作
   using SW = SweepingWindow;
+  using APG = AmAndPhGraph;
   //导出数据
   connect(exportDataAction, &QAction::triggered, this, &SW::slotExportData);
   //导出图片
   connect(saveImageAction, &QAction::triggered, this, &SW::slotSaveImage);
   //自动缩放
-  connect(autoScaleAction,
-          &QAction::triggered,
-          ui->bode,
-          &AmAndPhGraph::autoScaleAxis);
+  connect(autoScaleAction, &QAction::triggered, ui->bode, &APG::autoScaleAxis);
   //开启/关闭游标
   connect(switchTracerAction, &QAction::triggered, this, &SW::slotSwitchTracer);
 }
@@ -64,11 +62,17 @@ SweepingWindow::slotProccessCmd(const quint16 cmd, const QByteArray& data)
 {
   switch (cmd) {
     case XComm::TOOLBOX_SWEEPING_WRITE:
+      // log current run mode
+      m_xcomm->logRunMode(
+        static_cast<DriverDataType::RunMode>(m_sweepConfig.data().m_runMode));
       QMessageBox::information(
         this, QStringLiteral("提示"), QStringLiteral("参数写入成功"));
       break;
-    case XComm::TOOLBOX_SWEEPING_REQ_DATA:
-      showBode(data);
+    case XComm::TOOLBOX_SWEEPING_REQ_AM:
+      parseAmplitudeData(data);
+      break;
+    case XComm::TOOLBOX_SWEEPING_REQ_PH:
+      parsePhaseData(data);
       break;
     default:
       break;
@@ -77,7 +81,49 @@ SweepingWindow::slotProccessCmd(const quint16 cmd, const QByteArray& data)
 
 void
 SweepingWindow::slotExportData()
-{}
+{
+  // have data in graph ?
+  if (m_amplitude.size() == 0 || m_phase.size() == 0) {
+    // no data in graph
+    QMessageBox::warning(
+      this, QStringLiteral("错误"), QStringLiteral("无数据"));
+    return;
+  }
+  //保存文件对话框
+  QDateTime dateTime(QDateTime::currentDateTime());
+  QString format = QStringLiteral("yyyyMMdd-hhmmss");
+  QString timeStr = dateTime.toString(format);
+  QString fileName = QFileDialog::getSaveFileName(
+    this,
+    QStringLiteral("保存数据"),
+    qApp->applicationDirPath() % QLatin1String("SweepBode_") % timeStr %
+      QLatin1String(".csv"),
+    QStringLiteral("Files (*.csv *.txt)"));
+  if (fileName.isEmpty()) {
+    return;
+  }
+  //保存文件
+  QFile file(fileName);
+  //以只写方式打开
+  // Truncate清空文件
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+    QMessageBox::warning(
+      this, QStringLiteral("错误"), QStringLiteral("打开/创建文件失败！"));
+    return;
+  }
+  //写入每一行数据到文件
+  //如果am和ph数据长度不一致此处可能有段错误
+  //频率|幅值|相位
+  int i = 0;
+  Q_FOREACH (const auto& pt, m_amplitude) {
+    QTextStream out(&file);
+    out << pt.key << ',' << pt.value << ',' << m_phase[i].value << "\n";
+    i++;
+  }
+  file.close();
+  QMessageBox::information(
+    this, QStringLiteral("提示"), QStringLiteral("保存文件成功"));
+}
 
 void
 SweepingWindow::slotSaveImage()
@@ -123,18 +169,68 @@ SweepingWindow::slotSwitchTracer()
 }
 
 void
-SweepingWindow::showBode(const DataVector& ampitude, const DataVector& phase)
+SweepingWindow::parseAmplitudeData(const QByteArray& data)
 {
-  ui->bode->setDataAndShowBode(ampitude, phase);
+  // also see TracerWidget::storeTransformedData
+  using namespace BitConverter;
+  using namespace DriverDataType;
+  // clear stora before append new data
+  m_amplitude.clear();
+  m_amplitude.reserve(sweepRange);
+  // update step is bytes of data
+  int step = sizeof(amplitudeDataType);
+  size_t totalByteLen = sweepRange * step;
+  Q_ASSERT_X((size_t)data.size() == totalByteLen,
+             "parseAmplitudeData",
+             "recv data length is wrong");
+  double transFormFactor = 1 / _IQ15;
+  double f0 = m_runConfig.data().m_sampleFreq / sweepPoint; //分辨率
+  for (size_t indexOfArray = 0, indexOfPoint = 0; indexOfArray < totalByteLen;
+       indexOfArray += step, indexOfPoint++) {
+    //将字节数据转成整型，并且对数据进行变换
+    double am = ba2Int(data.mid(indexOfArray, step)) * transFormFactor;
+    double mag = 20 * log10(am); // 转换成Mag
+    // x根据采样周期和采样点数变换到Hz
+    double f = indexOfPoint * f0;
+    double w = f / (2 * M_PI); //变换到rad/s
+    m_amplitude.append(QCPGraphData(w, mag));
+  }
+  ui->bode->showAmplitude(m_amplitude);
 }
 
 void
-SweepingWindow::showBode(const QByteArray& data)
-{}
+SweepingWindow::parsePhaseData(const QByteArray& data)
+{
+  // also see TracerWidget::storeTransformedData
+  using namespace BitConverter;
+  using namespace DriverDataType;
+  // clear stora before append new data
+  m_phase.clear();
+  m_phase.reserve(sweepRange);
+  // update step is bytes of data
+  int step = sizeof(phaseDataType);
+  size_t totalByteLen = sweepRange * step;
+  Q_ASSERT_X((size_t)data.size() == totalByteLen,
+             "parsePhaseData",
+             "recv data length is wrong");
+  double transFormFactor = 1 / _IQ12;
+  for (size_t indexOfArray = 0, indexOfPoint = 0; indexOfArray < totalByteLen;
+       indexOfArray += step, indexOfPoint++) {
+    //将字节数据转成整型，并且对数据进行变换
+    double phase = ba2Int(data.mid(indexOfArray, step)) * transFormFactor;
+    double phaseDeg = phase * 180 / M_PI; //化成deg(°)位
+    //直接使用amplitude计算好的w，减少重复计算
+    //如果am和ph数据长度不一致此处可能有段错误
+    double w = m_amplitude[indexOfPoint].key;
+    m_phase.append(QCPGraphData(w, phaseDeg));
+  }
+  ui->bode->showPhase(m_phase);
+}
 
 void
 SweepingWindow::on_startButton_clicked()
 {
+  using namespace DriverDataType;
   RunConfigDialog runConfigDialog;
   if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
     // 未连接
@@ -144,37 +240,82 @@ SweepingWindow::on_startButton_clicked()
   }
   if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
     // if motor is running , no action
-    QMessageBox::warning(this,
-                         QStringLiteral("警告"),
-                         QStringLiteral("电机已在运行，不要重复发送指令！"));
+    QMessageBox::warning(
+      this, QStringLiteral("警告"), QStringLiteral("电机已在运行，请先停止！"));
+    return;
+  }
+  DriverDataType::RunMode currRunMode = m_xcomm->getCurrentRunMode();
+  if (currRunMode != DriverDataType::MODE7 &&
+      currRunMode != DriverDataType::MODE8) {
+    // not in sweeping modes
+    QMessageBox::warning(
+      this, QStringLiteral("警告"), QStringLiteral("非扫频模式，请切换模式！"));
     return;
   }
   //运行参数配置对话框，提示当前运行模式
-  QString currentRunMode = tr("Run Mode %1").arg(m_xcomm->getCurrentRunMode());
-  runConfigDialog.setRunModeInfo(currentRunMode);
+  runConfigDialog.setRunModeInfo(m_xcomm->getCurrentRunModeStr());
   if (runConfigDialog.exec() == QDialog::Rejected) {
     return;
   }
   //添加运行参数
-  DriverDataType::RunConfigType runConfig = runConfigDialog.getRunConfig();
+  m_runConfig = runConfigDialog.getRunConfig();
   // if motor is stop，start it
-  m_xcomm->startMotor(runConfig);
+  m_xcomm->startMotor(m_runConfig);
+  // after 100ms ,check motor status
+  QTimer::singleShot(100, this, [=]() {
+    if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
+      int sampleFreq = m_runConfig.data().m_sampleFreq;
+      //计算扫频时间：扫描一个频率点的时间 * 扫频范围
+      int timeToRequestResult = sweepPoint / sampleFreq * sweepRange;
+      timeToRequestResult += requestDataDelay; //加上一定时间等待DSP处理事务
+      //向DSP请求读取幅值、相位数据
+      QTimer::singleShot(timeToRequestResult, this, [=]() {
+        m_xcomm->stopMotor(); //先关闭电机
+        //再读取数据
+        m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_AM, QByteArray());
+        m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_PH, QByteArray());
+      });
+    } else { // MOTOR_STOP
+      QMessageBox::warning(
+        this, QStringLiteral("警告"), QStringLiteral("启动失败"));
+    }
+  });
+}
+
+auto
+SweepingWindow::mapSectionToRunMode(int section) -> DriverDataType::RunMode
+{
+  using namespace DriverDataType;
+  RunMode runMode = MODE7;
+  switch (section) {
+    case 0:
+      //机械环节
+      runMode = MODE7;
+      break;
+    case 1:
+      //电磁环节
+      runMode = MODE8;
+      break;
+    default:
+      break;
+  }
+  return runMode;
 }
 
 void
 SweepingWindow::on_writeButton_clicked()
 {
   using namespace DriverDataType;
-  SweepingConfigType sweepingConfig;
   // read sweeping config
-  // some data should be scaled for transmiton
-  sweepingConfig.data().m_targetLoop = ui->loopComboBox->currentIndex();
-  sweepingConfig.data().m_ref = ui->refDoubleSpinBox->value() * scaleFactorIQ15;
-  sweepingConfig.data().m_amplitude =
-    ui->amDoubleSpinBox->value() * scaleFactorIQ15;
-  sweepingConfig.data().m_minRange = ui->freqRangeMinSpinBox->value();
-  sweepingConfig.data().m_maxRange = ui->freqRangeMaxSpinBox->value();
-  sweepingConfig.data().m_sweepingStep =
-    ui->sweepStepDoubleSpinBox->value() * scaleFactorIQ15;
-  m_xcomm->command(XComm::TOOLBOX_SWEEPING_WRITE, sweepingConfig.toByteArray());
+  // some data should be scaled for transmition
+  RunMode runMode = mapSectionToRunMode(ui->sectionComboBox->currentIndex());
+  m_sweepConfig.data().m_runMode = runMode;
+  m_sweepConfig.data().m_ref = ui->refDoubleSpinBox->value() * _IQ15;
+  m_sweepConfig.data().m_amplitude = ui->amDoubleSpinBox->value() * _IQ15;
+  // Range、step参数现在没用 TBC
+  m_sweepConfig.data().m_minRange = ui->freqRangeMinSpinBox->value();
+  m_sweepConfig.data().m_maxRange = ui->freqRangeMaxSpinBox->value();
+  m_sweepConfig.data().m_sweepingStep =
+    ui->sweepStepDoubleSpinBox->value() * _IQ15;
+  m_xcomm->command(XComm::TOOLBOX_SWEEPING_WRITE, m_sweepConfig.toByteArray());
 }

@@ -556,7 +556,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QPushButton" name="autoSetButton">
+           <widget class="QPushButton" name="autoScaleAxisButton">
             <property name="text">
              <string>自动调整</string>
             </property>

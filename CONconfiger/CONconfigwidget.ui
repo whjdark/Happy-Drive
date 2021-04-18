@@ -51,7 +51,7 @@
       <widget class="QComboBox" name="runModeBox">
        <item>
         <property name="text">
-         <string>模式0：电流开环</string>
+         <string>模式0：开环</string>
         </property>
        </item>
        <item>

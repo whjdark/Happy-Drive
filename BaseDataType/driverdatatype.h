@@ -15,8 +15,13 @@
 
 namespace DriverDataType {
 //常量
-//浮点数-整型缩放因子
-Q_CONSTEXPR double scaleFactorIQ15 = 2 << 14;
+//浮点数-整型缩放因子 same as dsp
+Q_CONSTEXPR double _IQ15 = 2 << 14;
+Q_CONSTEXPR double _IQ14 = 2 << 13;
+Q_CONSTEXPR double _IQ13 = 2 << 12;
+Q_CONSTEXPR double _IQ12 = 2 << 11;
+Q_CONSTEXPR double _IQ11 = 2 << 10;
+Q_CONSTEXPR double _IQ10 = 2 << 9;
 //速度变换因子
 Q_CONSTEXPR double velocityTransformFactor = 2000.0;
 //电流变换因子
@@ -35,6 +40,10 @@ typedef qint16 velocityDataType;
 typedef qint32 positionDataType;
 //编码器数据类型
 typedef qint16 encoderDataType;
+//幅值数据类型
+typedef qint32 amplitudeDataType;
+//相位数据类型
+typedef qint16 phaseDataType;
 
 //运行模式
 enum RunMode
@@ -46,7 +55,8 @@ enum RunMode
   MODE4 = 4,
   MODE5 = 5,
   MODE6 = 6,
-
+  MODE7 = 7,
+  MODE8 = 8,
 };
 
 struct PIDParams
@@ -162,14 +172,14 @@ struct RunConfigData
 #pragma pack(1) //取消结构体对其
 struct SweepingConfigData
 {
-    quint16 m_targetLoop;   //扫频环节
-    qint16 m_ref; //参考值
-    qint16 m_amplitude; //幅值
-    quint16 m_minRange;//起始频率
-    quint16 m_maxRange; //终止频率
-    quint16 m_sweepingStep; //扫频步长
+  quint16 m_runMode;      //扫频环节
+  qint16 m_ref;           //参考值
+  qint16 m_amplitude;     //幅值
+  quint16 m_minRange;     //起始频率
+  quint16 m_maxRange;     //终止频率
+  quint16 m_sweepingStep; //扫频步长
 
-    SweepingConfigData() = default;
+  SweepingConfigData() = default;
 };
 #pragma pack(0)
 
@@ -219,19 +229,19 @@ private:
   RunConfigData m_runConfigData;
 };
 
-class SweepingConfigType
+class SweepConfigType
 {
 public:
-    explicit SweepingConfigType();
-    ~SweepingConfigType() = default;
+  explicit SweepConfigType();
+  ~SweepConfigType() = default;
 
-    QByteArray toByteArray();
-    void byteArrayToStruct(const QByteArray& ba);
-    void resetData();
-    SweepingConfigData& data() { return m_sweepingConfigData; }
+  QByteArray toByteArray();
+  void byteArrayToStruct(const QByteArray& ba);
+  void resetData();
+  SweepingConfigData& data() { return m_sweepingConfigData; }
 
 private:
-    SweepingConfigData m_sweepingConfigData;
+  SweepingConfigData m_sweepingConfigData;
 };
 
 } // namespace DriverDataType

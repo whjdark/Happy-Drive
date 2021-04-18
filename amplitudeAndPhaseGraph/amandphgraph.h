@@ -31,10 +31,9 @@ public:
   void setTitle(const QString& title);
   void setAmplitudeTitle(const QString& xTitle, const QString& yTitle);
   void setPhaseTitle(const QString& xTitle, const QString& yTitle);
-  int doFFTAndShowResult(const DataVector& data);
-  void setDataAndShowBode(const DataVector& amplitude, const DataVector& phase);
-  const DataVector& getAmplitudeData() const { return m_amplitude; }
-  const DataVector& getPhaseData() const { return m_phase; }
+  void showAmplitude(const DataVector& amplitude);
+  void showPhase(const DataVector& phase);
+  void showGraph(const DataVector& amplitude, const DataVector& phase);
 
 private:
   void initAmplitudeGraph();
@@ -44,8 +43,6 @@ private:
 private:
   Ui::AmAndPhGraph* ui;
   bool m_isVisible = false;
-  DataVector m_amplitude; //振幅谱
-  DataVector m_phase;     //相位谱
 };
 
 #endif // AMANDPHGRAPH_H

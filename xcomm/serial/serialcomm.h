@@ -71,7 +71,7 @@ private:
   //如果收到数据不完整考虑增大该值
   Q_CONSTEXPR static int checkRxdIdleTime = 20; // 20ms
   //轮询request queue的时间间隔，增大间隔可减小CPU使用率
-  Q_CONSTEXPR static int checkQueueEmptyInterval = 15; // 15ms
+  Q_CONSTEXPR static int checkQueueInterval = 15; // 15ms
 
   QQueue<QByteArray> m_requestQueue;
   SerialConfig m_config;

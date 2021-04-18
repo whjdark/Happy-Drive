@@ -32,7 +32,7 @@ XComm::command(const quint16 cmd, const QByteArray& data)
     m_commStats.m_cmdCnt++;
     m_commStats.m_totalTxdBytes += data.size() + sizeof(cmd);
   } else {
-    // command but in DISCONNECTED
+    // command but in DISCONNECTED, ignore
     // holdplace
   }
 }
@@ -79,6 +79,46 @@ void
 XComm::stopMotor()
 {
   command(STOP_MOTOR, QByteArray());
+}
+
+auto
+XComm::getCurrentRunModeStr() const -> QString
+{
+  QString runModeStr;
+  switch (currentRunMode) {
+    case DriverDataType::MODE0:
+      runModeStr = QStringLiteral("模式0：开环");
+      break;
+    case DriverDataType::MODE1:
+      runModeStr = QStringLiteral("模式1：速度闭环（电流PI，速度PI）");
+      break;
+    case DriverDataType::MODE2:
+      runModeStr = QStringLiteral("模式2：位置闭环（位置P，电流PI，速度PI）");
+      break;
+    case DriverDataType::MODE3:
+      runModeStr = QStringLiteral("模式3：速度闭环（速度ADRC，电流PI）");
+      break;
+    case DriverDataType::MODE4:
+      runModeStr = QStringLiteral("模式4：速度闭环（速度ADRC，电流ADRC）");
+      break;
+    case DriverDataType::MODE5:
+      runModeStr =
+        QStringLiteral("模式5：位置闭环（位置P，速度ADRC，电流ADRC）");
+      break;
+    case DriverDataType::MODE6:
+      runModeStr =
+        QStringLiteral("模式6：速度闭环（电流环PI，速度环FOPD-GESO）");
+      break;
+    case DriverDataType::MODE7:
+      runModeStr = QStringLiteral("模式7：扫频（机械环节）");
+      break;
+    case DriverDataType::MODE8:
+      runModeStr = QStringLiteral("模式8：扫频（电磁环节）");
+      break;
+    default:
+      break;
+  }
+  return runModeStr;
 }
 
 void
