@@ -109,11 +109,11 @@ XComm::getCurrentRunModeStr() const -> QString
       runModeStr =
         QStringLiteral("模式6：速度闭环（电流环PI，速度环FOPD-GESO）");
       break;
-    case DriverDataType::MODE7:
-      runModeStr = QStringLiteral("模式7：扫频（机械环节）");
+    case DriverDataType::MODE_SWEEP_1:
+      runModeStr = QStringLiteral("模式SWEEP_1：扫频（机械环节）");
       break;
-    case DriverDataType::MODE8:
-      runModeStr = QStringLiteral("模式8：扫频（电磁环节）");
+    case DriverDataType::MODE_SWEEP_2:
+      runModeStr = QStringLiteral("模式SWEEP_2：扫频（电磁环节）");
       break;
     default:
       break;

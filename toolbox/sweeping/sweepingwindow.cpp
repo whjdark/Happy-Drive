@@ -245,8 +245,8 @@ SweepingWindow::on_startButton_clicked()
     return;
   }
   DriverDataType::RunMode currRunMode = m_xcomm->getCurrentRunMode();
-  if (currRunMode != DriverDataType::MODE7 &&
-      currRunMode != DriverDataType::MODE8) {
+  if (currRunMode != DriverDataType::MODE_SWEEP_1 &&
+      currRunMode != DriverDataType::MODE_SWEEP_2) {
     // not in sweeping modes
     QMessageBox::warning(
       this, QStringLiteral("警告"), QStringLiteral("非扫频模式，请切换模式！"));
@@ -286,15 +286,15 @@ auto
 SweepingWindow::mapSectionToRunMode(int section) -> DriverDataType::RunMode
 {
   using namespace DriverDataType;
-  RunMode runMode = MODE7;
+  RunMode runMode = MODE_SWEEP_1;
   switch (section) {
     case 0:
       //机械环节
-      runMode = MODE7;
+      runMode = MODE_SWEEP_1;
       break;
     case 1:
       //电磁环节
-      runMode = MODE8;
+      runMode = MODE_SWEEP_2;
       break;
     default:
       break;

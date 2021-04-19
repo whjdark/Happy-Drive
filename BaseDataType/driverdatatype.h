@@ -55,8 +55,9 @@ enum RunMode
   MODE4 = 4,
   MODE5 = 5,
   MODE6 = 6,
-  MODE7 = 7,
-  MODE8 = 8,
+
+  MODE_SWEEP_1 = 100,
+  MODE_SWEEP_2 = 101,
 };
 
 struct PIDParams
