@@ -515,14 +515,16 @@ TracerWidget::on_readButton_clicked()
   }
   //防止用户多次操作
   ui->readButton->setEnabled(false);
-  //读取一下通道设定内容
-  readChBoxContent();
+  //读取一下通道设定内容,和启动的通道数
+  int readCnt = readChBoxContent();
   //检查接收数据数量是否与请求的数量一致
   //如果请求的数据与接收的数据在数量上一致
   // m_chOrderQueue应该是空的
   //如果m_chOrderQueue应该是空的不为空
   //很可能没收到数据或者部分数据未收到
-  QTimer::singleShot(defaultCheckRecvInterval, this, [=]() {
+  //检查时间取决于:启动的通道数*单个通道最大响应时间
+  int checkRecvInterval = readCnt * maxResponseTime;
+  QTimer::singleShot(checkRecvInterval, this, [=]() {
     if (m_chReqOrderQueue.isEmpty()) {
       QMessageBox::information(
         this, QStringLiteral("提示"), QStringLiteral("读取数据成功"));
@@ -589,8 +591,8 @@ TracerWidget::chComboIndexMapToCmd(int index) -> XComm::CmdType
   return cmd;
 }
 
-void
-TracerWidget::readChBoxContent()
+auto
+TracerWidget::readChBoxContent() -> int
 {
   //先将队列清空
   //如果请求未得到应答
@@ -600,46 +602,56 @@ TracerWidget::readChBoxContent()
   //依次检查8个下拉框，依序发送请求命令
   //将发送命令的按顺序存入queue
   //接收到数据时按照queue中储存的顺序依次放入通道
+  int count = 0;
   if (ui->ch1ComboBox->isEnabled()) {
     m_chReqOrderQueue.enqueue(Ch1);
     m_xcomm->command(chComboIndexMapToCmd(ui->ch1ComboBox->currentIndex()),
                      QByteArray());
+    count++;
   }
   if (ui->ch2ComboBox->isEnabled()) {
     m_chReqOrderQueue.enqueue(Ch2);
     m_xcomm->command(chComboIndexMapToCmd(ui->ch2ComboBox->currentIndex()),
                      QByteArray());
+    count++;
   }
   if (ui->ch3ComboBox->isEnabled()) {
     m_chReqOrderQueue.enqueue(Ch3);
     m_xcomm->command(chComboIndexMapToCmd(ui->ch3ComboBox->currentIndex()),
                      QByteArray());
+    count++;
   }
   if (ui->ch4ComboBox->isEnabled()) {
     m_chReqOrderQueue.enqueue(Ch4);
     m_xcomm->command(chComboIndexMapToCmd(ui->ch4ComboBox->currentIndex()),
                      QByteArray());
+    count++;
   }
   if (ui->ch5ComboBox->isEnabled()) {
     m_chReqOrderQueue.enqueue(Ch5);
     m_xcomm->command(chComboIndexMapToCmd(ui->ch5ComboBox->currentIndex()),
                      QByteArray());
+    count++;
   }
   if (ui->ch6ComboBox->isEnabled()) {
     m_chReqOrderQueue.enqueue(Ch6);
     m_xcomm->command(chComboIndexMapToCmd(ui->ch6ComboBox->currentIndex()),
                      QByteArray());
+    count++;
   }
   if (ui->ch7ComboBox->isEnabled()) {
     m_chReqOrderQueue.enqueue(Ch7);
     m_xcomm->command(chComboIndexMapToCmd(ui->ch7ComboBox->currentIndex()),
                      QByteArray());
+    count++;
   }
   if (ui->ch8ComboBox->isEnabled()) {
     m_chReqOrderQueue.enqueue(Ch8);
     m_xcomm->command(chComboIndexMapToCmd(ui->ch8ComboBox->currentIndex()),
                      QByteArray());
+    count++;
   }
+  return count;
 }
 
 void

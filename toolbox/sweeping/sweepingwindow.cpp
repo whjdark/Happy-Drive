@@ -189,10 +189,10 @@ SweepingWindow::parseAmplitudeData(const QByteArray& data)
        indexOfArray += step, indexOfPoint++) {
     //将字节数据转成整型，并且对数据进行变换
     double am = ba2Int(data.mid(indexOfArray, step)) * transFormFactor;
-    double mag = 20 * log10(am); // 转换成Mag
+    double mag = 20 * log10(am + eps); // 转换成Mag,加个小数防止0出现
     // x根据采样周期和采样点数变换到Hz
     double f = indexOfPoint * f0;
-    double w = f / (2 * M_PI); //变换到rad/s
+    double w = f * (2 * M_PI); //变换到rad/s
     m_amplitude.append(QCPGraphData(w, mag));
   }
   ui->bode->showAmplitude(m_amplitude);
@@ -262,12 +262,15 @@ SweepingWindow::on_startButton_clicked()
   // if motor is stop，start it
   m_xcomm->startMotor(m_runConfig);
   // after 100ms ,check motor status
-  QTimer::singleShot(100, this, [=]() {
+  QTimer::singleShot(2000, this, [=]() {
     if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
-      int sampleFreq = m_runConfig.data().m_sampleFreq;
-      //计算扫频时间：扫描一个频率点的时间 * 扫频范围
-      int timeToRequestResult = sweepPoint / sampleFreq * sweepRange;
-      timeToRequestResult += requestDataDelay; //加上一定时间等待DSP处理事务
+      double sampleFreq = m_runConfig.data().m_sampleFreq;
+      //计算扫频时间：扫描一个频率点的时间 * 扫频范围,
+      double timeToRequestResult =
+        ((double)sweepPoint / sampleFreq) * sweepRange * 1400;
+      //加上一定时间等待DSP处理事务
+      timeToRequestResult += requestDataDelay;
+      timeToRequestResult = static_cast<int>(timeToRequestResult);
       //向DSP请求读取幅值、相位数据
       QTimer::singleShot(timeToRequestResult, this, [=]() {
         m_xcomm->stopMotor(); //先关闭电机

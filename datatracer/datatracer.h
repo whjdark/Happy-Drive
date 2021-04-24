@@ -161,7 +161,7 @@ private:
   void initGraphConfigBox();
   void initConnections();
 
-  void readChBoxContent();
+  int readChBoxContent();
   void storeTransformedData(Channels waitForUdpdateCh,
                             const QByteArray& data,
                             DataTransformType type);
@@ -231,8 +231,8 @@ private:
   const QString defaultXTitle = QStringLiteral("Time(s)");
   // y标题
   const QString defaultYTitle = QStringLiteral("Amplitude");
-  //检查接收数据数量是否与请求的数量一致时间间隔
-  Q_CONSTEXPR static int defaultCheckRecvInterval = 1000; //  1.0s
+  //单个通道最大响应时间
+  Q_CONSTEXPR static int maxResponseTime = 400; //  0.4s
   //刷新统计信息表时间间隔
   Q_CONSTEXPR static int defaultUpdateStatusInterval = 1500; //  1.5s
 

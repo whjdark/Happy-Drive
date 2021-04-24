@@ -45,7 +45,7 @@ private:
   Q_CONSTEXPR static int sweepPoint = 512;
   Q_CONSTEXPR static int sweepRange = sweepPoint / 2; // half of samplePoint
   //扫频后请求数据延迟时间，因为扫频结束后并DSP并不能立即算出数据。
-  Q_CONSTEXPR static int requestDataDelay = 500; // 500ms
+  Q_CONSTEXPR static int requestDataDelay = 1000; // 1000ms
 
   Ui::SweepingWindow* ui;
   XComm* m_xcomm;

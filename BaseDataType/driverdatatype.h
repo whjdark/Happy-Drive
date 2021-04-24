@@ -15,6 +15,8 @@
 
 namespace DriverDataType {
 //常量
+Q_CONSTEXPR double eps = 10e-8;
+
 //浮点数-整型缩放因子 same as dsp
 Q_CONSTEXPR double _IQ15 = 2 << 14;
 Q_CONSTEXPR double _IQ14 = 2 << 13;
@@ -173,7 +175,7 @@ struct RunConfigData
 #pragma pack(1) //取消结构体对其
 struct SweepingConfigData
 {
-  quint16 m_runMode;      //扫频环节
+  quint16 m_runMode;      //运行模式
   qint16 m_ref;           //参考值
   qint16 m_amplitude;     //幅值
   quint16 m_minRange;     //起始频率

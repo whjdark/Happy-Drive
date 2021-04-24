@@ -86,9 +86,9 @@ MonitorWidget::initTableData()
 void
 MonitorWidget::initConnetions()
 {
-  connect(
-    m_updateTimer, &QTimer::timeout, this, &MonitorWidget::slotUpdateTable);
-  connect(m_xcomm, &XComm::monitorCmd, this, &MonitorWidget::slotProccessCmd);
+  using MW = MonitorWidget;
+  connect(m_updateTimer, &QTimer::timeout, this, &MW::slotUpdateTable);
+  connect(m_xcomm, &XComm::monitorCmd, this, &MW::slotProccessCmd);
 }
 
 void
