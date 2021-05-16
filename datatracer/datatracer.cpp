@@ -242,12 +242,10 @@ TracerWidget::storeTransformedData(Channels waitForUdpdateCh,
   int samplePoints = runConfig.data().m_samplePoints;
   // reserve for avoiding frequent memory allocate
   m_points[waitForUdpdateCh].reserve(samplePoints);
-  // get setting sample cycles according to frequency
-  double sampleCycles = 1.0 / runConfig.data().m_sampleFreq;
-  // total length, 数据总字节长度
-  size_t totalByteLen = 0;
-  // cycle step，循环步长，数据类型有关
-  size_t step = 0;
+  // get setting sample period according to frequency
+  double samplePeriod = 1.0 / runConfig.data().m_sampleFreq;
+  size_t totalByteLen = 0; // total length, 数据总字节长度
+  size_t step = 0;         // step，循环步长，数据类型有关
   // transFormFactor，变换系数
   double transFormFactor = 0;
   //根据数据类型计算变换系数
@@ -286,7 +284,7 @@ TracerWidget::storeTransformedData(Channels waitForUdpdateCh,
        indexOfArray += step, indexOfPoint++) {
     //将字节数据转成整型，并进行变换
     double Y = ba2Int(data.mid(indexOfArray, step)) * transFormFactor;
-    double x = indexOfPoint * sampleCycles; // x根据采样周期和采样点数变换到时间
+    double x = indexOfPoint * samplePeriod; // x根据采样周期和采样点数变换到时间
     m_points[waitForUdpdateCh].append(QCPGraphData(x, Y));
   }
   // show on plot

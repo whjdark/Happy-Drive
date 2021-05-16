@@ -142,7 +142,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="cycleText">
+       <widget class="QLabel" name="periodText">
         <property name="text">
          <string>0.00250</string>
         </property>

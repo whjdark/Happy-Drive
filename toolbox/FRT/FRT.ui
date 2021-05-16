@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SweepingWindow</class>
- <widget class="QMainWindow" name="SweepingWindow">
+ <class>FRT</class>
+ <widget class="QMainWindow" name="FRT">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -46,7 +46,7 @@
        </sizepolicy>
       </property>
       <property name="title">
-       <string>扫频配置</string>
+       <string>参数配置</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <property name="spacing">
@@ -235,7 +235,7 @@
          <item>
           <widget class="QPushButton" name="startButton">
            <property name="text">
-            <string>启动扫频!</string>
+            <string>启动!</string>
            </property>
            <property name="icon">
             <iconset resource="../../icon.qrc">

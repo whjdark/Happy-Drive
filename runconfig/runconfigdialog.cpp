@@ -45,8 +45,8 @@ RunConfigDialog::on_freqComboBox_currentTextChanged(const QString& text)
   int sampleFreq = text.toInt(&isOk);
   if (isOk && sampleFreq > 0) {
     //显示采样周期
-    QString sampleCycle = QString::number(1.0 / sampleFreq, 'f', 5);
-    ui->cycleText->setText(sampleCycle);
+    QString samplePeriod = QString::number(1.0 / sampleFreq, 'f', 5);
+    ui->periodText->setText(samplePeriod);
   }
 }
 

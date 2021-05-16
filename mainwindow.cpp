@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget* parent)
   , m_console(new ConsoleMainWindow(this, m_xcomm))
   , m_monitor(new MonitorWidget(this, m_xcomm))
   , m_tracer(new TracerWidget(this, m_xcomm))
-  , m_sweeping(new SweepingWindow(this, m_xcomm))
+  , m_FRT(new FRT(this, m_xcomm))
   , m_checkConnectTimer(new QTimer(this))
   , m_updateStatusBarTimer(new QTimer(this))
 {
@@ -190,7 +190,7 @@ MainWindow::initConnections()
   connect(m_closeAllAction, &QAction::triggered, this, &MW::slotCloseAllDocks);
   connect(m_showAllAction, &QAction::triggered, this, &MW::slotShowAllDocks);
   connect(m_startAction, &QAction::triggered, this, &MW::slotStartMotor);
-  connect(m_sweepingAction, &QAction::triggered, m_sweeping, &QWidget::show);
+  connect(m_sweepingAction, &QAction::triggered, m_FRT, &QWidget::show);
   connect(m_resetAction, &QAction::triggered, this, [=]() {}); // TBC
   connect(m_stopAction, &QAction::triggered, this, &MW::slotStopMotor);
   // connect driver status info update

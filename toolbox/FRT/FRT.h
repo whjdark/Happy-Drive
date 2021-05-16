@@ -1,5 +1,5 @@
-﻿#ifndef SWEEPINGWINDOW_H
-#define SWEEPINGWINDOW_H
+﻿#ifndef FRT_H
+#define FRT_H
 
 #include <QMainWindow>
 
@@ -9,10 +9,10 @@
 #include "../../xcomm/xcomm.h"
 
 namespace Ui {
-class SweepingWindow;
+class FRT;
 }
 
-class SweepingWindow : public QMainWindow
+class FRT : public QMainWindow
 {
   Q_OBJECT
 
@@ -20,8 +20,8 @@ private:
   using DataVector = QVector<QCPGraphData>;
 
 public:
-  explicit SweepingWindow(QWidget* parent = nullptr, XComm* xcomm = nullptr);
-  ~SweepingWindow();
+  explicit FRT(QWidget* parent = nullptr, XComm* xcomm = nullptr);
+  ~FRT();
 
 private Q_SLOTS:
   void slotProccessCmd(const quint16 cmd, const QByteArray& data);
@@ -47,10 +47,8 @@ private:
   Q_CONSTEXPR static int defaultSampleFreq = 2000;
   Q_CONSTEXPR static int sweepPoint = 512;
   Q_CONSTEXPR static int sweepRange = sweepPoint / 2; // half of samplePoint
-  //扫频后请求数据延迟时间，因为扫频结束后并DSP并不能立即算出数据。
-  Q_CONSTEXPR static int requestDataDelay = 2000; // 1000ms
 
-  Ui::SweepingWindow* ui;
+  Ui::FRT* ui;
   XComm* m_xcomm;
   DriverDataType::SweepConfigType m_sweepConfig;
   DriverDataType::RunConfigType m_runConfig;
@@ -58,4 +56,4 @@ private:
   DataVector m_phase;
 };
 
-#endif // SWEEPINGWINDOW_H
+#endif // FRT_H

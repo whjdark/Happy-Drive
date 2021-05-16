@@ -18,7 +18,8 @@ CONFIG += c++11
 # Use Precompiled headers (PCH)
 CONFIG += precompile_header
 PRECOMPILED_HEADER = stable.h
-HEADERS += stable.h #这句话是可有可无的，建议加上
+HEADERS += stable.h \  #这句话是可有可无的，建议加上
+    toolbox/FRT/FRT.h
 
 # release optimation level
 QMAKE_CXXFLAGS_RELEASE -= -O1
@@ -55,7 +56,6 @@ HEADERS += BaseDataType/bitconverter.h \
     oscilloscope/scopetracer.h \
     runconfig/runconfigdialog.h \
     stable.h \
-    toolbox/sweeping/sweepingwindow.h \
     utilities/CRC.h \
     mainwindow.h \
     timer.h \
@@ -80,7 +80,7 @@ FORMS += mainwindow.ui \
     datatracer/statisticsWindow/statisticswindow.ui \
     monitor/monitorwidget.ui \
     runconfig/runconfigdialog.ui \
-    toolbox/sweeping/sweepingwindow.ui
+    toolbox/FRT/FRT.ui \
 
 SOURCES += BaseDataType/bitconverter.cpp \
            BaseDataType/driverdatatype.cpp \
@@ -104,7 +104,7 @@ SOURCES += BaseDataType/bitconverter.cpp \
            oscilloscope/scopetraceline.cpp \
            oscilloscope/scopetracer.cpp \
            runconfig/runconfigdialog.cpp \
-           toolbox/sweeping/sweepingwindow.cpp \
+           toolbox/FRT/FRT.cpp \
            xcomm/serial/serialcomm.cpp \
            xcomm/xcomm.cpp
 

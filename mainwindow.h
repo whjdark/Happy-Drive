@@ -24,7 +24,7 @@
 #include "console/consolemainwindow.h"
 #include "datatracer/datatracer.h"
 #include "monitor/monitorwidget.h"
-#include "toolbox/sweeping/sweepingwindow.h"
+#include "toolbox/FRT/FRT.h"
 #include "xcomm/xcomm.h"
 
 QT_BEGIN_NAMESPACE
@@ -78,7 +78,7 @@ private:
   // data Tracer(oscilliscope)
   TracerWidget* m_tracer;
   // toolbox
-  SweepingWindow* m_sweeping;
+  FRT* m_FRT;
   // dock wdgets
   QVector<QDockWidget*> DockWidgets;
   QDockWidget* m_monitorDockWidget;

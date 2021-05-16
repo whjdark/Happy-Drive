@@ -1,9 +1,9 @@
-﻿#include "sweepingwindow.h"
-#include "ui_sweepingwindow.h"
+﻿#include "FRT.h"
+#include "ui_FRT.h"
 
-SweepingWindow::SweepingWindow(QWidget* parent, XComm* xcomm)
+FRT::FRT(QWidget* parent, XComm* xcomm)
   : QMainWindow(parent)
-  , ui(new Ui::SweepingWindow)
+  , ui(new Ui::FRT)
   , m_xcomm(xcomm)
   , m_sweepConfig()
   , m_runConfig(2000, 256)
@@ -11,17 +11,16 @@ SweepingWindow::SweepingWindow(QWidget* parent, XComm* xcomm)
   ui->setupUi(this);
   initBode();
   initToolBar();
-  using SW = SweepingWindow;
-  connect(m_xcomm, &XComm::toolboxSweepingCmd, this, &SW::slotProccessCmd);
+  connect(m_xcomm, &XComm::toolboxSweepingCmd, this, &FRT::slotProccessCmd);
 }
 
-SweepingWindow::~SweepingWindow()
+FRT::~FRT()
 {
   delete ui;
 }
 
 void
-SweepingWindow::initBode()
+FRT::initBode()
 {
   // set main title
   ui->bode->setTitle(QStringLiteral("Bode Diagram"));
@@ -34,7 +33,7 @@ SweepingWindow::initBode()
 }
 
 void
-SweepingWindow::initToolBar()
+FRT::initToolBar()
 {
   //工具栏
   QToolBar* toolBar = this->addToolBar(QStringLiteral("工具栏"));
@@ -45,20 +44,20 @@ SweepingWindow::initToolBar()
   QAction* autoScaleAction = toolBar->addAction(QStringLiteral("自动缩放"));
   QAction* switchTracerAction = toolBar->addAction(QStringLiteral("游标"));
   //工具栏动作
-  using SW = SweepingWindow;
   using APG = AmAndPhGraph;
   //导出数据
-  connect(exportDataAction, &QAction::triggered, this, &SW::slotExportData);
+  connect(exportDataAction, &QAction::triggered, this, &FRT::slotExportData);
   //导出图片
-  connect(saveImageAction, &QAction::triggered, this, &SW::slotSaveImage);
+  connect(saveImageAction, &QAction::triggered, this, &FRT::slotSaveImage);
   //自动缩放
   connect(autoScaleAction, &QAction::triggered, ui->bode, &APG::autoScaleAxis);
   //开启/关闭游标
-  connect(switchTracerAction, &QAction::triggered, this, &SW::slotSwitchTracer);
+  connect(
+    switchTracerAction, &QAction::triggered, this, &FRT::slotSwitchTracer);
 }
 
 void
-SweepingWindow::slotProccessCmd(const quint16 cmd, const QByteArray& data)
+FRT::slotProccessCmd(const quint16 cmd, const QByteArray& data)
 {
   switch (cmd) {
     case XComm::TOOLBOX_SWEEPING_WRITE:
@@ -80,7 +79,7 @@ SweepingWindow::slotProccessCmd(const quint16 cmd, const QByteArray& data)
 }
 
 void
-SweepingWindow::slotExportData()
+FRT::slotExportData()
 {
   // have data in graph ?
   if (m_amplitude.size() == 0 || m_phase.size() == 0) {
@@ -126,7 +125,7 @@ SweepingWindow::slotExportData()
 }
 
 void
-SweepingWindow::slotSaveImage()
+FRT::slotSaveImage()
 {
   QPixmap p = ui->bode->grab();
   QImage img = p.toImage();
@@ -159,7 +158,7 @@ SweepingWindow::slotSaveImage()
 }
 
 void
-SweepingWindow::slotSwitchTracer()
+FRT::slotSwitchTracer()
 {
   if (ui->bode->isTracerVisible()) {
     ui->bode->setTracerVisible(false);
@@ -169,7 +168,7 @@ SweepingWindow::slotSwitchTracer()
 }
 
 void
-SweepingWindow::parseAmplitudeData(const QByteArray& data)
+FRT::parseAmplitudeData(const QByteArray& data)
 {
   // also see TracerWidget::storeTransformedData
   using namespace BitConverter;
@@ -204,7 +203,7 @@ SweepingWindow::parseAmplitudeData(const QByteArray& data)
 }
 
 void
-SweepingWindow::parsePhaseData(const QByteArray& data)
+FRT::parsePhaseData(const QByteArray& data)
 {
   // also see TracerWidget::storeTransformedData
   using namespace BitConverter;
@@ -235,7 +234,7 @@ SweepingWindow::parsePhaseData(const QByteArray& data)
 }
 
 void
-SweepingWindow::on_startButton_clicked()
+FRT::on_startButton_clicked()
 {
   using namespace DriverDataType;
   if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
@@ -272,7 +271,7 @@ SweepingWindow::on_startButton_clicked()
 }
 
 auto
-SweepingWindow::mapSectionToRunMode(int section) -> DriverDataType::RunMode
+FRT::mapSectionToRunMode(int section) -> DriverDataType::RunMode
 {
   using namespace DriverDataType;
   RunMode runMode = MODE_SWEEP_1;
@@ -292,7 +291,7 @@ SweepingWindow::mapSectionToRunMode(int section) -> DriverDataType::RunMode
 }
 
 void
-SweepingWindow::on_writeButton_clicked()
+FRT::on_writeButton_clicked()
 {
   using namespace DriverDataType;
   // read sweeping config
@@ -310,7 +309,7 @@ SweepingWindow::on_writeButton_clicked()
 }
 
 void
-SweepingWindow::on_readButton_clicked()
+FRT::on_readButton_clicked()
 {
   m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_AM, QByteArray());
   m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_PH, QByteArray());
