@@ -19,6 +19,7 @@ public:
   ~RunConfigDialog();
 
   void setRunModeInfo(const QString& runMode);
+  void setSampleFrequency(int frequency);
   const DriverDataType::RunConfigType& getRunConfig() const;
 
 private Q_SLOTS:
@@ -28,6 +29,7 @@ private Q_SLOTS:
 
 private:
   Q_CONSTEXPR static int defaultSampleFreq = 400;
+  Q_CONSTEXPR static int maxSampleFreq = 8000;
   Q_CONSTEXPR static int defaultSamplePonits = 1024;
 
   Ui::RunConfigDialog* ui;

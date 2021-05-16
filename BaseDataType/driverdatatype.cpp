@@ -55,7 +55,7 @@ MonitorDataType::toByteArray() -> QByteArray
 void
 MonitorDataType::byteArrayToStruct(const QByteArray& ba)
 {
-  memcpy_s(&m_monitorData, sizeof(m_monitorData), ba.data(), sizeof(ba.data()));
+  memcpy_s(&m_monitorData, sizeof(m_monitorData), ba.data(), ba.size());
 }
 
 void
@@ -81,8 +81,7 @@ RunConfigType::toByteArray() -> QByteArray
 void
 RunConfigType::byteArrayToStruct(const QByteArray& ba)
 {
-  memcpy_s(
-    &m_runConfigData, sizeof(m_runConfigData), ba.data(), sizeof(ba.data()));
+  memcpy_s(&m_runConfigData, sizeof(m_runConfigData), ba.data(), ba.size());
 }
 
 void
@@ -94,31 +93,28 @@ RunConfigType::resetData()
 
 // Sweeping config datatype start
 SweepConfigType::SweepConfigType()
-  : m_sweepingConfigData()
+  : m_sweepConfigData()
 {}
 
 auto
 SweepConfigType::toByteArray() -> QByteArray
 {
   QByteArray Ba;
-  Ba.append(reinterpret_cast<char*>(&m_sweepingConfigData),
-            sizeof(m_sweepingConfigData));
+  Ba.append(reinterpret_cast<char*>(&m_sweepConfigData),
+            sizeof(m_sweepConfigData));
   return Ba;
 }
 
 void
 SweepConfigType::byteArrayToStruct(const QByteArray& ba)
 {
-  memcpy_s(&m_sweepingConfigData,
-           sizeof(m_sweepingConfigData),
-           ba.data(),
-           sizeof(ba.data()));
+  memcpy_s(&m_sweepConfigData, sizeof(m_sweepConfigData), ba.data(), ba.size());
 }
 
 void
 SweepConfigType::resetData()
 {
-  memset(&m_sweepingConfigData, 0, sizeof(m_sweepingConfigData));
+  memset(&m_sweepConfigData, 0, sizeof(m_sweepConfigData));
 }
 // Sweeping config data type end
 

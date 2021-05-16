@@ -43,9 +43,8 @@ MonitorWidget::initTableHeader()
   //设置标题
   //表头标题用QStringList来表示
   ui->tableWidget->setWindowTitle(QStringLiteral("监视器"));
-  const static QStringList headerText{
-    "编号", "名称", "当前值", "单位", "详细"
-  };
+  const static QStringList headerText{ "编号",   "代号", "名称",
+                                       "当前值", "单位", "详细" };
   //列数设置为与 headerText的行数相等
   ui->tableWidget->setColumnCount(headerText.count());
   //填充表头
@@ -77,10 +76,11 @@ MonitorWidget::initTableData()
   createItemsARow(FAULTCOME_ROW,
                   QStringLiteral("0x0"),
                   QStringLiteral("fault come"),
+                  QStringLiteral("故障代码"),
                   m_monitorData.data().faultCome,
                   true,
-                  QStringLiteral(),
-                  QStringLiteral("故障代码"));
+                  QStringLiteral("-"),
+                  QStringLiteral("无错误"));
 }
 
 void
@@ -137,6 +137,7 @@ template<typename T>
 void
 MonitorWidget::createItemsARow(const int row,
                                const QString& num,
+                               const QString& code,
                                const QString& name,
                                const T value,
                                const bool isHex,
@@ -146,13 +147,16 @@ MonitorWidget::createItemsARow(const int row,
   //编号
   auto* numItem = new QTableWidgetItem(num);
   ui->tableWidget->setItem(row, NUM_COL, numItem);
+  //代号
+  auto* codeItem = new QTableWidgetItem(code);
+  ui->tableWidget->setItem(row, CODE_COL, codeItem);
   //名称
   auto* nameItem = new QTableWidgetItem(name);
   ui->tableWidget->setItem(row, NAME_COL, nameItem);
   //值
   auto* vaueItem = new QTableWidgetItem();
   if (isHex) {
-    vaueItem->setText(tr("0x%1").arg(value, 0, 16));
+    vaueItem->setText(tr("0x%1").arg(qulonglong(value), 0, 16));
   } else { // !isHex
     vaueItem->setText(tr("%1").arg(value, 0));
   }
@@ -171,8 +175,8 @@ MonitorWidget::createItemsARow(const int row,
 
 template<typename T>
 void
-MonitorWidget::setTableData(const MonitorWidget::TableRows row,
-                            const MonitorWidget::TableCols col,
+MonitorWidget::setTableData(const TableRows row,
+                            const TableCols col,
                             const T data,
                             const bool isHex)
 {
@@ -191,10 +195,7 @@ MonitorWidget::updateTable()
   if (!this->isVisible()) {
     return;
   }
-  setTableData(MonitorWidget::FAULTCOME_ROW,
-               MonitorWidget::VAL_COL,
-               m_monitorData.data().faultCome,
-               true);
+  setTableData(FAULTCOME_ROW, VAL_COL, m_monitorData.data().faultCome, true);
 }
 
 void

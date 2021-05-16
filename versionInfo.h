@@ -9,11 +9,11 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define MAIN_VERSION "protypeV4"
+#define MAIN_VERSION "ALPHA V1"
 #define GIT_VERSION "0000"
 
-#define SOFTWARE_NAME "Happy Driver"
-#define COPYRIGHT "Copyright 2020-2021, whj"
+#define SOFTWARE_NAME "Happy Drive"
+#define COPYRIGHT "Copyright 2020-2022, whj"
 
 #define BUILD_VERSION GIT_VERSION
 #define SOFTWARE_VERSION MAIN_VERSION

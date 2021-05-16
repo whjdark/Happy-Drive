@@ -181,7 +181,7 @@ Serial::run()
     qTime.start();
     while (!m_quit) { // serial loop quit
       retryCnt++;
-      if (retryCnt > maxRetry) { // resend
+      if (retryCnt > maxRetry) { // retry
         Q_EMIT commLog(
           MSG_ERROR, reqCmd, QStringLiteral("[ERROR]retry count > 3"));
         break;
@@ -196,7 +196,7 @@ Serial::run()
         // retry
         continue;
       }
-      // Discards all characters from the output or input buffer
+      // Discards all data in the output and input buffer
       //防止粘包？
       serial.clear();
       if (!serial.waitForReadyRead(currentWaitTimeout)) {

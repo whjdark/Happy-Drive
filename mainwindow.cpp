@@ -115,7 +115,7 @@ MainWindow::initMenuBar()
   m_stopAction->setIcon(QIcon(QStringLiteral(":/icon/res/icon/stop.png")));
   //工具箱toolbox菜单
   m_toolboxMenu = m_menuBar->addMenu(QStringLiteral("工具箱"));
-  m_sweepingAction = m_toolboxMenu->addAction(QStringLiteral("扫频"));
+  m_sweepingAction = m_toolboxMenu->addAction(QStringLiteral("频率响应测试"));
   m_sweepingAction->setIcon(
     QIcon(QStringLiteral(":/icon/res/icon/sweeping.png")));
   //关于菜单
@@ -199,7 +199,8 @@ MainWindow::initConnections()
   connect(m_xcomm, &XComm::motorStop, this, &MW::slotMotorStopInfo);
   // connect timer
   connect(m_checkConnectTimer, &QTimer::timeout, this, &MW::slotCheckConnect);
-  connect(m_updateStatusBarTimer, &QTimer::timeout, this, &MW::slotUpdateStatusLbl);
+  connect(
+    m_updateStatusBarTimer, &QTimer::timeout, this, &MW::slotUpdateStatusLbl);
 }
 
 void
@@ -281,6 +282,8 @@ MainWindow::slotConnectSuccess()
 {
   QMessageBox::warning(
     this, QStringLiteral("提示"), QStringLiteral("连接成功"));
+  //连接成功后默认启动监视器
+  m_monitor->startMonitor();
 }
 
 void
@@ -304,9 +307,9 @@ MainWindow::slotDisconnect()
   if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
     QMessageBox msgBox(this);
     msgBox.setFixedSize(200, 200);
-    msgBox.setWindowTitle("警告");
-    msgBox.setText("请确定电机运行状态");
-    msgBox.setInformativeText("电机正在运行，是否断开连接?");
+    msgBox.setWindowTitle(QStringLiteral("警告"));
+    msgBox.setText(QStringLiteral("请确定电机运行状态"));
+    msgBox.setInformativeText(QStringLiteral("电机正在运行，是否断开连接?"));
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Ok);
     int ret = msgBox.exec();

@@ -103,7 +103,7 @@ private:
   //支持的模式
   Q_CONSTEXPR static int numOfMode = 7;
   //参数配置最大容忍误差
-  Q_CONSTEXPR static double tolerantConfigError = 0.1;
+  Q_CONSTEXPR static double tolerantConfigError = 0.2;
 
   Ui::ConfigWidget* ui;
   XComm* m_xcomm;

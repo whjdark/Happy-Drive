@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>扫频</string>
+   <string>频率响应测试</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../icon.qrc">
@@ -218,6 +218,17 @@
            <property name="icon">
             <iconset resource="../../icon.qrc">
              <normaloff>:/icon/res/icon/write.png</normaloff>:/icon/res/icon/write.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="readButton">
+           <property name="text">
+            <string>直接读取</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../icon.qrc">
+             <normaloff>:/icon/res/icon/readData.png</normaloff>:/icon/res/icon/readData.png</iconset>
            </property>
           </widget>
          </item>

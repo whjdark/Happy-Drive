@@ -24,6 +24,9 @@ Q_CONSTEXPR double _IQ13 = 2 << 12;
 Q_CONSTEXPR double _IQ12 = 2 << 11;
 Q_CONSTEXPR double _IQ11 = 2 << 10;
 Q_CONSTEXPR double _IQ10 = 2 << 9;
+Q_CONSTEXPR double _IQ9 = 2 << 8;
+Q_CONSTEXPR double _IQ8 = 2 << 7;
+
 //速度变换因子
 Q_CONSTEXPR double velocityTransformFactor = 2000.0;
 //电流变换因子
@@ -241,10 +244,10 @@ public:
   QByteArray toByteArray();
   void byteArrayToStruct(const QByteArray& ba);
   void resetData();
-  SweepingConfigData& data() { return m_sweepingConfigData; }
+  SweepingConfigData& data() { return m_sweepConfigData; }
 
 private:
-  SweepingConfigData m_sweepingConfigData;
+  SweepingConfigData m_sweepConfigData;
 };
 
 } // namespace DriverDataType

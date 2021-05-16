@@ -33,6 +33,8 @@ private Q_SLOTS:
   void on_startButton_clicked();
   void on_writeButton_clicked();
 
+  void on_readButton_clicked();
+
 private:
   void initBode();
   void initToolBar();
@@ -42,10 +44,11 @@ private:
 
 private:
   //扫频参数
+  Q_CONSTEXPR static int defaultSampleFreq = 2000;
   Q_CONSTEXPR static int sweepPoint = 512;
   Q_CONSTEXPR static int sweepRange = sweepPoint / 2; // half of samplePoint
   //扫频后请求数据延迟时间，因为扫频结束后并DSP并不能立即算出数据。
-  Q_CONSTEXPR static int requestDataDelay = 1000; // 1000ms
+  Q_CONSTEXPR static int requestDataDelay = 2000; // 1000ms
 
   Ui::SweepingWindow* ui;
   XComm* m_xcomm;

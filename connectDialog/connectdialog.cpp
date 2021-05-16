@@ -147,6 +147,7 @@ ConnectDialog::on_cancelButton_clicked()
 void
 ConnectDialog::on_defaultButton_clicked()
 {
+  ui->commPortComboBox->setCurrentIndex(0);
   ui->portComboBox->setCurrentIndex(0);
   ui->baudComboBox->setCurrentIndex(5);
   ui->waitResponsespinBox->setValue(1000);

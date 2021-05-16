@@ -117,7 +117,7 @@ SweepingWindow::slotExportData()
   int i = 0;
   Q_FOREACH (const auto& pt, m_amplitude) {
     QTextStream out(&file);
-    out << pt.key << ',' << pt.value << ',' << m_phase[i].value << "\n";
+    out << pt.key << ',' << pt.value << ',' << m_phase.at(i).value << "\n";
     i++;
   }
   file.close();
@@ -141,7 +141,7 @@ SweepingWindow::slotSaveImage()
   QString fileName = QFileDialog::getSaveFileName(
     this,
     QStringLiteral("保存数据图像"),
-    QStringLiteral("bode_") + timeStr + QStringLiteral(".png"),
+    QStringLiteral("sweepBode_") + timeStr + QStringLiteral(".png"),
     QStringLiteral("Images (*.png)"));
   if (fileName.isEmpty()) {
     return;
@@ -184,12 +184,17 @@ SweepingWindow::parseAmplitudeData(const QByteArray& data)
              "parseAmplitudeData",
              "recv data length is wrong");
   double transFormFactor = 1 / _IQ15;
-  double f0 = m_runConfig.data().m_sampleFreq / sweepPoint; //分辨率
-  for (size_t indexOfArray = 0, indexOfPoint = 0; indexOfArray < totalByteLen;
+  double f0 = (double)m_runConfig.data().m_sampleFreq / sweepPoint; //分辨率
+  //第一个点为直流分量，应当跳过
+  for (size_t indexOfArray = step, indexOfPoint = 1;
+       indexOfArray < totalByteLen;
        indexOfArray += step, indexOfPoint++) {
     //将字节数据转成整型，并且对数据进行变换
     double am = ba2Int(data.mid(indexOfArray, step)) * transFormFactor;
-    double mag = 20 * log10(am + eps); // 转换成Mag,加个小数防止0出现
+    if (am == 0.0) {
+      qDebug() << "apmlitude should ！= 0, but receive 0";
+    }
+    double mag = 20 * log10(am); // 转换成Mag,加个小数防止0出现
     // x根据采样周期和采样点数变换到Hz
     double f = indexOfPoint * f0;
     double w = f * (2 * M_PI); //变换到rad/s
@@ -214,14 +219,16 @@ SweepingWindow::parsePhaseData(const QByteArray& data)
              "parsePhaseData",
              "recv data length is wrong");
   double transFormFactor = 1 / _IQ12;
-  for (size_t indexOfArray = 0, indexOfPoint = 0; indexOfArray < totalByteLen;
+  //第一个点为直流分量，应当跳过
+  for (size_t indexOfArray = step, indexOfPoint = 1;
+       indexOfArray < totalByteLen;
        indexOfArray += step, indexOfPoint++) {
     //将字节数据转成整型，并且对数据进行变换
     double phase = ba2Int(data.mid(indexOfArray, step)) * transFormFactor;
     double phaseDeg = phase * 180 / M_PI; //化成deg(°)位
-    //直接使用amplitude计算好的w，减少重复计算
-    //如果am和ph数据长度不一致此处可能有段错误
-    double w = m_amplitude[indexOfPoint].key;
+    // 计算幅值时算过w（角频率），直接使用
+    // indexOfArray-1与m_amplitude下标相同
+    double w = m_amplitude.at(indexOfPoint - 1).key;
     m_phase.append(QCPGraphData(w, phaseDeg));
   }
   ui->bode->showPhase(m_phase);
@@ -231,7 +238,6 @@ void
 SweepingWindow::on_startButton_clicked()
 {
   using namespace DriverDataType;
-  RunConfigDialog runConfigDialog;
   if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
@@ -253,6 +259,8 @@ SweepingWindow::on_startButton_clicked()
     return;
   }
   //运行参数配置对话框，提示当前运行模式
+  RunConfigDialog runConfigDialog;
+  runConfigDialog.setSampleFrequency(defaultSampleFreq);
   runConfigDialog.setRunModeInfo(m_xcomm->getCurrentRunModeStr());
   if (runConfigDialog.exec() == QDialog::Rejected) {
     return;
@@ -261,28 +269,6 @@ SweepingWindow::on_startButton_clicked()
   m_runConfig = runConfigDialog.getRunConfig();
   // if motor is stop，start it
   m_xcomm->startMotor(m_runConfig);
-  // after 100ms ,check motor status
-  QTimer::singleShot(2000, this, [=]() {
-    if (m_xcomm->getMotorStatus() == XComm::MOTOR_RUN) {
-      double sampleFreq = m_runConfig.data().m_sampleFreq;
-      //计算扫频时间：扫描一个频率点的时间 * 扫频范围,
-      double timeToRequestResult =
-        ((double)sweepPoint / sampleFreq) * sweepRange * 1400;
-      //加上一定时间等待DSP处理事务
-      timeToRequestResult += requestDataDelay;
-      timeToRequestResult = static_cast<int>(timeToRequestResult);
-      //向DSP请求读取幅值、相位数据
-      QTimer::singleShot(timeToRequestResult, this, [=]() {
-        m_xcomm->stopMotor(); //先关闭电机
-        //再读取数据
-        m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_AM, QByteArray());
-        m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_PH, QByteArray());
-      });
-    } else { // MOTOR_STOP
-      QMessageBox::warning(
-        this, QStringLiteral("警告"), QStringLiteral("启动失败"));
-    }
-  });
 }
 
 auto
@@ -321,4 +307,11 @@ SweepingWindow::on_writeButton_clicked()
   m_sweepConfig.data().m_sweepingStep =
     ui->sweepStepDoubleSpinBox->value() * _IQ15;
   m_xcomm->command(XComm::TOOLBOX_SWEEPING_WRITE, m_sweepConfig.toByteArray());
+}
+
+void
+SweepingWindow::on_readButton_clicked()
+{
+  m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_AM, QByteArray());
+  m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_PH, QByteArray());
 }

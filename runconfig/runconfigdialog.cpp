@@ -10,7 +10,7 @@ RunConfigDialog::RunConfigDialog(QWidget* parent)
   ui->setupUi(this);
   setWindowTitle(QStringLiteral("运行参数配置"));
 
-  setFixedSize(QSize(400, 300));
+  setFixedSize(QSize(500, 300));
   setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 }
 
@@ -24,6 +24,12 @@ RunConfigDialog::setRunModeInfo(const QString& runMode)
 {
   ui->runModeText->setText(
     tr("<font color=\"#FF0000\" size=4>%1</font>").arg(runMode));
+}
+
+void
+RunConfigDialog::setSampleFrequency(int frequency)
+{
+  ui->freqComboBox->setCurrentText(QString::number(frequency));
 }
 
 auto
@@ -54,9 +60,9 @@ RunConfigDialog::on_RunPushButton_clicked()
       this, QStringLiteral("警告"), QStringLiteral("非法的值"));
     return;
   }
-  if (sampleFreq <= 0) {
+  if (sampleFreq <= 0 || sampleFreq > maxSampleFreq) {
     QMessageBox::warning(
-      this, QStringLiteral("警告"), QStringLiteral("frequency must > 0"));
+      this, QStringLiteral("警告"), QStringLiteral("frequency out of range"));
     return;
   }
   m_runConfig.data().m_sampleFreq = sampleFreq;

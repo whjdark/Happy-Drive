@@ -87,11 +87,11 @@ FFTWindow::slotExportData()
   }
   //写入每一行数据到文件
   //如果am和ph数据长度不一致此处可能有段错误
-  //频率|幅值|相位
+  //格式：频率|幅值|相位
   int i = 0;
   Q_FOREACH (const auto& pt, m_amplitude) {
     QTextStream out(&file);
-    out << pt.key << ',' << pt.value << ',' << m_phase[i].value << "\n";
+    out << pt.key << ',' << pt.value << ',' << m_phase.at(i).value << "\n";
     i++;
   }
   file.close();

@@ -28,10 +28,11 @@ public:
   enum TableCols
   {
     NUM_COL = 0,    //"编号"
-    NAME_COL = 1,   //"名称"
-    VAL_COL = 2,    // "当前值"
-    UNIT_COL = 3,   // "单位"
-    DETAIL_COL = 4, //"详细";
+    CODE_COL = 1,   //"代号"
+    NAME_COL = 2,   //"名称"
+    VAL_COL = 3,    // "当前值"
+    UNIT_COL = 4,   // "单位"
+    DETAIL_COL = 5, //"详细";
   };
   Q_ENUM(TableCols)
 
@@ -62,14 +63,15 @@ private:
   template<typename T>
   void createItemsARow(const int row,
                        const QString& num,
+                       const QString& code,
                        const QString& name,
                        const T value,
                        const bool isHex,
                        const QString& unit,
                        const QString& detail);
   template<typename T>
-  void setTableData(const MonitorWidget::TableRows row,
-                    const MonitorWidget::TableCols,
+  void setTableData(const TableRows row,
+                    const TableCols,
                     const T data,
                     const bool isHex);
   void updateTable();

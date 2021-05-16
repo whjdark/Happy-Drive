@@ -8,7 +8,7 @@ AboutDialog::AboutDialog(QWidget* parent)
   ui->setupUi(this);
 
   setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint); // 不显示问号
-  setFixedSize(400, 300); // 不能伸缩的对话框
+  setFixedSize(500, 300); // 不能伸缩的对话框
 
   ui->infoLabel->setText("<b>" SOFTWARE_NAME "</b><br>"
                          "Version: " SOFTWARE_VERSION " (" BUILD_VERSION ")<br>"
