@@ -66,17 +66,14 @@ ConsoleWidget::initLcd()
 void
 ConsoleWidget::initConnections()
 {
-  connect(
-    m_xcomm, &XComm::sendCommLog, this, &ConsoleWidget::slotProcessCommLog);
-  connect(m_updateStatsTimer,
-          &QTimer::timeout,
-          this,
-          &ConsoleWidget::slotUpdateStats);
+  using CW = ConsoleWidget;
+  connect(m_xcomm, &XComm::signalCommLog, this, &CW::slotProcessCommLog);
+  connect(m_updateStatsTimer, &QTimer::timeout, this, &CW::slotUpdateStats);
 }
 
 void
-ConsoleWidget::slotProcessCommLog(AbstractComm::LogLevel level,
-                                  quint16 errCmdInt,
+ConsoleWidget::slotProcessCommLog(AbstractPort::LogLevel level,
+                                  quint16 Cmd,
                                   const QString& msgLog)
 {
   //看不见不更新
@@ -92,23 +89,26 @@ ConsoleWidget::slotProcessCommLog(AbstractComm::LogLevel level,
   //消息等级
   //不同等级不同颜色
   switch (level) {
-    case AbstractComm::MSG_OK:
+    case AbstractPort::MSG_OK:
       // holdplace
+      ui->logTextEdit->append(tr("<font color=\"#7FFF00\">CMD:%1 %2</font>")
+                                .arg(Cmd, 0, 16)
+                                .arg(msgLog));
       break;
-    case AbstractComm::MSG_INFO:
+    case AbstractPort::MSG_INFO:
       // just info, also append on warnLogTextEdit
       ui->logTextEdit->append(tr("<font color=\"#00CCFF\">CMD:%1 %2</font>")
-                                .arg(errCmdInt, 0, 16)
+                                .arg(Cmd, 0, 16)
                                 .arg(msgLog));
       break;
-    case AbstractComm::MSG_WARNING:
+    case AbstractPort::MSG_WARNING:
       ui->logTextEdit->append(tr("<font color=\"#FFFF00\">CMD:%1 %2</font>")
-                                .arg(errCmdInt, 0, 16)
+                                .arg(Cmd, 0, 16)
                                 .arg(msgLog));
       break;
-    case AbstractComm::MSG_ERROR:
+    case AbstractPort::MSG_ERROR:
       ui->logTextEdit->append(tr("<font color=\"#FF0000\">CMD:%1 %2</font>")
-                                .arg(errCmdInt, 0, 16)
+                                .arg(Cmd, 0, 16)
                                 .arg(msgLog));
       break;
     default:
@@ -269,12 +269,14 @@ ConsoleWidget::on_showRecvCheckBox_stateChanged(int state)
 {
   switch (state) {
     case Qt::Unchecked:
-      disconnect(m_xcomm, &XComm::logAllRecv, this, &ConsoleWidget::slotShowCmd);
+      disconnect(
+        m_xcomm, &XComm::signalResponseLog, this, &ConsoleWidget::slotShowCmd);
       break;
     case Qt::PartiallyChecked:
       break;
     case Qt::Checked:
-      connect(m_xcomm, &XComm::logAllRecv, this, &ConsoleWidget::slotShowCmd);
+      connect(
+        m_xcomm, &XComm::signalResponseLog, this, &ConsoleWidget::slotShowCmd);
       break;
     default:
       break;

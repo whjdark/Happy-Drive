@@ -62,7 +62,7 @@ HEADERS += BaseDataType/bitconverter.h \
     utilities/CRC.h \
     utilities/fftw3.h \
     versionInfo.h \
-    xcomm/abstractcomm.h \
+    xcomm/abstractport.h \
     xcomm/serial/serialcomm.h \
     xcomm/xcomm.h
 

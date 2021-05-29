@@ -620,7 +620,7 @@ void
 CONConfigWidget::initConnetions()
 {
   connect(
-    m_xcomm, &XComm::controllerCmd, this, &CONConfigWidget::slotProcessCmd);
+    m_xcomm, &XComm::signalConfigerCmd, this, &CONConfigWidget::slotProcessCmd);
 }
 
 void

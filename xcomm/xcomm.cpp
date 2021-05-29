@@ -10,15 +10,22 @@
 
 XComm::XComm(QObject* parent)
   : QObject(parent)
-{
-  initConnections();
-}
+  , m_port(nullptr)
+{}
 
 void
-XComm::initConnections()
+XComm::setSlotConnect(bool isConnect)
 {
-  connect(&m_serial, &Serial::response, this, &XComm::slotResponse);
-  connect(&m_serial, &Serial::commLog, this, &XComm::slotCommLog);
+  if (isConnect) {
+    connect(
+      m_port, &AbstractPort::signalResponse, this, &XComm::slotForwardResponse);
+    connect(m_port, &AbstractPort::signalLog, this, &XComm::slotUpdateCommLog);
+  } else {
+    disconnect(
+      m_port, &AbstractPort::signalResponse, this, &XComm::slotForwardResponse);
+    disconnect(
+      m_port, &AbstractPort::signalLog, this, &XComm::slotUpdateCommLog);
+  }
 }
 
 void
@@ -27,7 +34,7 @@ XComm::command(const quint16 cmd, const QByteArray& data)
   if (m_commState == XComm::COMM_CONNECT || cmd == XComm::TRY_CONNECT) {
     // allow to command when  driver is CONNECT or TRY_CONNECT
     // TRY_CONNECT will send a test msg & try to connect DSP
-    m_serial.transaction(cmd, data);
+    m_port->transaction(cmd, data);
     //更新统计信息
     m_commStats.m_cmdCnt++;
     m_commStats.m_totalTxdBytes += data.size() + sizeof(cmd);
@@ -38,9 +45,14 @@ XComm::command(const quint16 cmd, const QByteArray& data)
 }
 
 void
-XComm::configSerialPort(const Serial::SerialConfig& serialConfig)
+XComm::configPort(const Serial::SerialConfig& serialConfig)
 {
-  m_serial.configSerial(serialConfig);
+  // abstractport factory produces serialport
+  m_port = new Serial(this);
+  // connect signal & slot after instantiation
+  setSlotConnect(true);
+  auto* serialPort = qobject_cast<Serial*>(m_port);
+  serialPort->configSerial(serialConfig);
 }
 
 auto
@@ -50,11 +62,11 @@ XComm::getConnectStatus() const -> XComm::CommState
 }
 
 void
-XComm::connectDriver()
+XComm::tryConnect()
 {
   if (m_commState == XComm::COMM_IDLE) {
     //启动通讯
-    m_serial.startComm();
+    m_port->openPort();
     command(XComm::TRY_CONNECT, QByteArray());
   } else {
     // holdplace
@@ -64,9 +76,13 @@ XComm::connectDriver()
 void
 XComm::disconnectDriver()
 {
-  m_serial.closeComm();
+  m_port->closePort();
   m_commState = XComm::COMM_IDLE;
   m_motorState = XComm::MOTOR_STOP;
+  // release m_port
+  setSlotConnect(false); // disconnect signal & slot
+  delete m_port;
+  m_port = nullptr;
 };
 
 void
@@ -82,12 +98,12 @@ XComm::stopMotor()
 }
 
 auto
-XComm::getCurrentRunModeStr() const -> QString
+XComm::getCurRunModeStr() const -> QString
 {
   QString runModeStr;
   switch (currentRunMode) {
     case DriverDataType::MODE0:
-      runModeStr = QStringLiteral("模式0：开环");
+      runModeStr = QStringLiteral("模式0：电流开环");
       break;
     case DriverDataType::MODE1:
       runModeStr = QStringLiteral("模式1：速度闭环（电流PI，速度PI）");
@@ -109,11 +125,11 @@ XComm::getCurrentRunModeStr() const -> QString
       runModeStr =
         QStringLiteral("模式6：速度闭环（电流环PI，速度环FOPD-GESO）");
       break;
-    case DriverDataType::MODE_SWEEP_1:
-      runModeStr = QStringLiteral("模式SWEEP_1：扫频（机械环节）");
+    case DriverDataType::MODE_FRT_MECH:
+      runModeStr = QStringLiteral("模式：频率响应测试（机械环节）");
       break;
-    case DriverDataType::MODE_SWEEP_2:
-      runModeStr = QStringLiteral("模式SWEEP_2：扫频（电磁环节）");
+    case DriverDataType::MODE_FRT_ELEC:
+      runModeStr = QStringLiteral("模式：频率响应测试（电磁环节）");
       break;
     default:
       break;
@@ -122,7 +138,7 @@ XComm::getCurrentRunModeStr() const -> QString
 }
 
 void
-XComm::slotResponse(const quint16 cmd, const QByteArray& data)
+XComm::slotForwardResponse(const quint16 cmd, const QByteArray& data)
 {
   //事件转发
   int cmdHeader = cmd >> 8; // 提取高8位（命令头）用于消息转发
@@ -131,22 +147,22 @@ XComm::slotResponse(const quint16 cmd, const QByteArray& data)
       slotSysCmd(cmd, data);
       break;
     case XComm::MONITOR_HEADER:
-      Q_EMIT monitorCmd(cmd, data);
+      Q_EMIT signalMonitorCmd(cmd, data);
       break;
     case XComm::TRACER_HEADER:
-      Q_EMIT tracerCmd(cmd, data);
+      Q_EMIT signalTracerCmd(cmd, data);
       break;
     case XComm::CONTROLLER_HEADER:
-      Q_EMIT controllerCmd(cmd, data);
+      Q_EMIT signalConfigerCmd(cmd, data);
       break;
-    case XComm::TOOLBOX_SWEEPING_HEADER:
-      Q_EMIT toolboxSweepingCmd(cmd, data);
+    case XComm::TOOLBOX_FRT_HEADER:
+      Q_EMIT signalFRTCmd(cmd, data);
       break;
     default:
       // unexpected cmd header
       m_commStats.m_errCnt++;
-      QString msgStr = QStringLiteral("[ERROR]unexpected cmd header");
-      Q_EMIT sendCommLog(AbstractComm::MSG_ERROR, 0, msgStr);
+      QString errMsg = QStringLiteral("[ERROR]unexpected cmd header");
+      Q_EMIT signalCommLog(AbstractPort::MSG_ERROR, 0, errMsg);
       break;
   }
   //更新统计信息
@@ -159,28 +175,30 @@ XComm::slotResponse(const quint16 cmd, const QByteArray& data)
   } else {
     truncatedData = data;
   }
-  Q_EMIT logAllRecv(cmd, truncatedData);
+  Q_EMIT signalResponseLog(cmd, truncatedData);
 }
 
 void
 XComm::slotSysCmd(const quint16 cmd, const QByteArray& data)
 {
-  Q_UNUSED(data);
   switch (cmd) {
-    case XComm::TRY_CONNECT:
+    case TRY_CONNECT:
       // driver responsed & connection is OK
-      m_commState = XComm::COMM_CONNECT;
-      Q_EMIT connectSuccess();
+      m_commState = COMM_CONNECT;
+      slotUpdateCommLog(AbstractPort::MSG_OK,
+                        QByteArray(),
+                        QStringLiteral("[OK]connect success"));
+      Q_EMIT signalConnectSuccess();
       break;
-    case XComm::START_MOTOR:
+    case START_MOTOR:
       // driver responsed & start running
-      m_motorState = XComm::MOTOR_RUN;
-      Q_EMIT motorStart();
+      m_motorState = MOTOR_RUN;
+      Q_EMIT signalMotorStart();
       break;
     case XComm::STOP_MOTOR:
       // stop motor running
-      m_motorState = XComm::MOTOR_STOP;
-      Q_EMIT motorStop();
+      m_motorState = MOTOR_STOP;
+      Q_EMIT signalMotorStop();
       break;
     default:
       break;
@@ -188,27 +206,27 @@ XComm::slotSysCmd(const quint16 cmd, const QByteArray& data)
 }
 
 void
-XComm::slotCommLog(AbstractComm::LogLevel level,
-                   const QByteArray& errCmd,
-                   const QString& msgStr)
+XComm::slotUpdateCommLog(AbstractPort::LogLevel level,
+                         const QByteArray& cmd,
+                         const QString& msgStr)
 {
   switch (level) {
-    case AbstractComm::MSG_OK:
+    case AbstractPort::MSG_OK:
       // holdplace
-    case AbstractComm::MSG_INFO:
-      // just info
+    case AbstractPort::MSG_INFO:
+      // holdplace
       break;
-    case AbstractComm::MSG_WARNING:
+    case AbstractPort::MSG_WARNING:
       m_commStats.m_warnCnt++;
       break;
-    case AbstractComm::MSG_ERROR:
+    case AbstractPort::MSG_ERROR:
       m_commStats.m_errCnt++;
       break;
     default:
       break;
   }
-  quint16 errCmdInt = BitConverter::ba2Int(errCmd);
-  Q_EMIT sendCommLog(level, errCmdInt, msgStr);
+  quint16 cmdInt = BitConverter::ba2Int(cmd);
+  Q_EMIT signalCommLog(level, cmdInt, msgStr);
 }
 
 auto
@@ -216,10 +234,13 @@ XComm::getStats() -> const CommStats&
 {
   // calculate average communication elapsed time
   // divide 0 will occur error
-  if (m_commStats.m_cmdCnt != 0) {
-    quint64 totalTimeElapsed = m_serial.getTotalTimeElapse();
-    m_commStats.m_avgElapsedTime =
-      static_cast<int>(totalTimeElapsed / (m_commStats.m_cmdCnt));
+  if (m_port != nullptr) {
+    // do not update when port is not init
+    if (m_commStats.m_cmdCnt != 0) {
+      quint64 totalTimeElapsed = m_port->getTotalTimeElapse();
+      m_commStats.m_avgElapsedTime =
+        static_cast<int>(totalTimeElapsed / (m_commStats.m_cmdCnt));
+    }
   }
   return m_commStats;
 }
@@ -246,7 +267,7 @@ void
 XComm::clearTotalTimeElapsed()
 {
   m_commStats.m_avgElapsedTime = 0;
-  m_serial.clearTotalTimeElapse();
+  m_port->clearTotalTimeElapse();
 }
 
 void

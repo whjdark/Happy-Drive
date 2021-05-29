@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../../icon.qrc">
-    <normaloff>:/icon/res/icon/sweeping.png</normaloff>:/icon/res/icon/sweeping.png</iconset>
+    <normaloff>:/icon/res/icon/scan.png</normaloff>:/icon/res/icon/scan.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -109,7 +109,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="sweepStepLbl">
+            <widget class="QLabel" name="StepLbl">
              <property name="text">
               <string>扫频步长：</string>
              </property>
@@ -198,7 +198,7 @@
             </layout>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="sweepStepDoubleSpinBox">
+            <widget class="QDoubleSpinBox" name="stepDoubleSpinBox">
              <property name="value">
               <double>1.000000000000000</double>
              </property>

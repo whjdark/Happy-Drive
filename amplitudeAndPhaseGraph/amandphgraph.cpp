@@ -97,9 +97,9 @@ AmAndPhGraph::initConnections()
 {
   //幅频图和相拼图的tracer绑定，实现同步移动
   connect(
-    ui->amWidget, &Graph::tracerMove, ui->phWidget, &Graph::slotSyncTracer);
+    ui->amWidget, &Graph::signalTracerMove, ui->phWidget, &Graph::slotSyncTracer);
   connect(
-    ui->phWidget, &Graph::tracerMove, ui->amWidget, &Graph::slotSyncTracer);
+    ui->phWidget, &Graph::signalTracerMove, ui->amWidget, &Graph::slotSyncTracer);
 }
 
 void

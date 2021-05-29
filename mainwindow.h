@@ -114,7 +114,7 @@ private:
   QAction* m_manualAction;
   // toolbox menu
   QMenu* m_toolboxMenu;
-  QAction* m_sweepingAction;
+  QAction* m_FRTAction;
   // timers
   QTimer* m_checkConnectTimer;
   QTimer* m_updateStatusBarTimer;

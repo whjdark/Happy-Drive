@@ -22,6 +22,13 @@ class XComm : public QObject
   Q_OBJECT
 
 public:
+  enum PortType
+  {
+    Type_Serial = 0,
+    Type_EtherCAT = 1,
+  };
+  Q_ENUM(PortType)
+
   enum MotorState
   {
     MOTOR_STOP = 0,
@@ -42,7 +49,7 @@ public:
     MONITOR_HEADER = 0x10,
     TRACER_HEADER = 0x20,
     CONTROLLER_HEADER = 0x30,
-    TOOLBOX_SWEEPING_HEADER = 0x40,
+    TOOLBOX_FRT_HEADER = 0x40,
 
     HEADER_UNKNOWN = 0xFF,
   };
@@ -73,9 +80,9 @@ public:
     CONTROLLER_WRITE = 0x3001,
     CONTROLLER_READ = 0x3002,
 
-    TOOLBOX_SWEEPING_WRITE = 0x4001,
-    TOOLBOX_SWEEPING_REQ_AM = 0x4002,
-    TOOLBOX_SWEEPING_REQ_PH = 0x4003,
+    TOOLBOX_FRT_WRITE = 0x4001,
+    TOOLBOX_FRT_REQ_AM = 0x4002,
+    TOOLBOX_FRT_REQ_PH = 0x4003,
 
     CMD_UNKNOWN = 0xFFFF,
   };
@@ -104,11 +111,12 @@ public:
   explicit XComm(QObject* parent = nullptr);
   ~XComm() = default;
 
-  void initConnections();
+  void setSlotConnect(bool isConnect);
   void command(const quint16 cmd, const QByteArray& data);
-  const QString& getCurrentSerialPort() const { return m_serial.currentPort(); }
-  void configSerialPort(const Serial::SerialConfig& serialConfig);
-  void connectDriver();
+  QString getPortType() const { return m_port->getPortType(); };
+  QString getCurPort() const { return m_port->getPortNum(); }
+  void configPort(const Serial::SerialConfig& serialConfig);
+  void tryConnect();
   void disconnectDriver();
   CommState getConnectStatus() const;
   const CommStats& getStats();
@@ -122,32 +130,32 @@ public:
   void clearTotalRxdBytes();
   void startMotor(DriverDataType::RunConfigType& runConfig);
   void stopMotor();
-  DriverDataType::RunMode getCurrentRunMode() const { return currentRunMode; }
-  QString getCurrentRunModeStr() const;
+  DriverDataType::RunMode getCurRunMode() const { return currentRunMode; }
+  QString getCurRunModeStr() const;
   void logRunMode(const DriverDataType::RunMode mode) { currentRunMode = mode; }
 
 Q_SIGNALS:
-  void connectSuccess();
-  void motorStart();
-  void motorStop();
-  void logAllRecv(const quint16 cmd, const QByteArray& data);
-  void monitorCmd(const quint16 cmd, const QByteArray& data);
-  void tracerCmd(const quint16 cmd, const QByteArray& data);
-  void controllerCmd(const quint16 cmd, const QByteArray& data);
-  void toolboxSweepingCmd(const quint16 cmd, const QByteArray& data);
-  void sendCommLog(AbstractComm::LogLevel level,
-                   quint16 errCmdInt,
-                   const QString& msgLog);
+  void signalConnectSuccess();
+  void signalMotorStart();
+  void signalMotorStop();
+  void signalResponseLog(const quint16 cmd, const QByteArray& data);
+  void signalMonitorCmd(const quint16 cmd, const QByteArray& data);
+  void signalTracerCmd(const quint16 cmd, const QByteArray& data);
+  void signalConfigerCmd(const quint16 cmd, const QByteArray& data);
+  void signalFRTCmd(const quint16 cmd, const QByteArray& data);
+  void signalCommLog(AbstractPort::LogLevel level,
+                     quint16 errCmd,
+                     const QString& msgLog);
 
 private Q_SLOTS:
   void slotSysCmd(const quint16 cmd, const QByteArray& data);
-  void slotResponse(const quint16 cmd, const QByteArray& data);
-  void slotCommLog(AbstractComm::LogLevel level,
-                   const QByteArray& errCmd,
-                   const QString& msgStr);
+  void slotForwardResponse(const quint16 cmd, const QByteArray& data);
+  void slotUpdateCommLog(AbstractPort::LogLevel level,
+                         const QByteArray& errCmd,
+                         const QString& msgStr);
 
 private:
-  Serial m_serial;
+  AbstractPort* m_port;
   CommState m_commState = XComm::COMM_IDLE;
   MotorState m_motorState = XComm::MOTOR_STOP;
   CommStats m_commStats;

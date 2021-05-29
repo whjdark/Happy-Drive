@@ -1,11 +1,13 @@
-﻿#ifndef ABSTRACTCOMM_H
-#define ABSTRACTCOMM_H
+﻿#ifndef ABSTRACTPORT_H
+#define ABSTRACTPORT_H
 
 #include <QMetaType>
 #include <QThread>
 
-class AbstractComm : public QThread
+class AbstractPort : public QThread
 {
+  Q_OBJECT
+
 public:
   enum LogLevel
   {
@@ -17,26 +19,30 @@ public:
   Q_ENUM(LogLevel)
 
 public:
-  explicit AbstractComm(QObject* parent = nullptr)
+  explicit AbstractPort(QObject* parent = nullptr)
     : QThread(parent)
   {
     //不同线程之间通过信号和槽来传递自定义数据类型,
     //需添加注册自定义类SerialMsgLevel类型
     qRegisterMetaType<LogLevel>("LogLevel");
   };
-  ~AbstractComm() = default;
+  ~AbstractPort() = default;
 
   virtual void transaction(const quint16 cmd, const QByteArray& data) = 0;
-  virtual void closeComm() = 0;
-  virtual void startComm() = 0;
+  virtual void closePort() = 0;
+  virtual void openPort() = 0;
   virtual bool isBusy() = 0;
   virtual quint64 getTotalTimeElapse() = 0;
   virtual void clearTotalTimeElapse() = 0;
-  virtual QString type() = 0;
+  virtual const QString& getPortNum() const = 0;
+  virtual QString getPortType() = 0;
 
 Q_SIGNALS:
-  void response(const quint16 cmd, const QByteArray& data);
-  void commLog(LogLevel level, const QByteArray& errCmd, const QString& msgStr);
+  void signalResponse(const quint16 cmd, const QByteArray& data);
+  // level 0 = ok; level 1 = INFO; level 2 = WARNING; level 3 = ERROR
+  void signalLog(LogLevel level,
+                 const QByteArray& errCmd,
+                 const QString& msgStr);
 };
 
-#endif // ABSTRACTCOMM_H
+#endif // ABSTRACTPORT_H

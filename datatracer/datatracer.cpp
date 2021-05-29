@@ -189,7 +189,7 @@ TracerWidget::initConnections()
 {
   using TW = TracerWidget;
   using QCP = QCustomPlot; //省略一下
-  connect(m_xcomm, &XComm::tracerCmd, this, &TW::slotProccessCmd);
+  connect(m_xcomm, &XComm::signalTracerCmd, this, &TW::slotProccessCmd);
   //关联选中图例与线条
   connect(ui->customPlot,
           &QCP::selectionChangedByUser,
@@ -294,7 +294,7 @@ TracerWidget::storeTransformedData(Channels waitForUdpdateCh,
 void
 TracerWidget::slotProccessCmd(const quint16 cmd, const QByteArray& data)
 {
-  Channels waitForUdpdateCh;
+  Channels waitForUdpdateCh = ChUNK;
   if (m_chReqOrderQueue.isEmpty()) {
     //如果出现queue为空但是接收到数，可能是用户由控制台发起指令
     qDebug(
@@ -307,43 +307,43 @@ TracerWidget::slotProccessCmd(const quint16 cmd, const QByteArray& data)
   //根据不同的数据类型进行变换，然后储存到通道数据区里面
   switch (cmd) {
     case XComm::TRACER_REQ_VELOCITY_FDB:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::VELOCITY);
+      storeTransformedData(waitForUdpdateCh, data, VELOCITY);
       break;
     case XComm::TRACER_REQ_VELOCITY_REF:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::VELOCITY);
+      storeTransformedData(waitForUdpdateCh, data, VELOCITY);
       break;
     case XComm::TRACER_REQ_VELOCITY_OUT:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::VELOCITY);
+      storeTransformedData(waitForUdpdateCh, data, VELOCITY);
       break;
     case XComm::TRACER_REQ_CURRENT_FDB:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::CURRENT);
+      storeTransformedData(waitForUdpdateCh, data, CURRENT);
       break;
     case XComm::TRACER_REQ_CURRENT_REF:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::CURRENT);
+      storeTransformedData(waitForUdpdateCh, data, CURRENT);
       break;
     case XComm::TRACER_REQ_CURRENT_OUT:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::CURRENT);
+      storeTransformedData(waitForUdpdateCh, data, CURRENT);
       break;
     case XComm::TRACER_REQ_POSITION_FDB:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::POSITION);
+      storeTransformedData(waitForUdpdateCh, data, POSITION);
       break;
     case XComm::TRACER_REQ_POSITION_REF:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::POSITION);
+      storeTransformedData(waitForUdpdateCh, data, POSITION);
       break;
     case XComm::TRACER_REQ_POSITION_OUT:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::POSITION);
+      storeTransformedData(waitForUdpdateCh, data, POSITION);
       break;
     case XComm::TRACER_REQ_ENCODER_CLOCK:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::ENCODER);
+      storeTransformedData(waitForUdpdateCh, data, ENCODER);
       break;
     case XComm::TRACER_REQ_CURRENT_U:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::CURRENT);
+      storeTransformedData(waitForUdpdateCh, data, CURRENT);
       break;
     case XComm::TRACER_REQ_CURRENT_V:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::CURRENT);
+      storeTransformedData(waitForUdpdateCh, data, CURRENT);
       break;
     case XComm::TRACER_REQ_CURRENT_W:
-      storeTransformedData(waitForUdpdateCh, data, TracerWidget::CURRENT);
+      storeTransformedData(waitForUdpdateCh, data, CURRENT);
       break;
     default:
       break;
@@ -445,7 +445,7 @@ TracerWidget::on_startButton_clicked()
     return;
   }
   //运行参数配置对话框，提示当前运行模式
-  m_runConfiger->setRunModeInfo(m_xcomm->getCurrentRunModeStr());
+  m_runConfiger->setRunModeInfo(m_xcomm->getCurRunModeStr());
   if (m_runConfiger->exec() == QDialog::Rejected) {
     return;
   }

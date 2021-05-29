@@ -56,6 +56,14 @@ ConnectDialog::detectPorts()
   }
 }
 
+auto
+ConnectDialog::getPortType() const -> XComm::PortType
+{
+  using PT = XComm::PortType;
+  PT type = static_cast<PT>(ui->commPortComboBox->currentIndex());
+  return type;
+}
+
 void
 ConnectDialog::on_setButton_clicked()
 {
@@ -66,8 +74,8 @@ ConnectDialog::on_setButton_clicked()
                                         "请重试."));
     return;
   }
-  m_config.m_portName = ui->portComboBox->currentText();
-  if (m_config.m_portName.isEmpty()) {
+  m_config.m_portNum = ui->portComboBox->currentText();
+  if (m_config.m_portNum.isEmpty()) {
     QMessageBox::warning(this,
                          QStringLiteral("未选择串口"),
                          QStringLiteral("未选择串口,"

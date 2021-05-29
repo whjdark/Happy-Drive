@@ -14,7 +14,7 @@
 #include <QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 
-#include "../xcomm/serial/serialcomm.h"
+#include "../xcomm/xcomm.h"
 
 namespace Ui {
 class ConnectDialog;
@@ -30,7 +30,8 @@ public:
 
   void initBaudBox();
   void detectPorts();
-  const Serial::SerialConfig& getConfig() const { return m_config; }
+  const Serial::SerialConfig& getSerialConfig() const { return m_config; }
+  XComm::PortType getPortType() const;
   bool isConnect() const { return m_isConnect; }
 
 private Q_SLOTS:

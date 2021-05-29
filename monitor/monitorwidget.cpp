@@ -88,7 +88,7 @@ MonitorWidget::initConnetions()
 {
   using MW = MonitorWidget;
   connect(m_updateTimer, &QTimer::timeout, this, &MW::slotUpdateTable);
-  connect(m_xcomm, &XComm::monitorCmd, this, &MW::slotProccessCmd);
+  connect(m_xcomm, &XComm::signalMonitorCmd, this, &MW::slotProccessCmd);
 }
 
 void

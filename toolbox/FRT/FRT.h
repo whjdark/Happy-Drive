@@ -45,12 +45,12 @@ private:
 private:
   //扫频参数
   Q_CONSTEXPR static int defaultSampleFreq = 2000;
-  Q_CONSTEXPR static int sweepPoint = 512;
-  Q_CONSTEXPR static int sweepRange = sweepPoint / 2; // half of samplePoint
+  Q_CONSTEXPR static int samplePts = 512;
+  Q_CONSTEXPR static int freqPts = samplePts / 2; // half of samplePts
 
   Ui::FRT* ui;
   XComm* m_xcomm;
-  DriverDataType::SweepConfigType m_sweepConfig;
+  DriverDataType::FRTConfigType m_FRTConfig;
   DriverDataType::RunConfigType m_runConfig;
   DataVector m_amplitude;
   DataVector m_phase;

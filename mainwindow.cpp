@@ -115,9 +115,8 @@ MainWindow::initMenuBar()
   m_stopAction->setIcon(QIcon(QStringLiteral(":/icon/res/icon/stop.png")));
   //工具箱toolbox菜单
   m_toolboxMenu = m_menuBar->addMenu(QStringLiteral("工具箱"));
-  m_sweepingAction = m_toolboxMenu->addAction(QStringLiteral("频率响应测试"));
-  m_sweepingAction->setIcon(
-    QIcon(QStringLiteral(":/icon/res/icon/sweeping.png")));
+  m_FRTAction = m_toolboxMenu->addAction(QStringLiteral("频率响应测试"));
+  m_FRTAction->setIcon(QIcon(QStringLiteral(":/icon/res/icon/scan.png")));
   //关于菜单
   m_helpMenu = m_menuBar->addMenu(QStringLiteral("帮助"));
   m_aboutAction = m_helpMenu->addAction(QStringLiteral("关于"));
@@ -148,7 +147,7 @@ MainWindow::initToolBar()
   m_toolBar->addAction(m_consoleAction);
   m_toolBar->addSeparator();
   // toolbox工具栏
-  m_toolBar->addAction(m_sweepingAction);
+  m_toolBar->addAction(m_FRTAction);
 }
 
 void
@@ -190,13 +189,13 @@ MainWindow::initConnections()
   connect(m_closeAllAction, &QAction::triggered, this, &MW::slotCloseAllDocks);
   connect(m_showAllAction, &QAction::triggered, this, &MW::slotShowAllDocks);
   connect(m_startAction, &QAction::triggered, this, &MW::slotStartMotor);
-  connect(m_sweepingAction, &QAction::triggered, m_FRT, &QWidget::show);
+  connect(m_FRTAction, &QAction::triggered, m_FRT, &QWidget::show);
   connect(m_resetAction, &QAction::triggered, this, [=]() {}); // TBC
   connect(m_stopAction, &QAction::triggered, this, &MW::slotStopMotor);
   // connect driver status info update
-  connect(m_xcomm, &XComm::connectSuccess, this, &MW::slotConnectSuccess);
-  connect(m_xcomm, &XComm::motorStart, this, &MW::slotMotorStartInfo);
-  connect(m_xcomm, &XComm::motorStop, this, &MW::slotMotorStopInfo);
+  connect(m_xcomm, &XComm::signalConnectSuccess, this, &MW::slotConnectSuccess);
+  connect(m_xcomm, &XComm::signalMotorStart, this, &MW::slotMotorStartInfo);
+  connect(m_xcomm, &XComm::signalMotorStop, this, &MW::slotMotorStopInfo);
   // connect timer
   connect(m_checkConnectTimer, &QTimer::timeout, this, &MW::slotCheckConnect);
   connect(
@@ -214,8 +213,7 @@ MainWindow::slotUpdateStatusLbl()
     m_conAction->setEnabled(true);
     m_disconAction->setEnabled(false);
   } else { // m_xcomm->connectStatus() == XComm::COMM_CONNECT
-    m_commStatusLbl->setText(
-      tr("通讯: %1").arg(m_xcomm->getCurrentSerialPort()));
+    m_commStatusLbl->setText(tr("通讯: %1").arg(m_xcomm->getCurPort()));
     m_commStatusLbl->setStyleSheet(QStringLiteral("color:green;"));
     //连接/短线按钮使能/失效
     m_conAction->setEnabled(false);
@@ -293,9 +291,14 @@ MainWindow::slotOpenConnectDialog()
   ConnectDialog connectDialog(this);
   connectDialog.exec(); //阻止对其他窗口的操作
   if (connectDialog.isConnect()) {
-    //配置串口并进行连接
-    m_xcomm->configSerialPort(connectDialog.getConfig());
-    m_xcomm->connectDriver();
+    //配置并进行连接
+    XComm::PortType type = connectDialog.getPortType();
+    if (type == XComm::Type_Serial) {
+      m_xcomm->configPort(connectDialog.getSerialConfig());
+    } else if (type == XComm::Type_EtherCAT) {
+      // TBC
+    }
+    m_xcomm->tryConnect();
     //连接状态检查
     m_checkConnectTimer->start(3100);
   }

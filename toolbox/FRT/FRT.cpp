@@ -5,13 +5,13 @@ FRT::FRT(QWidget* parent, XComm* xcomm)
   : QMainWindow(parent)
   , ui(new Ui::FRT)
   , m_xcomm(xcomm)
-  , m_sweepConfig()
+  , m_FRTConfig()
   , m_runConfig(2000, 256)
 {
   ui->setupUi(this);
   initBode();
   initToolBar();
-  connect(m_xcomm, &XComm::toolboxSweepingCmd, this, &FRT::slotProccessCmd);
+  connect(m_xcomm, &XComm::signalFRTCmd, this, &FRT::slotProccessCmd);
 }
 
 FRT::~FRT()
@@ -60,17 +60,17 @@ void
 FRT::slotProccessCmd(const quint16 cmd, const QByteArray& data)
 {
   switch (cmd) {
-    case XComm::TOOLBOX_SWEEPING_WRITE:
+    case XComm::TOOLBOX_FRT_WRITE:
       // log current run mode
       m_xcomm->logRunMode(
-        static_cast<DriverDataType::RunMode>(m_sweepConfig.data().m_runMode));
+        static_cast<DriverDataType::RunMode>(m_FRTConfig.data().m_runMode));
       QMessageBox::information(
         this, QStringLiteral("提示"), QStringLiteral("参数写入成功"));
       break;
-    case XComm::TOOLBOX_SWEEPING_REQ_AM:
+    case XComm::TOOLBOX_FRT_REQ_AM:
       parseAmplitudeData(data);
       break;
-    case XComm::TOOLBOX_SWEEPING_REQ_PH:
+    case XComm::TOOLBOX_FRT_REQ_PH:
       parsePhaseData(data);
       break;
     default:
@@ -95,7 +95,7 @@ FRT::slotExportData()
   QString fileName = QFileDialog::getSaveFileName(
     this,
     QStringLiteral("保存数据"),
-    qApp->applicationDirPath() % QLatin1String("SweepBode_") % timeStr %
+    qApp->applicationDirPath() % QLatin1String("FRTBode_") % timeStr %
       QLatin1String(".csv"),
     QStringLiteral("Files (*.csv *.txt)"));
   if (fileName.isEmpty()) {
@@ -140,7 +140,7 @@ FRT::slotSaveImage()
   QString fileName = QFileDialog::getSaveFileName(
     this,
     QStringLiteral("保存数据图像"),
-    QStringLiteral("sweepBode_") + timeStr + QStringLiteral(".png"),
+    QStringLiteral("FRTBode_") + timeStr + QStringLiteral(".png"),
     QStringLiteral("Images (*.png)"));
   if (fileName.isEmpty()) {
     return;
@@ -175,15 +175,15 @@ FRT::parseAmplitudeData(const QByteArray& data)
   using namespace DriverDataType;
   // clear stora before append new data
   m_amplitude.clear();
-  m_amplitude.reserve(sweepRange);
+  m_amplitude.reserve(freqPts);
   // update step is bytes of data
   int step = sizeof(amplitudeDataType);
-  size_t totalByteLen = sweepRange * step;
+  size_t totalByteLen = freqPts * step;
   Q_ASSERT_X((size_t)data.size() == totalByteLen,
              "parseAmplitudeData",
              "recv data length is wrong");
   double transFormFactor = 1 / _IQ15;
-  double f0 = (double)m_runConfig.data().m_sampleFreq / sweepPoint; //分辨率
+  double f0 = (double)m_runConfig.data().m_sampleFreq / samplePts; //分辨率
   //第一个点为直流分量，应当跳过
   for (size_t indexOfArray = step, indexOfPoint = 1;
        indexOfArray < totalByteLen;
@@ -210,10 +210,10 @@ FRT::parsePhaseData(const QByteArray& data)
   using namespace DriverDataType;
   // clear stora before append new data
   m_phase.clear();
-  m_phase.reserve(sweepRange);
+  m_phase.reserve(freqPts);
   // update step is bytes of data
   int step = sizeof(phaseDataType);
-  size_t totalByteLen = sweepRange * step;
+  size_t totalByteLen = freqPts * step;
   Q_ASSERT_X((size_t)data.size() == totalByteLen,
              "parsePhaseData",
              "recv data length is wrong");
@@ -249,10 +249,10 @@ FRT::on_startButton_clicked()
       this, QStringLiteral("警告"), QStringLiteral("电机已在运行，请先停止！"));
     return;
   }
-  DriverDataType::RunMode currRunMode = m_xcomm->getCurrentRunMode();
-  if (currRunMode != DriverDataType::MODE_SWEEP_1 &&
-      currRunMode != DriverDataType::MODE_SWEEP_2) {
-    // not in sweeping modes
+  DriverDataType::RunMode currRunMode = m_xcomm->getCurRunMode();
+  if (currRunMode != DriverDataType::MODE_FRT_MECH &&
+      currRunMode != DriverDataType::MODE_FRT_ELEC) {
+    // not in FRTing modes
     QMessageBox::warning(
       this, QStringLiteral("警告"), QStringLiteral("非扫频模式，请切换模式！"));
     return;
@@ -260,7 +260,7 @@ FRT::on_startButton_clicked()
   //运行参数配置对话框，提示当前运行模式
   RunConfigDialog runConfigDialog;
   runConfigDialog.setSampleFrequency(defaultSampleFreq);
-  runConfigDialog.setRunModeInfo(m_xcomm->getCurrentRunModeStr());
+  runConfigDialog.setRunModeInfo(m_xcomm->getCurRunModeStr());
   if (runConfigDialog.exec() == QDialog::Rejected) {
     return;
   }
@@ -274,15 +274,15 @@ auto
 FRT::mapSectionToRunMode(int section) -> DriverDataType::RunMode
 {
   using namespace DriverDataType;
-  RunMode runMode = MODE_SWEEP_1;
+  RunMode runMode = MODE_FRT_MECH;
   switch (section) {
     case 0:
       //机械环节
-      runMode = MODE_SWEEP_1;
+      runMode = MODE_FRT_MECH;
       break;
     case 1:
       //电磁环节
-      runMode = MODE_SWEEP_2;
+      runMode = MODE_FRT_ELEC;
       break;
     default:
       break;
@@ -294,23 +294,22 @@ void
 FRT::on_writeButton_clicked()
 {
   using namespace DriverDataType;
-  // read sweeping config
+  // read FRTing config
   // some data should be scaled for transmition
   RunMode runMode = mapSectionToRunMode(ui->sectionComboBox->currentIndex());
-  m_sweepConfig.data().m_runMode = runMode;
-  m_sweepConfig.data().m_ref = ui->refDoubleSpinBox->value() * _IQ15;
-  m_sweepConfig.data().m_amplitude = ui->amDoubleSpinBox->value() * _IQ15;
+  m_FRTConfig.data().m_runMode = runMode;
+  m_FRTConfig.data().m_ref = ui->refDoubleSpinBox->value() * _IQ15;
+  m_FRTConfig.data().m_amplitude = ui->amDoubleSpinBox->value() * _IQ15;
   // Range、step参数现在没用 TBC
-  m_sweepConfig.data().m_minRange = ui->freqRangeMinSpinBox->value();
-  m_sweepConfig.data().m_maxRange = ui->freqRangeMaxSpinBox->value();
-  m_sweepConfig.data().m_sweepingStep =
-    ui->sweepStepDoubleSpinBox->value() * _IQ15;
-  m_xcomm->command(XComm::TOOLBOX_SWEEPING_WRITE, m_sweepConfig.toByteArray());
+  m_FRTConfig.data().m_minRange = ui->freqRangeMinSpinBox->value();
+  m_FRTConfig.data().m_maxRange = ui->freqRangeMaxSpinBox->value();
+  m_FRTConfig.data().m_step = ui->stepDoubleSpinBox->value() * _IQ15;
+  m_xcomm->command(XComm::TOOLBOX_FRT_WRITE, m_FRTConfig.toByteArray());
 }
 
 void
 FRT::on_readButton_clicked()
 {
-  m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_AM, QByteArray());
-  m_xcomm->command(XComm::TOOLBOX_SWEEPING_REQ_PH, QByteArray());
+  m_xcomm->command(XComm::TOOLBOX_FRT_REQ_AM, QByteArray());
+  m_xcomm->command(XComm::TOOLBOX_FRT_REQ_PH, QByteArray());
 }

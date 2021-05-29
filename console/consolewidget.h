@@ -19,8 +19,8 @@ public:
   ~ConsoleWidget();
 
 private Q_SLOTS:
-  void slotProcessCommLog(AbstractComm::LogLevel level,
-                          quint16 errCmd,
+  void slotProcessCommLog(AbstractPort::LogLevel level,
+                          quint16 Cmd,
                           const QString& msgLog);
   void slotUpdateStats();
   void slotShowCmd(const quint16 cmd, const QByteArray& data);

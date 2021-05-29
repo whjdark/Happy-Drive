@@ -91,31 +91,30 @@ RunConfigType::resetData()
 }
 // run config data type end
 
-// Sweeping config datatype start
-SweepConfigType::SweepConfigType()
-  : m_sweepConfigData()
+// FRT config datatype start
+FRTConfigType::FRTConfigType()
+  : m_FRTConfigData()
 {}
 
 auto
-SweepConfigType::toByteArray() -> QByteArray
+FRTConfigType::toByteArray() -> QByteArray
 {
   QByteArray Ba;
-  Ba.append(reinterpret_cast<char*>(&m_sweepConfigData),
-            sizeof(m_sweepConfigData));
+  Ba.append(reinterpret_cast<char*>(&m_FRTConfigData), sizeof(m_FRTConfigData));
   return Ba;
 }
 
 void
-SweepConfigType::byteArrayToStruct(const QByteArray& ba)
+FRTConfigType::byteArrayToStruct(const QByteArray& ba)
 {
-  memcpy_s(&m_sweepConfigData, sizeof(m_sweepConfigData), ba.data(), ba.size());
+  memcpy_s(&m_FRTConfigData, sizeof(m_FRTConfigData), ba.data(), ba.size());
 }
 
 void
-SweepConfigType::resetData()
+FRTConfigType::resetData()
 {
-  memset(&m_sweepConfigData, 0, sizeof(m_sweepConfigData));
+  memset(&m_FRTConfigData, 0, sizeof(m_FRTConfigData));
 }
-// Sweeping config data type end
+// FRT config data type end
 
 } // namespace DriverDataType

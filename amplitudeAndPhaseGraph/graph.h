@@ -1,4 +1,4 @@
-#ifndef GRAPH_H
+﻿#ifndef GRAPH_H
 #define GRAPH_H
 
 #include <QObject>
@@ -19,7 +19,7 @@ public:
 
   //以下两个函数用于多个图像之间游标同步移动
 Q_SIGNALS:
-  void tracerMove(double x);
+  void signalTracerMove(double x);
 
 public Q_SLOTS:
   void slotSyncTracer(double x);

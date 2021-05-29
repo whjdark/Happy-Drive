@@ -12,7 +12,7 @@
 #include <QTime>
 
 Serial::Serial(QObject* parent)
-  : AbstractComm(parent)
+  : AbstractPort(parent)
 {}
 
 Serial::~Serial()
@@ -60,7 +60,7 @@ Serial::parseData(const QByteArray& rxdBuf, const QByteArray& reqCmd)
 {
   // seperate data from a whole frame
   if (rxdBuf.isEmpty()) {
-    Q_EMIT commLog(
+    Q_EMIT signalLog(
       MSG_WARNING, reqCmd, QStringLiteral("[WARNING]received data is empty"));
     return qMakePair(QByteArray(), QByteArray());
   }
@@ -75,7 +75,7 @@ Serial::parseData(const QByteArray& rxdBuf, const QByteArray& reqCmd)
     int tailInd = rxdBuf.indexOf(frameTail, headInd);
     if (headInd == -1 || tailInd == -1) {
       // no valid data found
-      Q_EMIT commLog(
+      Q_EMIT signalLog(
         MSG_WARNING, reqCmd, QStringLiteral("[WARNING]no valid data found"));
       // have problem, return empty
       return qMakePair(QByteArray(), QByteArray());
@@ -83,7 +83,7 @@ Serial::parseData(const QByteArray& rxdBuf, const QByteArray& reqCmd)
     // check data length
     int recvLen = BitConverter::ba2Int(rxdBuf.mid(headInd + 2, 2));
     if ((tailInd - headInd) - 6 != recvLen) {
-      Q_EMIT commLog(
+      Q_EMIT signalLog(
         MSG_INFO, reqCmd, QStringLiteral("[INFO]cmd data length error"));
       continue;
     }
@@ -91,7 +91,7 @@ Serial::parseData(const QByteArray& rxdBuf, const QByteArray& reqCmd)
     QByteArray rxdCmd = rxdBuf.mid(headInd + 4, 2);
     // requestCmd == recv cmd?
     if (reqCmd != rxdCmd) {
-      Q_EMIT commLog(
+      Q_EMIT signalLog(
         MSG_INFO, reqCmd, QStringLiteral("[INFO]request cmd != recv cmd"));
       continue;
     }
@@ -133,14 +133,14 @@ Serial::run()
 
   // read serial config
   m_mutex.lock();
-  QString currentPortName = m_config.m_portName;
+  QString currentPortName = m_config.m_portNum;
   QSerialPort::BaudRate currentBaud = m_config.m_baudRate;
   int currentWaitTimeout = m_config.m_waitTimeout;
   m_mutex.unlock();
   // check serial is available
   QSerialPort serial;
   if (currentPortName.isEmpty()) {
-    Q_EMIT commLog(
+    Q_EMIT signalLog(
       MSG_ERROR, QByteArray(), QStringLiteral("[ERROR]No port name specified"));
     qDebug() << QThread::currentThreadId() << " quit";
     return;
@@ -150,11 +150,11 @@ Serial::run()
   serial.setBaudRate(currentBaud);
   // open serial
   if (!serial.open(QIODevice::ReadWrite)) {
-    Q_EMIT commLog(MSG_ERROR,
-                   QByteArray(),
-                   tr("[ERROR]Can't open %1, error code %2")
-                     .arg(m_config.m_portName)
-                     .arg(serial.error()));
+    Q_EMIT signalLog(MSG_ERROR,
+                     QByteArray(),
+                     tr("[ERROR]Can't open %1, error code %2")
+                       .arg(m_config.m_portNum)
+                       .arg(serial.error()));
     qDebug() << QThread::currentThreadId() << " quit";
     return;
   }
@@ -182,7 +182,7 @@ Serial::run()
     while (!m_quit) { // serial loop quit
       retryCnt++;
       if (retryCnt > maxRetry) { // retry
-        Q_EMIT commLog(
+        Q_EMIT signalLog(
           MSG_ERROR, reqCmd, QStringLiteral("[ERROR]retry count > 3"));
         break;
       }
@@ -190,9 +190,10 @@ Serial::run()
       serial.write(request);
       // wait for write
       if (!serial.waitForBytesWritten(currentWaitTimeout)) {
-        Q_EMIT commLog(MSG_WARNING,
-                       reqCmd,
-                       QStringLiteral("[WARNING]Wait write response timeout"));
+        Q_EMIT signalLog(
+          MSG_WARNING,
+          reqCmd,
+          QStringLiteral("[WARNING]Wait write response timeout"));
         // retry
         continue;
       }
@@ -200,9 +201,9 @@ Serial::run()
       //防止粘包？
       serial.clear();
       if (!serial.waitForReadyRead(currentWaitTimeout)) {
-        Q_EMIT commLog(MSG_WARNING,
-                       reqCmd,
-                       QStringLiteral("[WARNING]Wait read response timeout"));
+        Q_EMIT signalLog(MSG_WARNING,
+                         reqCmd,
+                         QStringLiteral("[WARNING]Wait read response timeout"));
         continue;
       }
       // read response
@@ -220,7 +221,7 @@ Serial::run()
       }
       // success
       auto int16Cmd = static_cast<quint16>(BitConverter::ba2Int(rxdPair.first));
-      Q_EMIT response(int16Cmd, rxdPair.second);
+      Q_EMIT signalResponse(int16Cmd, rxdPair.second);
       break; // go to sleep
     }
     m_totalTimeElapse += qTime.elapsed();
@@ -254,7 +255,7 @@ Serial::clearTotalTimeElapse()
 }
 
 void
-Serial::startComm()
+Serial::openPort()
 {
   const QMutexLocker locker(&m_mutex);
   // start loop
@@ -263,7 +264,7 @@ Serial::startComm()
 }
 
 void
-Serial::closeComm()
+Serial::closePort()
 {
   const QMutexLocker locker(&m_mutex);
   // stop loop

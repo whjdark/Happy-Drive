@@ -68,5 +68,5 @@ Graph::mouseMoveEvent(QMouseEvent* event)
   m_line->updatePosition(x_val, 0);
   //曲线重绘,使用绘制队列避免不必要的多次重绘
   this->replot(QCustomPlot::rpQueuedReplot);
-  emit tracerMove(x_val);
+  emit signalTracerMove(x_val);
 }

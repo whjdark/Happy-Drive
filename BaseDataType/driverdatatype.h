@@ -61,8 +61,8 @@ enum RunMode
   MODE5 = 5,
   MODE6 = 6,
 
-  MODE_SWEEP_1 = 100,
-  MODE_SWEEP_2 = 101,
+  MODE_FRT_MECH = 100,
+  MODE_FRT_ELEC = 101,
 };
 
 struct PIDParams
@@ -176,16 +176,16 @@ struct RunConfigData
 };
 
 #pragma pack(1) //取消结构体对其
-struct SweepingConfigData
+struct FRTConfigData
 {
-  quint16 m_runMode;      //运行模式
-  qint16 m_ref;           //参考值
-  qint16 m_amplitude;     //幅值
-  quint16 m_minRange;     //起始频率
-  quint16 m_maxRange;     //终止频率
-  quint16 m_sweepingStep; //扫频步长
+  quint16 m_runMode;  //运行模式
+  qint16 m_ref;       //参考值
+  qint16 m_amplitude; //幅值
+  quint16 m_minRange; //起始频率
+  quint16 m_maxRange; //终止频率
+  quint16 m_step;     //步长
 
-  SweepingConfigData() = default;
+  FRTConfigData() = default;
 };
 #pragma pack(0)
 
@@ -235,19 +235,19 @@ private:
   RunConfigData m_runConfigData;
 };
 
-class SweepConfigType
+class FRTConfigType
 {
 public:
-  explicit SweepConfigType();
-  ~SweepConfigType() = default;
+  explicit FRTConfigType();
+  ~FRTConfigType() = default;
 
   QByteArray toByteArray();
   void byteArrayToStruct(const QByteArray& ba);
   void resetData();
-  SweepingConfigData& data() { return m_sweepConfigData; }
+  FRTConfigData& data() { return m_FRTConfigData; }
 
 private:
-  SweepingConfigData m_sweepConfigData;
+  FRTConfigData m_FRTConfigData;
 };
 
 } // namespace DriverDataType

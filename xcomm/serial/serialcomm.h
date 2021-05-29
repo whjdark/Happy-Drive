@@ -11,26 +11,26 @@
 
 #include "../../BaseDataType/bitconverter.h"
 #include "../../utilities/CRC.h"
-#include "../abstractcomm.h"
+#include "../abstractport.h"
 
 #include <QMutex>
 #include <QPair>
 #include <QTime>
 #include <QtSerialPort>
 
-class Serial : public AbstractComm
+class Serial : public AbstractPort
 {
   Q_OBJECT
 
 public:
   struct SerialConfig
   {
-    QString m_portName;
+    QString m_portNum;
     QSerialPort::BaudRate m_baudRate;
     int m_waitTimeout;
 
     SerialConfig()
-      : m_portName(QStringLiteral())
+      : m_portNum(QStringLiteral())
       , m_baudRate(QSerialPort::UnknownBaud)
       , m_waitTimeout(1000)
     {}
@@ -41,19 +41,14 @@ public:
   ~Serial();
 
   void transaction(const quint16 cmd, const QByteArray& data) override;
-  void closeComm() override;
-  void startComm() override;
+  void closePort() override;
+  void openPort() override;
   bool isBusy() override;
   quint64 getTotalTimeElapse() override;
   void clearTotalTimeElapse() override;
-  QString type() override { return "Serial"; }
+  QString getPortType() override { return "Serial"; }
   void configSerial(const SerialConfig& config) { m_config = config; }
-  const QString& currentPort() const { return m_config.m_portName; }
-
-Q_SIGNALS:
-  void response(const quint16 cmd, const QByteArray& data);
-  // level 0 = ok; level 1 = INFO; level 2 = WARNING; level 3 = ERROR
-  void commLog(LogLevel level, const QByteArray& errCmd, const QString& msgStr);
+  const QString& getPortNum() const override { return m_config.m_portNum; }
 
 private:
   void run() override;
