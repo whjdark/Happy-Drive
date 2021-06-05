@@ -19,7 +19,8 @@ CONFIG += c++11
 CONFIG += precompile_header
 PRECOMPILED_HEADER = stable.h
 HEADERS += stable.h \  #这句话是可有可无的，建议加上
-    toolbox/FRT/FRT.h
+    toolbox/FRT/FRT.h \
+    xcomm/tcp/tcpclient.h
 
 # release optimation level
 QMAKE_CXXFLAGS_RELEASE -= -O1
@@ -28,6 +29,7 @@ QT += core \
 widgets \
 serialport \
 printsupport \
+network \
 opengl
 
 DEFINES += QCUSTOMPLOT_USE_OPENGL
@@ -63,7 +65,7 @@ HEADERS += BaseDataType/bitconverter.h \
     utilities/fftw3.h \
     versionInfo.h \
     xcomm/abstractport.h \
-    xcomm/serial/serialcomm.h \
+    xcomm/serial/serialport.h \
     xcomm/xcomm.h
 
 FORMS += mainwindow.ui \
@@ -105,7 +107,8 @@ SOURCES += BaseDataType/bitconverter.cpp \
            oscilloscope/scopetracer.cpp \
            runconfig/runconfigdialog.cpp \
            toolbox/FRT/FRT.cpp \
-           xcomm/serial/serialcomm.cpp \
+           xcomm/serial/serialport.cpp \
+           xcomm/tcp/tcpclient.cpp \
            xcomm/xcomm.cpp
 
 LIBS +=  -lopengl32 \

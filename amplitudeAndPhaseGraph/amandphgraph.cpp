@@ -95,11 +95,15 @@ AmAndPhGraph::initPhaseGraph()
 void
 AmAndPhGraph::initConnections()
 {
-  //幅频图和相拼图的tracer绑定，实现同步移动
-  connect(
-    ui->amWidget, &Graph::signalTracerMove, ui->phWidget, &Graph::slotSyncTracer);
-  connect(
-    ui->phWidget, &Graph::signalTracerMove, ui->amWidget, &Graph::slotSyncTracer);
+  //幅频图和相频图的tracer绑定，实现同步移动
+  connect(ui->amWidget,
+          &Graph::signalTracerMove,
+          ui->phWidget,
+          &Graph::slotSyncTracer);
+  connect(ui->phWidget,
+          &Graph::signalTracerMove,
+          ui->amWidget,
+          &Graph::slotSyncTracer);
 }
 
 void

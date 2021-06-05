@@ -6,8 +6,8 @@
  * @Description: file content
  */
 
-#ifndef SERIALCOMM_H
-#define SERIALCOMM_H
+#ifndef SERIALPORT_H
+#define SERIALPORT_H
 
 #include "../../BaseDataType/bitconverter.h"
 #include "../../utilities/CRC.h"
@@ -46,9 +46,9 @@ public:
   bool isBusy() override;
   quint64 getTotalTimeElapse() override;
   void clearTotalTimeElapse() override;
-  QString getPortType() override { return "Serial"; }
+  AbstractPort::PortType getPortType() const override;
+  QString getPortNum() const override { return m_config.m_portNum; }
   void configSerial(const SerialConfig& config) { m_config = config; }
-  const QString& getPortNum() const override { return m_config.m_portNum; }
 
 private:
   void run() override;
@@ -76,4 +76,4 @@ private:
   quint64 m_totalTimeElapse = 0;
 };
 
-#endif // SERIALCOMM_H
+#endif // SERIALPORT_H

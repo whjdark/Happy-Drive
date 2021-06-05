@@ -646,7 +646,7 @@ CONConfigWidget::slotProcessCmd(const quint16 cmd, const QByteArray& data)
 void
 CONConfigWidget::on_writeDSPButon_clicked()
 {
-  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));

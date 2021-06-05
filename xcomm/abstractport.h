@@ -9,6 +9,15 @@ class AbstractPort : public QThread
   Q_OBJECT
 
 public:
+  enum PortType
+  {
+    SerialPort = 0,
+    TCPClient = 1,
+
+    Unk = 0xFFFF
+  };
+  Q_ENUM(PortType)
+
   enum LogLevel
   {
     MSG_OK = 0,      // level 0 = ok;
@@ -34,13 +43,13 @@ public:
   virtual bool isBusy() = 0;
   virtual quint64 getTotalTimeElapse() = 0;
   virtual void clearTotalTimeElapse() = 0;
-  virtual const QString& getPortNum() const = 0;
-  virtual QString getPortType() = 0;
+  virtual QString getPortNum() const = 0;
+  virtual PortType getPortType() const = 0;
 
 Q_SIGNALS:
   void signalResponse(const quint16 cmd, const QByteArray& data);
   // level 0 = ok; level 1 = INFO; level 2 = WARNING; level 3 = ERROR
-  void signalLog(LogLevel level,
+  void signalLog(AbstractPort::LogLevel level,
                  const QByteArray& errCmd,
                  const QString& msgStr);
 };

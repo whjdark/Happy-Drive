@@ -196,7 +196,7 @@ ConsoleWidget::on_rxdLcdNumber_overflow()
 void
 ConsoleWidget::on_sendButton_clicked()
 {
-  if (m_xcomm->getConnectStatus() == XComm::COMM_CONNECT) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_CONNECT) {
     //提取命令选项
     quint16 cmd = ui->cmdComboBox->currentText().toUShort(nullptr, 16);
     //命令行参数

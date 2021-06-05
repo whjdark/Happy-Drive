@@ -195,7 +195,8 @@ TracerWidget::initConnections()
           &QCP::selectionChangedByUser,
           this,
           &TW::slotSelectionChanged);
-  //存在多个重载，使用指针函数明确具体函数
+  //存在多个重载，使用函数指针明确具体函数
+  //也可用QOverload指定重载
   // x轴范围变化
   void (QCPAxis::*xRangeChangedFunc)(const QCPRange&) = &QCPAxis::rangeChanged;
   connect(
@@ -431,7 +432,7 @@ TracerWidget::selectChannel() -> Channels
 void
 TracerWidget::on_startButton_clicked()
 {
-  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));
@@ -458,7 +459,7 @@ TracerWidget::on_startButton_clicked()
 void
 TracerWidget::on_stopButton_clicked()
 {
-  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));
@@ -481,7 +482,7 @@ TracerWidget::on_configButton_clicked()
 void
 TracerWidget::on_readButton_clicked()
 {
-  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));

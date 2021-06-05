@@ -117,4 +117,30 @@ FRTConfigType::resetData()
 }
 // FRT config data type end
 
+// EtherCATDataType start
+ECATDataType::ECATDataType()
+  : m_eCATData()
+{}
+
+auto
+ECATDataType::toByteArray() -> QByteArray
+{
+  QByteArray Ba;
+  Ba.append(reinterpret_cast<char*>(&m_eCATData), sizeof(m_eCATData));
+  return Ba;
+}
+
+void
+ECATDataType::ba2Struct(const QByteArray& ba)
+{
+  memcpy_s(&m_eCATData, sizeof(m_eCATData), ba.data(), ba.size());
+}
+
+void
+ECATDataType::resetData()
+{
+  memset(&m_eCATData, 0, sizeof(m_eCATData));
+}
+// EtherCATDataType end
+
 } // namespace DriverDataType

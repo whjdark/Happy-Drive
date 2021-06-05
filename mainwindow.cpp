@@ -206,7 +206,7 @@ void
 MainWindow::slotUpdateStatusLbl()
 {
   // set communicate status label
-  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_IDLE) {
     m_commStatusLbl->setText(QStringLiteral("通讯: 关闭"));
     m_commStatusLbl->setStyleSheet(QStringLiteral("color:red;"));
     //连接/短线按钮使能/失效
@@ -280,8 +280,13 @@ MainWindow::slotConnectSuccess()
 {
   QMessageBox::warning(
     this, QStringLiteral("提示"), QStringLiteral("连接成功"));
-  //连接成功后默认启动监视器
-  m_monitor->startMonitor();
+  // SerialPort连接成功后默认启动监视器, TCPClient暂不支持
+  auto type = m_xcomm->getPortType();
+  if (type == AbstractPort::SerialPort) {
+    m_monitor->startMonitor();
+  } else if (type == AbstractPort::TCPClient) {
+    // TBC
+  }
 }
 
 void
@@ -291,14 +296,18 @@ MainWindow::slotOpenConnectDialog()
   ConnectDialog connectDialog(this);
   connectDialog.exec(); //阻止对其他窗口的操作
   if (connectDialog.isConnect()) {
-    //配置并进行连接
-    XComm::PortType type = connectDialog.getPortType();
-    if (type == XComm::Type_Serial) {
-      m_xcomm->configPort(connectDialog.getSerialConfig());
-    } else if (type == XComm::Type_EtherCAT) {
-      // TBC
+    //配置并尝试连接
+    switch (connectDialog.getPortType()) {
+      case AbstractPort::SerialPort:
+        m_xcomm->configPort(connectDialog.getSerialConfig());
+        break;
+      case AbstractPort::TCPClient:
+        m_xcomm->configPort(connectDialog.getTcpConfig());
+        break;
+      default:
+        break;
     }
-    m_xcomm->tryConnect();
+    m_xcomm->tryConnectDriver();
     //连接状态检查
     m_checkConnectTimer->start(3100);
   }
@@ -358,10 +367,9 @@ MainWindow::slotShowAllDocks()
 void
 MainWindow::slotCheckConnect()
 {
-  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_IDLE) {
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("连接失败"));
-    m_xcomm->disconnectDriver();
   }
   //不需要连接状态检查
   m_checkConnectTimer->stop();

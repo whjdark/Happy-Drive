@@ -237,7 +237,7 @@ void
 FRT::on_startButton_clicked()
 {
   using namespace DriverDataType;
-  if (m_xcomm->getConnectStatus() == XComm::COMM_IDLE) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_IDLE) {
     // 未连接
     QMessageBox::warning(
       this, QStringLiteral("错误"), QStringLiteral("未连接驱动器"));

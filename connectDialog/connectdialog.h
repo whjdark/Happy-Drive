@@ -28,10 +28,9 @@ public:
   explicit ConnectDialog(QWidget* parent = nullptr);
   ~ConnectDialog();
 
-  void initBaudBox();
-  void detectPorts();
-  const Serial::SerialConfig& getSerialConfig() const { return m_config; }
-  XComm::PortType getPortType() const;
+  const Serial::SerialConfig& getSerialConfig() const { return m_serialConfig; }
+  const TcpClient::TCPConfig& getTcpConfig() const { return m_tcpConfig; }
+  AbstractPort::PortType getPortType() const;
   bool isConnect() const { return m_isConnect; }
 
 private Q_SLOTS:
@@ -40,6 +39,16 @@ private Q_SLOTS:
   void on_cancelButton_clicked();
   void on_defaultButton_clicked();
   void on_detailButton_clicked();
+  void on_commPortComboBox_currentIndexChanged(int index);
+
+private:
+  void initBaudBox();
+  void detectPorts();
+  void installReg();
+  void showTcpClientDetail();
+  void showSerialDetail();
+  bool configTcpClient();
+  bool configSerial();
 
 private:
   //可用波特率 use c++11 initializer_list
@@ -49,7 +58,8 @@ private:
     "500000", "576000", "921600", "1000000", "1152000"
   };
   Ui::ConnectDialog* ui;
-  Serial::SerialConfig m_config;
+  Serial::SerialConfig m_serialConfig;
+  TcpClient::TCPConfig m_tcpConfig;
   bool m_isConnect = false;
 };
 

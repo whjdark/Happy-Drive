@@ -6,10 +6,7 @@
  * @Description: file content
  */
 
-#include "serialcomm.h"
-
-#include <QSerialPort>
-#include <QTime>
+#include "serialport.h"
 
 Serial::Serial(QObject* parent)
   : AbstractPort(parent)
@@ -252,6 +249,11 @@ Serial::clearTotalTimeElapse()
 {
   const QMutexLocker locker(&m_mutex);
   m_totalTimeElapse = 0;
+}
+auto
+Serial::getPortType() const -> AbstractPort::PortType
+{
+  return AbstractPort::SerialPort;
 }
 
 void

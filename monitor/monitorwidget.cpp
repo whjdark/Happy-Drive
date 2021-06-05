@@ -94,7 +94,7 @@ MonitorWidget::initConnetions()
 void
 MonitorWidget::startMonitor()
 {
-  if (m_xcomm->getConnectStatus() == XComm::COMM_CONNECT) {
+  if (m_xcomm->getCommStatus() == XComm::COMM_CONNECT) {
     if (!m_updateTimer->isActive()) { //如果timer没在工作
       ui->stopButton->setEnabled(true);
       ui->startButton->setEnabled(false);

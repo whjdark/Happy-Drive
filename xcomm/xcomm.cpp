@@ -11,28 +11,37 @@
 XComm::XComm(QObject* parent)
   : QObject(parent)
   , m_port(nullptr)
-{}
+  , m_updateTimer(new QTimer(this))
+{
+  // only for Tcp Client
+  connect(m_updateTimer, &QTimer::timeout, this, [=]() {
+    // send something to host
+    // To request EtherCAT server data
+    command(0x0000, QByteArray("HELLO"));
+  });
+}
 
 void
 XComm::setSlotConnect(bool isConnect)
 {
+  using AB = AbstractPort;
   if (isConnect) {
-    connect(
-      m_port, &AbstractPort::signalResponse, this, &XComm::slotForwardResponse);
-    connect(m_port, &AbstractPort::signalLog, this, &XComm::slotUpdateCommLog);
+    connect(m_port, &AB::signalResponse, this, &XComm::slotForwardResponse);
+    connect(m_port, &AB::signalLog, this, &XComm::slotUpdateCommLog);
   } else {
-    disconnect(
-      m_port, &AbstractPort::signalResponse, this, &XComm::slotForwardResponse);
-    disconnect(
-      m_port, &AbstractPort::signalLog, this, &XComm::slotUpdateCommLog);
+    disconnect(m_port, &AB::signalResponse, this, &XComm::slotForwardResponse);
+    disconnect(m_port, &AB::signalLog, this, &XComm::slotUpdateCommLog);
   }
 }
 
 void
 XComm::command(const quint16 cmd, const QByteArray& data)
 {
-  if (m_commState == XComm::COMM_CONNECT || cmd == XComm::TRY_CONNECT) {
-    // allow to command when  driver is CONNECT or TRY_CONNECT
+  if (m_port == nullptr) {
+    return;
+  }
+  if (m_commStatus == XComm::COMM_CONNECT || cmd == XComm::TRY_CONNECT) {
+    // allow to command when  driver is in CONNECT or TRY_CONNECT
     // TRY_CONNECT will send a test msg & try to connect DSP
     m_port->transaction(cmd, data);
     //更新统计信息
@@ -44,30 +53,57 @@ XComm::command(const quint16 cmd, const QByteArray& data)
   }
 }
 
+auto
+XComm::getPortType() const -> AbstractPort::PortType
+{
+  return m_port->getPortType();
+}
+
 void
-XComm::configPort(const Serial::SerialConfig& serialConfig)
+XComm::configPort(const Serial::SerialConfig& Config)
 {
   // abstractport factory produces serialport
   m_port = new Serial(this);
   // connect signal & slot after instantiation
   setSlotConnect(true);
   auto* serialPort = qobject_cast<Serial*>(m_port);
-  serialPort->configSerial(serialConfig);
-}
-
-auto
-XComm::getConnectStatus() const -> XComm::CommState
-{
-  return m_commState;
+  serialPort->configSerial(Config);
 }
 
 void
-XComm::tryConnect()
+XComm::configPort(const TcpClient::TCPConfig& config)
 {
-  if (m_commState == XComm::COMM_IDLE) {
+  // abstractport factory produces serialport
+  m_port = new TcpClient(this);
+  // connect signal & slot after instantiation
+  setSlotConnect(true);
+  auto* tcpClient = qobject_cast<TcpClient*>(m_port);
+  tcpClient->configClient(config);
+}
+
+auto
+XComm::getCommStatus() const -> XComm::CommState
+{
+  return m_commStatus;
+}
+
+void
+XComm::tryConnectDriver()
+{
+  if (m_commStatus == XComm::COMM_IDLE) {
     //启动通讯
-    m_port->openPort();
-    command(XComm::TRY_CONNECT, QByteArray());
+    switch (m_port->getPortType()) {
+      case AbstractPort::SerialPort:
+        m_port->openPort();
+        // TRY_CONNECT cmd is designed for serial
+        command(XComm::TRY_CONNECT, QByteArray());
+        break;
+      case AbstractPort::TCPClient:
+        m_port->openPort();
+        break;
+      default:
+        break;
+    }
   } else {
     // holdplace
   }
@@ -76,12 +112,14 @@ XComm::tryConnect()
 void
 XComm::disconnectDriver()
 {
-  m_port->closePort();
-  m_commState = XComm::COMM_IDLE;
-  m_motorState = XComm::MOTOR_STOP;
+  m_commStatus = XComm::COMM_IDLE;
+  m_motorStatus = XComm::MOTOR_STOP;
+  m_updateTimer->stop(); // stop update. only for TCP
   // release m_port
-  setSlotConnect(false); // disconnect signal & slot
-  delete m_port;
+  m_port->closePort();
+  // disconnect signal & slot , should i do it?
+  setSlotConnect(false);
+  m_port->deleteLater(); // instead of delete
   m_port = nullptr;
 };
 
@@ -140,51 +178,68 @@ XComm::getCurRunModeStr() const -> QString
 void
 XComm::slotForwardResponse(const quint16 cmd, const QByteArray& data)
 {
-  //事件转发
-  int cmdHeader = cmd >> 8; // 提取高8位（命令头）用于消息转发
-  switch (cmdHeader) {
-    case XComm::SYSTEM_HEADER:
-      slotSysCmd(cmd, data);
-      break;
-    case XComm::MONITOR_HEADER:
-      Q_EMIT signalMonitorCmd(cmd, data);
-      break;
-    case XComm::TRACER_HEADER:
-      Q_EMIT signalTracerCmd(cmd, data);
-      break;
-    case XComm::CONTROLLER_HEADER:
-      Q_EMIT signalConfigerCmd(cmd, data);
-      break;
-    case XComm::TOOLBOX_FRT_HEADER:
-      Q_EMIT signalFRTCmd(cmd, data);
-      break;
-    default:
-      // unexpected cmd header
-      m_commStats.m_errCnt++;
-      QString errMsg = QStringLiteral("[ERROR]unexpected cmd header");
-      Q_EMIT signalCommLog(AbstractPort::MSG_ERROR, 0, errMsg);
-      break;
+  if (m_port->getPortType() == AbstractPort::SerialPort) {
+    //事件转发 为SerialPort设计
+    int cmdHeader = cmd >> 8; // 提取高8位（命令头）用于消息转发
+    switch (cmdHeader) {
+      case XComm::SYSTEM_HEADER:
+        slotSysCmd(cmd, data);
+        break;
+      case XComm::MONITOR_HEADER:
+        Q_EMIT signalMonitorCmd(cmd, data);
+        break;
+      case XComm::TRACER_HEADER:
+        Q_EMIT signalTracerCmd(cmd, data);
+        break;
+      case XComm::CONTROLLER_HEADER:
+        Q_EMIT signalConfigerCmd(cmd, data);
+        break;
+      case XComm::TOOLBOX_FRT_HEADER:
+        Q_EMIT signalFRTCmd(cmd, data);
+        break;
+      default:
+        // unexpected cmd header
+        m_commStats.m_errCnt++;
+        QString errMsg = QStringLiteral("[ERROR]unexpected cmd header");
+        Q_EMIT signalCommLog(AbstractPort::MSG_ERROR, 0, errMsg);
+        break;
+    }
+    //更新统计信息
+    m_commStats.m_totalRxdBytes += data.size() + sizeof(cmd);
+    //发送所有消息给控制台，用于调试
+    //太长的消息进行截断，方便展示分析
+    QByteArray truncatedData;
+    if (data.count() > 16) {
+      truncatedData = data.mid(0, 16);
+    } else {
+      truncatedData = data;
+    }
+    Q_EMIT signalResponseLog(cmd, truncatedData);
+  } else if (m_port->getPortType() == AbstractPort::TCPClient) {
+    //直接处理事件 为ctp client主站通讯设计
+    if (cmd == 0x1001) {
+      // successfully connect to host, info user
+      m_commStatus = COMM_CONNECT;
+      slotUpdateCommLog(AbstractPort::MSG_OK,
+                        QByteArray(),
+                        QStringLiteral("[OK]connect success"));
+      Q_EMIT signalConnectSuccess();
+      m_updateTimer->start(50); // only available for Tcp client
+    } else if (cmd == 0x000) {
+      // byte array to etherCAT data struct
+      m_eCATData.ba2Struct(data);
+    }
   }
-  //更新统计信息
-  m_commStats.m_totalRxdBytes += data.size() + sizeof(cmd);
-  //发送所有消息给控制台，用于调试
-  //太长的消息进行截断，方便展示分析
-  QByteArray truncatedData;
-  if (data.count() > 16) {
-    truncatedData = data.mid(0, 16);
-  } else {
-    truncatedData = data;
-  }
-  Q_EMIT signalResponseLog(cmd, truncatedData);
 }
 
 void
 XComm::slotSysCmd(const quint16 cmd, const QByteArray& data)
 {
+  Q_UNUSED(data);
   switch (cmd) {
     case TRY_CONNECT:
       // driver responsed & connection is OK
-      m_commState = COMM_CONNECT;
+      m_commStatus = COMM_CONNECT;
       slotUpdateCommLog(AbstractPort::MSG_OK,
                         QByteArray(),
                         QStringLiteral("[OK]connect success"));
@@ -192,12 +247,12 @@ XComm::slotSysCmd(const quint16 cmd, const QByteArray& data)
       break;
     case START_MOTOR:
       // driver responsed & start running
-      m_motorState = MOTOR_RUN;
+      m_motorStatus = MOTOR_RUN;
       Q_EMIT signalMotorStart();
       break;
     case XComm::STOP_MOTOR:
       // stop motor running
-      m_motorState = MOTOR_STOP;
+      m_motorStatus = MOTOR_STOP;
       Q_EMIT signalMotorStop();
       break;
     default:
@@ -221,28 +276,44 @@ XComm::slotUpdateCommLog(AbstractPort::LogLevel level,
       break;
     case AbstractPort::MSG_ERROR:
       m_commStats.m_errCnt++;
+      // Error occurs ,stop communication
+      disconnectDriver();
       break;
     default:
       break;
   }
-  quint16 cmdInt = BitConverter::ba2Int(cmd);
+  // some error messages do not have cmd string
+  quint16 cmdInt = 0;
+  if (!cmd.isEmpty()) {
+    cmdInt = BitConverter::ba2Int(cmd);
+  }
   Q_EMIT signalCommLog(level, cmdInt, msgStr);
 }
 
 auto
 XComm::getStats() -> const CommStats&
 {
-  // calculate average communication elapsed time
-  // divide 0 will occur error
-  if (m_port != nullptr) {
-    // do not update when port is not init
+  // do not update when port is not exist
+  if (m_port == nullptr) {
+    return m_commStats;
+  }
+  if (m_port->getPortType() == AbstractPort::SerialPort) {
+    // only support SerialPort for NOW
     if (m_commStats.m_cmdCnt != 0) {
       quint64 totalTimeElapsed = m_port->getTotalTimeElapse();
+      // calculate average communication elapsed time
+      // divide 0 will occur error
       m_commStats.m_avgElapsedTime =
         static_cast<int>(totalTimeElapsed / (m_commStats.m_cmdCnt));
     }
   }
   return m_commStats;
+}
+
+void
+XComm::setMotorState(const XComm::MotorState motorState)
+{
+  m_motorStatus = motorState;
 }
 
 void

@@ -14,7 +14,7 @@
 #include <QtGlobal>
 
 namespace DriverDataType {
-//常量
+//超小常量
 Q_CONSTEXPR double eps = 10e-8;
 
 //浮点数-整型缩放因子 same as dsp
@@ -133,7 +133,7 @@ struct EncoderData
   EncoderData() = default;
 };
 
-#pragma pack(1) //取消结构体对其
+#pragma pack(1) //取消结构体对齐
 struct MonitorData
 {
   // PIDValue position; //位置
@@ -175,7 +175,7 @@ struct RunConfigData
   {}
 };
 
-#pragma pack(1) //取消结构体对其
+#pragma pack(1) //取消结构体对齐
 struct FRTConfigData
 {
   quint16 m_runMode;  //运行模式
@@ -188,6 +188,79 @@ struct FRTConfigData
   FRTConfigData() = default;
 };
 #pragma pack(0)
+
+//与EtherCAT主站通讯的结构数据
+
+struct server_sendData_t
+{
+  uint16_t statusWrod[6];
+  uint8_t actualOperationMode[6];
+  uint8_t alState;
+  int32_t cia402ErrorCode;
+  uint8_t journeyPercent; // percentage of PTP, Lin, Cir ......
+
+  int32_t actualPosition[6];
+  double jointAngles[6];
+  double jointVelocity[6];
+  double jointAcceleration[6];
+  double jointTorque[6];
+  double cartPosition[6];
+
+  int32_t hyperson_fx;
+  int32_t hyperson_fy;
+  int32_t hyperson_fz;
+  int32_t hyperson_mx;
+  int32_t hyperson_my;
+  int32_t hyperson_mz;
+};
+
+struct server_recvData_t
+{
+  uint8_t client_id;
+  int32_t targetPosition[6];
+  int32_t targetVelocity[6];
+  int16_t targetTorque[6];
+  uint8_t targetOperationMode[6];
+
+  uint8_t motionCommandSize = 0;
+
+  bool startSignal;
+  bool stopSignal;
+  bool enable;
+  bool shutDown;
+  bool faultReset;
+
+  int8_t motionMode; // 0 manual_Joint_Space
+                     // 1 manual_Cartesian_Space
+                     // 2 continuous
+
+  uint8_t velocityPercent;
+  uint8_t accelerationPercent;
+
+  int8_t jogButton; //  1   Axis1 +
+                    //  -1  Axis1 -
+                    //  2   Axis2 +
+                    //  -2  Axis2 -
+                    //  3   Axis3 +
+                    //  4   Axis3 -
+
+  //    Point endPoint;
+  //    Point middlePoint;
+
+  uint8_t ethercatStateMechine[6];
+  int32_t ethercatErrorCode[6];
+};
+
+struct motionCommand
+{
+  uint8_t mode; // 0 -- PTP, 1 -- Lin, 2 -- Cir
+  double PosMid[6];
+  double PosFin[6];
+  uint8_t velPercent;
+  uint8_t accPercent;
+};
+
+//进一步封装struct
 
 class MonitorDataType
 {
@@ -248,6 +321,21 @@ public:
 
 private:
   FRTConfigData m_FRTConfigData;
+};
+
+class ECATDataType
+{
+public:
+  explicit ECATDataType();
+  ~ECATDataType() = default;
+
+  QByteArray toByteArray();
+  void ba2Struct(const QByteArray& ba);
+  void resetData();
+  server_sendData_t& data() { return m_eCATData; }
+
+private:
+  server_sendData_t m_eCATData;
 };
 
 } // namespace DriverDataType

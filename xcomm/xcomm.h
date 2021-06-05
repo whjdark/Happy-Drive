@@ -11,7 +11,8 @@
 
 #include "../BaseDataType/bitconverter.h"
 #include "../BaseDataType/driverdatatype.h"
-#include "serial/serialcomm.h"
+#include "serial/serialport.h"
+#include "tcp/tcpclient.h"
 
 #include <QByteArray>
 #include <QQueue>
@@ -22,13 +23,6 @@ class XComm : public QObject
   Q_OBJECT
 
 public:
-  enum PortType
-  {
-    Type_Serial = 0,
-    Type_EtherCAT = 1,
-  };
-  Q_ENUM(PortType)
-
   enum MotorState
   {
     MOTOR_STOP = 0,
@@ -113,15 +107,16 @@ public:
 
   void setSlotConnect(bool isConnect);
   void command(const quint16 cmd, const QByteArray& data);
-  QString getPortType() const { return m_port->getPortType(); };
+  AbstractPort::PortType getPortType() const;
   QString getCurPort() const { return m_port->getPortNum(); }
-  void configPort(const Serial::SerialConfig& serialConfig);
-  void tryConnect();
+  void configPort(const Serial::SerialConfig& Config);
+  void configPort(const TcpClient::TCPConfig& config);
+  void tryConnectDriver();
   void disconnectDriver();
-  CommState getConnectStatus() const;
+  CommState getCommStatus() const;
   const CommStats& getStats();
-  MotorState getMotorStatus() const { return m_motorState; }
-  void setMotorState(const MotorState motorState) { m_motorState = motorState; }
+  MotorState getMotorStatus() const { return m_motorStatus; }
+  void setMotorState(const MotorState motorState);
   void clearCmdCnt();
   void clearErrCnt();
   void clearWarnCnt();
@@ -156,9 +151,12 @@ private Q_SLOTS:
 
 private:
   AbstractPort* m_port;
-  CommState m_commState = XComm::COMM_IDLE;
-  MotorState m_motorState = XComm::MOTOR_STOP;
+  CommState m_commStatus = XComm::COMM_IDLE;
+  MotorState m_motorStatus = XComm::MOTOR_STOP;
   CommStats m_commStats;
   DriverDataType::RunMode currentRunMode = DriverDataType::MODE0;
+  DriverDataType::ECATDataType m_eCATData;
+  // automatically tcp client request EtherCAT data from host
+  QTimer* m_updateTimer;
 };
 #endif // XCOMM_H
