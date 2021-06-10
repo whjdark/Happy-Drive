@@ -76,6 +76,7 @@ private:
   void initMode4Tables();
   void initMode5Tables();
   void initMode6Tables();
+  void initMode7Tables();
   void initConnetions();
   double inputCheck(const int row, bool* isOk);
 
@@ -101,7 +102,7 @@ private:
 
 private:
   //支持的模式
-  Q_CONSTEXPR static int numOfMode = 7;
+  Q_CONSTEXPR static int numOfMode = 8;
   //参数配置最大容忍误差
   Q_CONSTEXPR static double tolerantConfigError = 0.2;
 

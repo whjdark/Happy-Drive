@@ -13,7 +13,7 @@ AboutDialog::AboutDialog(QWidget* parent)
   ui->infoLabel->setText("<b>" SOFTWARE_NAME "</b><br>"
                          "Version: " SOFTWARE_VERSION " (" BUILD_VERSION ")<br>"
                          "Email: boeingA380@126.com<br>"
-                         "Source Page: <a href=\"\">View Code On "
+                         "Source Page: <a href=\"\">View Code On <br>"
                          "Home Page: <a href=\"\">View Page On "
                          "GitHub</a><br>"
                          "Build Date: " __DATE__ "<br>" COPYRIGHT);

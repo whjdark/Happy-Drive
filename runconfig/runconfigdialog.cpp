@@ -23,7 +23,7 @@ void
 RunConfigDialog::setRunModeInfo(const QString& runMode)
 {
   ui->runModeText->setText(
-    tr("<font color=\"#FF0000\" size=4>%1</font>").arg(runMode));
+    tr("<font color=\"#FF0000\" size=3>%1</font>").arg(runMode));
 }
 
 void

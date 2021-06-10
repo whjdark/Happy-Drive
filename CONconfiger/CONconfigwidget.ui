@@ -84,6 +84,11 @@
          <string>模式6：速度闭环（电流环PI，速度环FOPD-GESO）</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>模式7：位置闭环（位置P，电流环PI，速度环FOPD-GESO）</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>

@@ -60,6 +60,7 @@ enum RunMode
   MODE4 = 4,
   MODE5 = 5,
   MODE6 = 6,
+  MODE7 = 7,
 
   MODE_FRT_MECH = 100,
   MODE_FRT_ELEC = 101,

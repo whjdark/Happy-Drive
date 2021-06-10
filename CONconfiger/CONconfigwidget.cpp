@@ -28,6 +28,7 @@ CONConfigWidget::CONConfigWidget(QWidget* parent, XComm* xcomm)
   initMode4Tables();
   initMode5Tables();
   initMode6Tables();
+  initMode7Tables();
   initConnetions();
 }
 
@@ -614,6 +615,132 @@ CONConfigWidget::initMode6Tables()
   paramsRow.defaultValue = QStringLiteral("0");
   paramsRow.detail = QStringLiteral("reserve");
   m_tableConfig[DriverDataType::MODE6].append(paramsRow);
+}
+
+void
+CONConfigWidget::initMode7Tables()
+{
+  //模式7菜单参数配置表
+  ParamsRow paramsRow;
+  //电流PID-kp
+  paramsRow.num = QStringLiteral("0x0");
+  paramsRow.name = QStringLiteral("电流PID-kp");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 电流pid ki
+  paramsRow.num = QStringLiteral("0x1");
+  paramsRow.name = QStringLiteral("电流PID-ki");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 电流pid kc
+  paramsRow.num = QStringLiteral("0x17");
+  paramsRow.name = QStringLiteral("电流PID-kc");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 速度FOPD-GESO kp
+  paramsRow.num = QStringLiteral("0xF");
+  paramsRow.name = QStringLiteral("速度FOPD-GESO-kp");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 速度FOPD-GESO kd
+  paramsRow.num = QStringLiteral("0x10");
+  paramsRow.name = QStringLiteral("速度FOPD-GESO-kd");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 速度FOPD-GESO mu
+  paramsRow.num = QStringLiteral("0x11");
+  paramsRow.name = QStringLiteral("速度FOPD-GESO-mu");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 速度FOPD-GESO omegaO
+  paramsRow.num = QStringLiteral("0x12");
+  paramsRow.name = QStringLiteral("速度FOPD-GESO-omegaO");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 速度FOPD-GESO b0
+  paramsRow.num = QStringLiteral("0x13");
+  paramsRow.name = QStringLiteral("速度FOPD-GESO-b0");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 速度FOPD-GESO a1
+  paramsRow.num = QStringLiteral("0x14");
+  paramsRow.name = QStringLiteral("速度FOPD-GESO-a1");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 速度FOPD-GESO a2
+  paramsRow.num = QStringLiteral("0x15");
+  paramsRow.name = QStringLiteral("速度FOPD-GESO-a2");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  paramsRow.num = QStringLiteral("0x16");
+  paramsRow.name = QStringLiteral("速度FOPD-GESO-h");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-16384");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
+  // 位置PID-kp
+  paramsRow.num = QStringLiteral("0x6");
+  paramsRow.name = QStringLiteral("位置PID-kp");
+  paramsRow.value = 0.0;
+  paramsRow.isHex = false;
+  paramsRow.unit = QStringLiteral("");
+  paramsRow.range = QStringLiteral("0-128");
+  paramsRow.defaultValue = QStringLiteral("0");
+  paramsRow.detail = QStringLiteral("reserve");
+  m_tableConfig[DriverDataType::MODE7].append(paramsRow);
 }
 
 void

@@ -40,7 +40,7 @@ XComm::command(const quint16 cmd, const QByteArray& data)
   if (m_port == nullptr) {
     return;
   }
-  if (m_commStatus == XComm::COMM_CONNECT || cmd == XComm::TRY_CONNECT) {
+  if (m_commStatus == COMM_CONNECT || cmd == TRY_CONNECT) {
     // allow to command when  driver is in CONNECT or TRY_CONNECT
     // TRY_CONNECT will send a test msg & try to connect DSP
     m_port->transaction(cmd, data);
@@ -90,13 +90,13 @@ XComm::getCommStatus() const -> XComm::CommState
 void
 XComm::tryConnectDriver()
 {
-  if (m_commStatus == XComm::COMM_IDLE) {
+  if (m_commStatus == COMM_IDLE) {
     //启动通讯
     switch (m_port->getPortType()) {
       case AbstractPort::SerialPort:
         m_port->openPort();
         // TRY_CONNECT cmd is designed for serial
-        command(XComm::TRY_CONNECT, QByteArray());
+        command(TRY_CONNECT, QByteArray());
         break;
       case AbstractPort::TCPClient:
         m_port->openPort();
@@ -112,8 +112,8 @@ XComm::tryConnectDriver()
 void
 XComm::disconnectDriver()
 {
-  m_commStatus = XComm::COMM_IDLE;
-  m_motorStatus = XComm::MOTOR_STOP;
+  m_commStatus = COMM_IDLE;
+  m_motorStatus = MOTOR_STOP;
   m_updateTimer->stop(); // stop update. only for TCP
   // release m_port
   m_port->closePort();
@@ -163,6 +163,9 @@ XComm::getCurRunModeStr() const -> QString
       runModeStr =
         QStringLiteral("模式6：速度闭环（电流环PI，速度环FOPD-GESO）");
       break;
+    case DriverDataType::MODE7:
+      runModeStr =
+        QStringLiteral("模式7：位置闭环（位置P，电流环PI，速度环FOPD-GESO）");
     case DriverDataType::MODE_FRT_MECH:
       runModeStr = QStringLiteral("模式：频率响应测试（机械环节）");
       break;
@@ -311,7 +314,7 @@ XComm::getStats() -> const CommStats&
 }
 
 void
-XComm::setMotorState(const XComm::MotorState motorState)
+XComm::setMotorState(const MotorState motorState)
 {
   m_motorStatus = motorState;
 }
